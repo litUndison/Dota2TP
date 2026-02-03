@@ -6,13 +6,14 @@ using System.Threading.Tasks;
 using System.Net.Http;
 using System.Text.Json;
 using System.Windows.Forms;
+using Dota_2_Training_Platform.Models;
 
 namespace Dota_2_Training_Platform
 {
     public static class ApiCourier
     {
         //1204572532
-        public static List<DotaPlayerProfileModel> players = new List<DotaPlayerProfileModel>();
+        public static List<DotaPlayerProfileModel> players = new List<DotaPlayerProfileModel>(); // на всякий случай, вдруг понадобится доп. инфа
         private static readonly HttpClient _apiHttpClient = new HttpClient();
 
 

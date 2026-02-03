@@ -8,7 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml;
-using JsonManager;
+using DataBaseManager;
+using Dota_2_Training_Platform.Models;
 
 namespace Dota_2_Training_Platform
 {
@@ -39,29 +40,72 @@ namespace Dota_2_Training_Platform
 
         private async void guna2GradientButton2_Click(object sender, EventArgs e) // Регистрация
         {
-            if (SteamIDTextBox.Text.Length != 0 && PasswordTextBox.Text.Length != 0)
+            switch(typeOfEntering)
             {
-                try
-                {
-                    DotaPlayerProfileModel profileInfo = new DotaPlayerProfileModel();
-                    profileInfo = await ApiCourier.TryGetUserInfo(SteamIDTextBox.Text);
-                    if (profileInfo != null)
+                case TypeOfEntering.Player:
                     {
-                        MessageBox.Show("Работаец " + profileInfo.profile.ToString());
-                        jManager.AddUser(SteamIDTextBox.Text, PasswordTextBox.Text);
+                        if(await PlayerSignUp(SteamIDTextBox.Text, PasswordTextBox.Text))
+                        {
+                            // что-то сделать если зарегался
+                        }
+                        else
+                        {
+
+                        }
+                        break;
                     }
-                }
-                catch(Exception ex)
-                {
-
-                }
-                
-
+                case TypeOfEntering.Trainer:
+                    {
+                        break;
+                    }
             }
         }
 
+
+        public async Task<bool> PlayerSignUp(string SteamID, string Password)
+        {
+            if (SteamIDTextBox.Text.Length != 0 && PasswordTextBox.Text.Length != 0)
+            {
+                DotaPlayerProfileModel player = await dbManager.AddPlayer(SteamID, Password);
+                if (player != null)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+        public bool PlayerSignIn(string SteamID, string Password)
+        {
+            foreach(var user in dbManager.Players)
+            {
+                if(user.SteamID == SteamID && user.Password == Password)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
         private void guna2GradientButton1_Click(object sender, EventArgs e) // Вход
         {
+            switch (typeOfEntering)
+            {
+                case TypeOfEntering.Player:
+                    {
+                        if (PlayerSignIn(SteamIDTextBox.Text, PasswordTextBox.Text))
+                        {
+                            // что-то сделать если зарегался
+                        }
+                        else
+                        {
+
+                        }
+                        break;
+                    }
+                case TypeOfEntering.Trainer:
+                    {
+                        break;
+                    }
+            }
         }
 
         private void Form2_FormClosing(object sender, FormClosingEventArgs e)
@@ -69,5 +113,9 @@ namespace Dota_2_Training_Platform
             Application.Exit();
         }
 
+        private void guna2GradientButton3_Click(object sender, EventArgs e) // Назад на Form1
+        {
+            
+        }
     }
 }
