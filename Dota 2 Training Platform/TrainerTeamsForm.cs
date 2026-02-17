@@ -31,6 +31,7 @@ namespace Dota_2_Training_Platform
         private void Form2_Load(object sender, EventArgs e)
         {
             color = PlayerBox1.FocusedState.BorderColor;
+            PrintAllTeams();
         }
 
 
@@ -48,100 +49,134 @@ namespace Dota_2_Training_Platform
             this.Close();
         }
 
-        private async void CreateTeamButton_Click(object sender, EventArgs e)
+        private void CreateTeamButton_Click(object sender, EventArgs e) // добавление команды
         {
-            List<string> steamids = new List<string>();
+            MessageBox.Show("Поля доступны для редактирования");
             Guna2TextBox[] playerBoxes = new Guna2TextBox[] { PlayerBox1, PlayerBox2, PlayerBox3, PlayerBox4, PlayerBox5 };
+            Guna2HtmlLabel[] nameboxes = { guna2HtmlLabel1, guna2HtmlLabel2, guna2HtmlLabel3, guna2HtmlLabel4, guna2HtmlLabel5 };
+            for (int i = 0; i < playerBoxes.Length; i++)
+            {
+                playerBoxes[i].ReadOnly = false;
+                playerBoxes[i].Text = "";
+            }
+            TeamNameBox.ReadOnly = false;
+            for (int i = 0; i < nameboxes.Length; i++)
+            {
+                nameboxes[i].Text = $"Игрок {i+1}";
+            }
+            TeamConfirm.Visible = true;
+        }
+        private async void TeamConfirm_Click(object sender, EventArgs e)
+        {
+            Guna2TextBox[] playerBoxes = { PlayerBox1, PlayerBox2, PlayerBox3, PlayerBox4, PlayerBox5 };
 
             if (string.IsNullOrWhiteSpace(TeamNameBox.Text) || TeamNameBox.Text.Length < 5)
             {
-                MessageBox.Show("Название команды не введено или название менее 5 символов");
+                MessageBox.Show("Название команды не введено или менее 5 символов");
                 return;
             }
+
+            // Список задач API
+            List<Task<ApiCourier.ApiResult<DotaPlayerProfileModel>>> apiTasks = new List<Task<ApiCourier.ApiResult<DotaPlayerProfileModel>>>();
 
             for (int i = 0; i < playerBoxes.Length; i++)
             {
                 string input = playerBoxes[i].Text.Trim();
-                if (string.IsNullOrWhiteSpace(input))
+                if (!string.IsNullOrWhiteSpace(input))
                 {
-                    continue; // пропускаем пустые поля
+                    apiTasks.Add(ApiCourier.TryGetUserInfo(input));
                 }
+            }
 
-                var apiResult = await ApiCourier.TryGetUserInfo(input);
+            // Ждем все API запросы параллельно
+            var results = await Task.WhenAll(apiTasks);
 
-                if (!apiResult.IsSuccess)
+            List<DotaPlayerProfileModel> players = new List<DotaPlayerProfileModel>();
+
+            foreach (var res in results)
+            {
+                if (!res.IsSuccess)
                 {
-                    MessageBox.Show($"Ошибка у игрока {i + 1}: {apiResult.ErrorMessage}");
+                    MessageBox.Show(res.ErrorMessage);
                     return;
                 }
 
-                var profileInfo = apiResult.Data;
-                //Console.WriteLine("Adding player: " + playerSteamId);
-                steamids.Add(profileInfo.profile.steamid.ToString());
+                players.Add(res.Data);
             }
 
-            if (steamids.Count == 0)
+            if (players.Count == 0)
             {
-                MessageBox.Show("Добавьте хотя бы одного игрока в команду");
+                MessageBox.Show("Добавьте хотя бы одного игрока");
                 return;
             }
 
-            dbManager.CreateTeam(TeamNameBox.Text, currentUser.SteamID, steamids);
+            await Task.Run(() => dbManager.CreateTeam(TeamNameBox.Text, currentUser.SteamID, players));
+
             PrintAllTeams();
         }
 
 
 
+
+
         private void PrintAllTeams()
         {
-            int top = 10;
-            int left = 10;
+            guna2Panel1.Controls.Clear(); // ВОТ ЭТО ОБЯЗАТЕЛЬНО
+
             currentTeams = dbManager.GetTrainerTeams(currentUser.SteamID);
 
             foreach (TeamModel team in currentTeams)
             {
-                MessageBox.Show($"Team {team.Name} has {team.Players.Count} players");
                 Button button = new Button();
-                button.Left = left;
-                if (guna2Panel1.Controls.Count > 0)
-                {
-                    button.Top = guna2Panel1.Controls[guna2Panel1.Controls.Count - 1].Top + button.Height + 2;
-                }
-                else
-                {
-                    button.Top = top;
-                }
+                button.Text = team.Name;
+                button.Width = 150;
 
-                button.Text = $"{team.Name}";
+                button.Top = guna2Panel1.Controls.Count == 0
+                    ? 10
+                    : guna2Panel1.Controls[guna2Panel1.Controls.Count - 1].Bottom + 2;
+
+                button.Tag = team; // ВАЖНО
                 button.Click += LoadTeam;
+
                 guna2Panel1.Controls.Add(button);
-                label1.Text = guna2Panel1.Controls.Count.ToString();
             }
         }
 
         private void LoadTeam(object sender, EventArgs e)
         {
-            ShowAllMembers(guna2Panel1.Controls.GetChildIndex((Button)sender));
+            var button = (Button)sender;
+            var team = (TeamModel)button.Tag;
+
+            ShowAllMembers(team);
         }
 
-        private void ShowAllMembers(int index)
+        private void ShowAllMembers(TeamModel team)
         {
-            Guna2TextBox[] playerBoxes = new Guna2TextBox[] { PlayerBox1, PlayerBox2, PlayerBox3, PlayerBox4, PlayerBox5 };
-            Guna2HtmlLabel[] nameboxes = new Guna2HtmlLabel[] { guna2HtmlLabel1, guna2HtmlLabel2, guna2HtmlLabel3, guna2HtmlLabel4, guna2HtmlLabel5 };
+            Guna2TextBox[] playerBoxes = { PlayerBox1, PlayerBox2, PlayerBox3, PlayerBox4, PlayerBox5 };
+            Guna2HtmlLabel[] nameboxes = { guna2HtmlLabel1, guna2HtmlLabel2, guna2HtmlLabel3, guna2HtmlLabel4, guna2HtmlLabel5 };
+            Guna2PictureBox[] imageboxes = { PlayerPicture1, PlayerPicture2, PlayerPicture3, PlayerPicture4, PlayerPicture5 };
 
-            if (index < 0 || index >= currentTeams.Count) return;
+            // Очистка
+            for (int i = 0; i < playerBoxes.Length; i++)
+            {
+                playerBoxes[i].Text = "";
+                playerBoxes[i].ReadOnly = true;
+                nameboxes[i].Text = $"Игрок {i + 1}";
+                imageboxes[i].Image = null;
+            }
 
-            TeamModel team = currentTeams[index];
+            TeamNameBox.ReadOnly = true;
 
-            // Очищаем все TextBox
-            foreach (var box in playerBoxes)
-                box.Text = "";
-
-            // Заполняем игроков в PlayerBox1-5
+            // Заполнение
             for (int i = 0; i < team.Players.Count && i < playerBoxes.Length; i++)
             {
-                playerBoxes[i].Text = team.Players[i].AccountID; // или любой другой идентификатор игрока
+                playerBoxes[i].Text = team.Players[i].AccountID;
                 nameboxes[i].Text = team.Players[i].Name;
+
+                if (!string.IsNullOrEmpty(team.Players[i].Avatarfull))
+                {
+                    imageboxes[i].LoadAsync(team.Players[i].Avatarfull);
+                }
             }
         }
 
@@ -197,6 +232,8 @@ namespace Dota_2_Training_Platform
                 }
             }
         }
+
+        
 
         //private void DoSmth(object sender, EventArgs e)
         //{

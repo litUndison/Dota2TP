@@ -75,10 +75,13 @@ namespace DataBaseManager
                     command.CommandText =
                     @"
             CREATE TABLE IF NOT EXISTS TeamPlayers (
-                Id INTEGER PRIMARY KEY AUTOINCREMENT,
-                TeamId INTEGER NOT NULL,
-                PlayerSteamId TEXT NOT NULL,
-                UNIQUE(TeamId, PlayerSteamId)
+            Id INTEGER PRIMARY KEY AUTOINCREMENT,
+            TeamId INTEGER NOT NULL,
+            Name TEXT,
+            AccountId TEXT,
+            PlayerSteamId TEXT NOT NULL,
+            Avatar TEXT,
+            UNIQUE(TeamId, PlayerSteamId)
             );";
                     command.ExecuteNonQuery();
                 }
@@ -411,70 +414,55 @@ namespace DataBaseManager
 
         #region TeamsFunctions
 
-        public static bool CreateTeam(string teamName, string trainerSteamId, List<string> playerSteamIds = null)
+        public static bool CreateTeam(string teamName, string trainerSteamId, List<DotaPlayerProfileModel> players = null)
         {
-            if (playerSteamIds == null)
-            {
-                playerSteamIds = new List<string>();
-            }
+            if (players == null)
+                players = new List<DotaPlayerProfileModel>();
 
-            // Проверки
-            if (playerSteamIds.Contains(trainerSteamId))
-            {
-                MessageBox.Show("Тренер не может быть участником своей команды");
+            if (players.Count > 5)
                 return false;
-            }
-
-            if (playerSteamIds.Count > 5)
-            {
-                MessageBox.Show("В команде не может быть больше 5 игроков");
-                return false;
-            }
-
-            if (playerSteamIds.Distinct().Count() != playerSteamIds.Count)
-            {
-                MessageBox.Show("Список игроков содержит повторяющихся участников");
-                return false;
-            }
 
             using (var connection = new SQLiteConnection(connectionString))
             {
                 connection.Open();
+
                 using (var transaction = connection.BeginTransaction())
                 {
                     try
                     {
                         long teamId;
 
-                        // Создаём команду
+                        // 1️⃣ Создаем команду
                         using (var cmd = connection.CreateCommand())
                         {
-                            cmd.CommandText =
-                            @"
+                            cmd.CommandText = @"
                     INSERT INTO Teams (Name, TrainerSteamId)
-                    VALUES (@name, @trainerSteamId);
-                    SELECT last_insert_rowid();
-                    ";
+                    VALUES (@name, @trainer);
+                    SELECT last_insert_rowid();";
 
                             cmd.Parameters.AddWithValue("@name", teamName);
-                            cmd.Parameters.AddWithValue("@trainerSteamId", trainerSteamId);
+                            cmd.Parameters.AddWithValue("@trainer", trainerSteamId);
 
                             teamId = (long)cmd.ExecuteScalar();
                         }
 
-                        // Добавляем игроков (если есть)
-                        foreach (var playerSteamId in playerSteamIds)
+                        // 2️⃣ Добавляем игроков
+                        foreach (var player in players)
                         {
                             using (var cmd = connection.CreateCommand())
                             {
-                                cmd.CommandText =
-                                @"
-                        INSERT INTO TeamPlayers (TeamId, PlayerSteamId)
-                        VALUES (@teamId, @playerSteamId);
-                        ";
+                                cmd.CommandText = @"
+                        INSERT INTO TeamPlayers
+                        (TeamId, Name, AccountId, PlayerSteamId, Avatar)
+                        VALUES
+                        (@teamId, @name, @accountId, @steamId, @avatar);";
 
                                 cmd.Parameters.AddWithValue("@teamId", teamId);
-                                cmd.Parameters.AddWithValue("@playerSteamId", playerSteamId);
+                                cmd.Parameters.AddWithValue("@name", player.profile.personaname);
+                                cmd.Parameters.AddWithValue("@accountId", player.profile.account_id);
+                                cmd.Parameters.AddWithValue("@steamId", player.profile.steamid);
+                                cmd.Parameters.AddWithValue("@avatar", player.profile.avatarfull);
+
                                 cmd.ExecuteNonQuery();
                             }
                         }
@@ -482,15 +470,15 @@ namespace DataBaseManager
                         transaction.Commit();
                         return true;
                     }
-                    catch (Exception ex)
+                    catch
                     {
                         transaction.Rollback();
-                        MessageBox.Show(ex.Message);
                         return false;
                     }
                 }
             }
         }
+
 
         public static TeamModel GetTeam(int teamId)
         {
@@ -568,7 +556,7 @@ namespace DataBaseManager
             {
                 connection.Open();
 
-                // Получаем команды, где steamId является тренером
+                // 1️⃣ Получаем команды тренера
                 using (var cmd = connection.CreateCommand())
                 {
                     cmd.CommandText =
@@ -589,24 +577,24 @@ namespace DataBaseManager
                                 reader.GetString(1),
                                 reader.GetString(2)
                             );
+
                             teams.Add(team);
                         }
                     }
                 }
 
-                // Подгружаем игроков для каждой команды
+                // 2️⃣ Подгружаем игроков ДЛЯ КАЖДОЙ команды
                 foreach (var team in teams)
                 {
                     using (var cmd = connection.CreateCommand())
                     {
                         cmd.CommandText =
                         @"
-                SELECT p.Name, p.AccountId, p.SteamId, p.Password, p.Avatar
-                FROM TeamPlayers tp
-                JOIN Players p ON p.SteamId = tp.PlayerSteamId
-                WHERE tp.TeamId = @teamId
+                SELECT Name, AccountId, PlayerSteamId, Avatar
+                FROM TeamPlayers
+                WHERE TeamId = @teamId
                 ";
-                        cmd.Parameters.Clear(); // Очистим предыдущие параметры
+
                         cmd.Parameters.AddWithValue("@teamId", team.Id);
 
                         using (var reader = cmd.ExecuteReader())
@@ -614,11 +602,11 @@ namespace DataBaseManager
                             while (reader.Read())
                             {
                                 team.Players.Add(new UserModel(
-                                    reader.GetString(0),
-                                    reader.GetString(1),
-                                    reader.GetString(2),
-                                    reader.GetString(3),
-                                    reader.GetString(4)
+                                    reader.GetString(0), // Name
+                                    reader.GetString(1), // AccountId
+                                    reader.GetString(2), // SteamId
+                                    "",                  // Password нет
+                                    reader.GetString(3)  // Avatar
                                 ));
                             }
                         }
@@ -628,6 +616,7 @@ namespace DataBaseManager
 
             return teams;
         }
+
 
         public static List<TeamModel> GetPlayerTeams(string playerSteamId)
         {
