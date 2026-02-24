@@ -120,6 +120,7 @@
             // 
             // PlayerBox1
             // 
+            this.PlayerBox1.BorderRadius = 5;
             this.PlayerBox1.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.PlayerBox1.DefaultText = "";
             this.PlayerBox1.DisabledState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(208)))), ((int)(((byte)(208)))));
@@ -200,6 +201,7 @@
             // 
             // PlayerBox2
             // 
+            this.PlayerBox2.BorderRadius = 5;
             this.PlayerBox2.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.PlayerBox2.DefaultText = "";
             this.PlayerBox2.DisabledState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(208)))), ((int)(((byte)(208)))));
@@ -245,6 +247,7 @@
             // 
             // PlayerBox3
             // 
+            this.PlayerBox3.BorderRadius = 5;
             this.PlayerBox3.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.PlayerBox3.DefaultText = "";
             this.PlayerBox3.DisabledState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(208)))), ((int)(((byte)(208)))));
@@ -290,6 +293,7 @@
             // 
             // PlayerBox5
             // 
+            this.PlayerBox5.BorderRadius = 5;
             this.PlayerBox5.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.PlayerBox5.DefaultText = "";
             this.PlayerBox5.DisabledState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(208)))), ((int)(((byte)(208)))));
@@ -335,6 +339,7 @@
             // 
             // PlayerBox4
             // 
+            this.PlayerBox4.BorderRadius = 5;
             this.PlayerBox4.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.PlayerBox4.DefaultText = "";
             this.PlayerBox4.DisabledState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(208)))), ((int)(((byte)(208)))));
@@ -356,6 +361,7 @@
             // 
             // TeamNameBox
             // 
+            this.TeamNameBox.BorderRadius = 5;
             this.TeamNameBox.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.TeamNameBox.DefaultText = "";
             this.TeamNameBox.DisabledState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(208)))), ((int)(((byte)(208)))));

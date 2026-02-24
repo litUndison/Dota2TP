@@ -24,9 +24,6 @@ namespace Dota_2_Training_Platform
             Trainer
         }
 
-        string correctPasswordSymbols = "1234567890abcdefghijklmnopqrstuvwxyz-_";
-        string correctSteamIDSymbols = "1234567890";
-
         TypeOfEntering entering;
         Color color;
         Form form2;
@@ -133,11 +130,11 @@ namespace Dota_2_Training_Platform
 
         private void SteamIDTextBox_TextChanged(object sender, EventArgs e) // SteamIDTextBox
         {
-            FieldChecker.FieldCheck(SteamIDTextBox, correctSteamIDSymbols);
+            FieldChecker.FieldCheck(SteamIDTextBox, FieldChecker.CheckType.SteamID);
         }
         private void PasswordTextBox_TextChanged(object sender, EventArgs e) //PasswordTextBox
         {
-            FieldChecker.FieldCheck(PasswordTextBox, correctPasswordSymbols);
+            FieldChecker.FieldCheck(PasswordTextBox, FieldChecker.CheckType.Password);
         }
 
         private void TrainerButton_Click(object sender, EventArgs e) // Trainer button
@@ -248,9 +245,5 @@ namespace Dota_2_Training_Platform
             }
         }
 
-        private void guna2GradientButton1_Click(object sender, EventArgs e)
-        {
-            OpenForm(TypeOfEntering.Trainer);
-        }
     }
 }

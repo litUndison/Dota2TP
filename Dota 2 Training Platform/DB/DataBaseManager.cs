@@ -414,6 +414,134 @@ namespace DataBaseManager
 
         #region TeamsFunctions
 
+        public static bool UpdateTeamName(int teamId, string newName)
+        {
+            if (string.IsNullOrWhiteSpace(newName))
+                return false;
+
+            using (var connection = new SQLiteConnection(connectionString))
+            {
+                connection.Open();
+
+                using (var cmd = connection.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                        UPDATE Teams
+                        SET Name = @name
+                        WHERE Id = @teamId
+                    ";
+
+                    cmd.Parameters.AddWithValue("@name", newName);
+                    cmd.Parameters.AddWithValue("@teamId", teamId);
+
+                    return cmd.ExecuteNonQuery() > 0;
+                }
+            }
+        }
+
+        public static async Task<bool> ReplacePlayerInTeam(int teamId, string oldPlayerSteamId, string newSteamOrAccountId)
+        {
+            using (var connection = new SQLiteConnection(connectionString))
+            {
+                connection.Open();
+
+                // Проверяем, есть ли старый игрок в команде
+                using (var checkCmd = connection.CreateCommand())
+                {
+                    checkCmd.CommandText = @"
+                SELECT COUNT(*) FROM TeamPlayers
+                WHERE TeamId = @teamId AND PlayerSteamId = @steamId
+            ";
+
+                    checkCmd.Parameters.AddWithValue("@teamId", teamId);
+                    checkCmd.Parameters.AddWithValue("@steamId", oldPlayerSteamId);
+
+                    if (Convert.ToInt32(checkCmd.ExecuteScalar()) == 0)
+                    {
+                        MessageBox.Show("Старый игрок не найден в команде");
+                        return false;
+                    }
+                }
+
+                // Получаем данные нового игрока через API
+                var apiResult = await ApiCourier.TryGetUserInfo(newSteamOrAccountId);
+
+                if (!apiResult.IsSuccess)
+                {
+                    MessageBox.Show("Новый игрок не найден в API");
+                    return false;
+                }
+
+                var newPlayer = apiResult.Data.profile;
+                string newSteamId = newPlayer.steamid.ToString();
+
+                // Проверяем, не состоит ли уже в команде
+                using (var checkCmd = connection.CreateCommand())
+                {
+                    checkCmd.CommandText = @"
+                SELECT COUNT(*) FROM TeamPlayers
+                WHERE TeamId = @teamId AND PlayerSteamId = @steamId
+            ";
+
+                    checkCmd.Parameters.AddWithValue("@teamId", teamId);
+                    checkCmd.Parameters.AddWithValue("@steamId", newSteamId);
+
+                    if (Convert.ToInt32(checkCmd.ExecuteScalar()) > 0)
+                    {
+                        MessageBox.Show("Новый игрок уже состоит в команде");
+                        return false;
+                    }
+                }
+
+                using (var transaction = connection.BeginTransaction())
+                {
+                    try
+                    {
+                        // Удаляем старого игрока
+                        using (var deleteCmd = connection.CreateCommand())
+                        {
+                            deleteCmd.CommandText = @"
+                        DELETE FROM TeamPlayers
+                        WHERE TeamId = @teamId AND PlayerSteamId = @steamId
+                    ";
+
+                            deleteCmd.Parameters.AddWithValue("@teamId", teamId);
+                            deleteCmd.Parameters.AddWithValue("@steamId", oldPlayerSteamId);
+                            deleteCmd.ExecuteNonQuery();
+                        }
+
+                        // Добавляем нового
+                        using (var insertCmd = connection.CreateCommand())
+                        {
+                            insertCmd.CommandText = @"
+                        INSERT INTO TeamPlayers
+                        (TeamId, Name, AccountId, PlayerSteamId, Avatar)
+                        VALUES
+                        (@teamId, @name, @accountId, @steamId, @avatar)
+                    ";
+
+                            insertCmd.Parameters.AddWithValue("@teamId", teamId);
+                            insertCmd.Parameters.AddWithValue("@name", newPlayer.personaname);
+                            insertCmd.Parameters.AddWithValue("@accountId", newPlayer.account_id);
+                            insertCmd.Parameters.AddWithValue("@steamId", newSteamId);
+                            insertCmd.Parameters.AddWithValue("@avatar", newPlayer.avatarfull);
+
+                            insertCmd.ExecuteNonQuery();
+                        }
+
+                        transaction.Commit();
+                        return true;
+                    }
+                    catch (Exception ex)
+                    {
+                        transaction.Rollback();
+                        MessageBox.Show(ex.Message);
+                        return false;
+                    }
+                }
+            }
+        }
+
         public static bool CreateTeam(string teamName, string trainerSteamId, List<DotaPlayerProfileModel> players = null)
         {
             if (players == null)
@@ -692,7 +820,147 @@ namespace DataBaseManager
             return teams;
         }
 
+        public static async Task<bool> UpdateTeamFullAsync(TeamModel team, string newTeamName, List<string> newSteamOrAccountIds)
+        {
+            using (var connection = new SQLiteConnection(connectionString))
+            {
+                connection.Open();
 
+                using (var transaction = connection.BeginTransaction())
+                {
+                    try
+                    {
+                        // ==============================
+                        // Обновляем имя команды
+                        // ==============================
+                        if (team.Name != newTeamName)
+                        {
+                            using (var cmd = connection.CreateCommand())
+                            {
+                                cmd.CommandText =
+                                    "UPDATE Teams SET Name = @name WHERE Id = @id";
+
+                                cmd.Parameters.AddWithValue("@name", newTeamName);
+                                cmd.Parameters.AddWithValue("@id", team.Id);
+                                cmd.ExecuteNonQuery();
+                            }
+                        }
+
+                        // ==============================
+                        // Нормализация ID через API
+                        // ==============================
+                        var normalizedSteamIds = new List<string>();
+
+                        foreach (var id in newSteamOrAccountIds)
+                        {
+                            var apiResult = await ApiCourier.TryGetUserInfo(id);
+
+                            if (!apiResult.IsSuccess)
+                                throw new Exception($"Игрок {id} не найден");
+
+                            normalizedSteamIds.Add(apiResult.Data.profile.steamid.ToString());
+                        }
+
+                        // ==============================
+                        // Проверка на дубликаты
+                        // ==============================
+                        if (normalizedSteamIds.Count != normalizedSteamIds.Distinct().Count())
+                            throw new Exception("Нельзя добавить одного и того же игрока дважды");
+
+                        // ==============================
+                        // Проверка лимита 5 игроков
+                        // ==============================
+                        if (normalizedSteamIds.Count > 5)
+                            throw new Exception("В команде не может быть более 5 игроков");
+
+                        // ==============================
+                        // Проверка: нельзя добавить тренера этой команды
+                        // ==============================
+                        if (normalizedSteamIds.Contains(team.TrainerSteamId))
+                            throw new Exception("Тренер команды не может быть игроком");
+
+                        // ==============================
+                        // Проверка: нельзя добавить любого тренера
+                        // ==============================
+                        foreach (var steamId in normalizedSteamIds)
+                        {
+                            using (var cmd = connection.CreateCommand())
+                            {
+                                cmd.CommandText =
+                                    "SELECT COUNT(*) FROM Trainers WHERE SteamId = @steamId";
+
+                                cmd.Parameters.AddWithValue("@steamId", steamId);
+
+                                if (Convert.ToInt32(cmd.ExecuteScalar()) > 0)
+                                    throw new Exception("Нельзя добавить тренера как игрока");
+                            }
+                        }
+
+                        // ==============================
+                        // Проверка: состав изменился?
+                        // ==============================
+                        var oldPlayers = team.Players
+                            .Select(p => p.SteamID)
+                            .OrderBy(x => x)
+                            .ToList();
+
+                        var newPlayersSorted = normalizedSteamIds
+                            .OrderBy(x => x)
+                            .ToList();
+
+                        if (oldPlayers.SequenceEqual(newPlayersSorted))
+                        {
+                            transaction.Commit();
+                            return true;
+                        }
+
+                        // ==============================
+                        // Полная замена состава
+                        // ==============================
+                        using (var cmd = connection.CreateCommand())
+                        {
+                            cmd.CommandText =
+                                "DELETE FROM TeamPlayers WHERE TeamId = @teamId";
+
+                            cmd.Parameters.AddWithValue("@teamId", team.Id);
+                            cmd.ExecuteNonQuery();
+                        }
+
+                        foreach (var steamId in normalizedSteamIds)
+                        {
+                            var apiResult = await ApiCourier.TryGetUserInfo(steamId);
+                            var p = apiResult.Data.profile;
+
+                            using (var cmd = connection.CreateCommand())
+                            {
+                                cmd.CommandText = @"
+                            INSERT INTO TeamPlayers
+                            (TeamId, Name, AccountId, PlayerSteamId, Avatar)
+                            VALUES
+                            (@teamId, @name, @accountId, @steamId, @avatar)";
+
+                                cmd.Parameters.AddWithValue("@teamId", team.Id);
+                                cmd.Parameters.AddWithValue("@name", p.personaname);
+                                cmd.Parameters.AddWithValue("@accountId", p.account_id);
+                                cmd.Parameters.AddWithValue("@steamId", p.steamid);
+                                cmd.Parameters.AddWithValue("@avatar", p.avatarfull);
+
+                                cmd.ExecuteNonQuery();
+                            }
+                        }
+
+                        transaction.Commit();
+                        return true;
+                    }
+                    catch (Exception ex)
+                    {
+                        transaction.Rollback();
+                        MessageBox.Show(ex.Message);
+                        return false;
+                    }
+                }
+            }
+        }
         public static bool AddPlayerToTeam(int teamId, string playerSteamId)
         {
             using (var connection = new SQLiteConnection(connectionString))

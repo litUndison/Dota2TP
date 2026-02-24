@@ -23,8 +23,11 @@ namespace Dota_2_Training_Platform
         TeamModel currentTeam;
         List<TeamModel> currentTeams = new List<TeamModel>();
         Color color;
-        string correctTeamSymbols = "абвгдеёжзийклмнопрстуфхцчшщъыьэюя 1234567890abcdefghijklmnopqrstuvwxyz-_";
-        string correctSteamIDSymbols = "1234567890";
+
+        Form form2 = null;
+
+
+        bool selfExit = false; //если самовыход = true, то закрывается только текущее окно. Без закрытия всей программы. Немного криво, ну лан))
         public TrainerTeamsForm(UserModel currentUser)
         {
             this.currentUser = currentUser;
@@ -40,7 +43,8 @@ namespace Dota_2_Training_Platform
 
         private void Form2_FormClosing(object sender, FormClosingEventArgs e)
         {
-            Application.Exit();
+            if(!selfExit)
+                Application.Exit();
         }
 
         private void guna2GradientButton3_Click(object sender, EventArgs e) // Назад на Form1
@@ -49,6 +53,7 @@ namespace Dota_2_Training_Platform
             enterForm.StartPosition = FormStartPosition.Manual;
             enterForm.Location = this.DesktopLocation;
             enterForm.Show();
+            selfExit = true;
             this.Close();
         }
 
@@ -196,42 +201,49 @@ namespace Dota_2_Training_Platform
             }
 
             currentTeam = team;
+
+            ContinueButton.Visible = true;
         }
 
         private void TeamNameBox_TextChanged(object sender, EventArgs e)
         {
-            FieldChecker.FieldCheck(PlayerBox1, correctTeamSymbols);
+            FieldChecker.FieldCheck(PlayerBox1, FieldChecker.CheckType.Team);
             //string.IsNullOrWhiteSpace(TeamNameBox.Text)
         }
 
         private void PlayerBox1_TextChanged(object sender, EventArgs e)
         {
-            FieldChecker.FieldCheck(PlayerBox1, correctSteamIDSymbols);
+            FieldChecker.FieldCheck(PlayerBox1, FieldChecker.CheckType.SteamID);
         }
 
         private void PlayerBox2_TextChanged(object sender, EventArgs e)
         {
-            FieldChecker.FieldCheck(PlayerBox2, correctSteamIDSymbols);
+            FieldChecker.FieldCheck(PlayerBox2, FieldChecker.CheckType.SteamID);
         }
 
         private void PlayerBox3_TextChanged(object sender, EventArgs e)
         {
-            FieldChecker.FieldCheck(PlayerBox3, correctSteamIDSymbols);
+            FieldChecker.FieldCheck(PlayerBox3, FieldChecker.CheckType.SteamID);
         }
 
         private void PlayerBox4_TextChanged(object sender, EventArgs e)
         {
-            FieldChecker.FieldCheck(PlayerBox4, correctSteamIDSymbols);
+            FieldChecker.FieldCheck(PlayerBox4, FieldChecker.CheckType.SteamID);
         }
 
         private void PlayerBox5_TextChanged(object sender, EventArgs e)
         {
-            FieldChecker.FieldCheck(PlayerBox5, correctSteamIDSymbols);
+            FieldChecker.FieldCheck(PlayerBox5, FieldChecker.CheckType.SteamID);
         }
 
         private void guna2GradientButton1_Click(object sender, EventArgs e) // ContinueButton
         {
-            // создать новую форму в которую буду передавать currentTeam и currentUser
+            form2 = new MainForm(currentTeam, currentUser);
+            form2.StartPosition = FormStartPosition.Manual;
+            form2.Location = this.DesktopLocation;
+            form2.Show();
+            selfExit = true;
+            this.Close();
         }
 
 

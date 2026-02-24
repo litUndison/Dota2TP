@@ -22,6 +22,8 @@ namespace Dota_2_Training_Platform
         Color color;
         string correctTeamSymbols = "абвгдеёжзийклмнопрстуфхцчшщъыьэюя 1234567890abcdefghijklmnopqrstuvwxyz-_";
         string correctSteamIDSymbols = "1234567890";
+
+        bool selfExit = false;
         public PlayerTeamsForm(UserModel currentUser)
         {
             this.currentUser = currentUser;
@@ -35,7 +37,8 @@ namespace Dota_2_Training_Platform
         }
         private void PlayerTeamsForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            Application.Exit();
+            if (!selfExit)
+                Application.Exit();
         }
 
 
@@ -45,6 +48,7 @@ namespace Dota_2_Training_Platform
             enterForm.StartPosition = FormStartPosition.Manual;
             enterForm.Location = this.DesktopLocation;
             enterForm.Show();
+            selfExit = true;
             this.Close();
         }
 
@@ -134,6 +138,7 @@ namespace Dota_2_Training_Platform
 
         private void ContinueButton_Click(object sender, EventArgs e)
         {
+            selfExit = true;
             // создать новую форму в которую буду передавать currentTeam и currentUser
         }
 

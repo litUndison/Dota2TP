@@ -35,7 +35,6 @@
             this.PasswordTextBox = new Guna.UI2.WinForms.Guna2TextBox();
             this.TrainerButton = new Guna.UI2.WinForms.Guna2GradientButton();
             this.PlayerButton = new Guna.UI2.WinForms.Guna2GradientButton();
-            this.guna2GradientButton1 = new Guna.UI2.WinForms.Guna2GradientButton();
             this.SuspendLayout();
             // 
             // RegistrationButton
@@ -170,27 +169,6 @@
             this.PlayerButton.UseTransparentBackground = true;
             this.PlayerButton.Click += new System.EventHandler(this.PlayerButton_Click);
             // 
-            // guna2GradientButton1
-            // 
-            this.guna2GradientButton1.Animated = true;
-            this.guna2GradientButton1.BackColor = System.Drawing.Color.Transparent;
-            this.guna2GradientButton1.BorderRadius = 15;
-            this.guna2GradientButton1.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
-            this.guna2GradientButton1.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
-            this.guna2GradientButton1.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
-            this.guna2GradientButton1.DisabledState.FillColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
-            this.guna2GradientButton1.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
-            this.guna2GradientButton1.Font = new System.Drawing.Font("JetBrains Mono", 12F);
-            this.guna2GradientButton1.ForeColor = System.Drawing.Color.White;
-            this.guna2GradientButton1.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.ForwardDiagonal;
-            this.guna2GradientButton1.Location = new System.Drawing.Point(89, 12);
-            this.guna2GradientButton1.Name = "guna2GradientButton1";
-            this.guna2GradientButton1.Size = new System.Drawing.Size(160, 43);
-            this.guna2GradientButton1.TabIndex = 29;
-            this.guna2GradientButton1.Text = "ПОТОМ УДАЛТЬ";
-            this.guna2GradientButton1.UseTransparentBackground = true;
-            this.guna2GradientButton1.Click += new System.EventHandler(this.guna2GradientButton1_Click);
-            // 
             // EnterForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -199,7 +177,6 @@
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(334, 361);
-            this.Controls.Add(this.guna2GradientButton1);
             this.Controls.Add(this.PlayerButton);
             this.Controls.Add(this.TrainerButton);
             this.Controls.Add(this.RegistrationButton);
@@ -222,7 +199,6 @@
         private Guna.UI2.WinForms.Guna2TextBox PasswordTextBox;
         private Guna.UI2.WinForms.Guna2GradientButton TrainerButton;
         private Guna.UI2.WinForms.Guna2GradientButton PlayerButton;
-        private Guna.UI2.WinForms.Guna2GradientButton guna2GradientButton1;
     }
 }
 

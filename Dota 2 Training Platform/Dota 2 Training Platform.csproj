@@ -95,7 +95,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ApiCourier.cs" />
+    <Compile Include="Api\ApiCourier.cs" />
     <Compile Include="EnterForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -103,6 +103,12 @@
       <DependentUpon>EnterForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Functions\FieldChecker.cs" />
+    <Compile Include="MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="PlayerTeamsForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -120,9 +126,12 @@
     <Compile Include="Models\UserModel.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="DataBaseManager.cs" />
+    <Compile Include="DB\DataBaseManager.cs" />
     <EmbeddedResource Include="EnterForm.resx">
       <DependentUpon>EnterForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="PlayerTeamsForm.resx">
       <DependentUpon>PlayerTeamsForm.cs</DependentUpon>
