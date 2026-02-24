@@ -28,42 +28,44 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TrainerTeamsForm));
             this.guna2GradientButton3 = new Guna.UI2.WinForms.Guna2GradientButton();
             this.CreateTeamButton = new Guna.UI2.WinForms.Guna2GradientButton();
             this.guna2Panel1 = new Guna.UI2.WinForms.Guna2Panel();
             this.PlayerBox1 = new Guna.UI2.WinForms.Guna2TextBox();
             this.guna2HtmlLabel1 = new Guna.UI2.WinForms.Guna2HtmlLabel();
             this.guna2Panel2 = new Guna.UI2.WinForms.Guna2Panel();
-            this.guna2Panel3 = new Guna.UI2.WinForms.Guna2Panel();
+            this.PlayerPicture1 = new Guna.UI2.WinForms.Guna2PictureBox();
+            this.PlayerPicture2 = new Guna.UI2.WinForms.Guna2PictureBox();
             this.guna2HtmlLabel2 = new Guna.UI2.WinForms.Guna2HtmlLabel();
             this.PlayerBox2 = new Guna.UI2.WinForms.Guna2TextBox();
-            this.guna2Panel4 = new Guna.UI2.WinForms.Guna2Panel();
+            this.PlayerPicture3 = new Guna.UI2.WinForms.Guna2PictureBox();
             this.guna2HtmlLabel3 = new Guna.UI2.WinForms.Guna2HtmlLabel();
             this.PlayerBox3 = new Guna.UI2.WinForms.Guna2TextBox();
-            this.guna2Panel5 = new Guna.UI2.WinForms.Guna2Panel();
+            this.PlayerPicture5 = new Guna.UI2.WinForms.Guna2PictureBox();
             this.guna2HtmlLabel4 = new Guna.UI2.WinForms.Guna2HtmlLabel();
             this.PlayerBox5 = new Guna.UI2.WinForms.Guna2TextBox();
-            this.guna2Panel6 = new Guna.UI2.WinForms.Guna2Panel();
+            this.PlayerPicture4 = new Guna.UI2.WinForms.Guna2PictureBox();
             this.guna2HtmlLabel5 = new Guna.UI2.WinForms.Guna2HtmlLabel();
             this.PlayerBox4 = new Guna.UI2.WinForms.Guna2TextBox();
             this.TeamNameBox = new Guna.UI2.WinForms.Guna2TextBox();
             this.TeamConfirm = new Guna.UI2.WinForms.Guna2GradientButton();
-            this.PlayerPicture1 = new Guna.UI2.WinForms.Guna2PictureBox();
-            this.PlayerPicture2 = new Guna.UI2.WinForms.Guna2PictureBox();
-            this.PlayerPicture3 = new Guna.UI2.WinForms.Guna2PictureBox();
-            this.PlayerPicture4 = new Guna.UI2.WinForms.Guna2PictureBox();
-            this.PlayerPicture5 = new Guna.UI2.WinForms.Guna2PictureBox();
+            this.guna2Panel5 = new Guna.UI2.WinForms.Guna2Panel();
+            this.guna2Panel6 = new Guna.UI2.WinForms.Guna2Panel();
+            this.guna2Panel4 = new Guna.UI2.WinForms.Guna2Panel();
+            this.guna2Panel3 = new Guna.UI2.WinForms.Guna2Panel();
+            this.guna2Panel7 = new Guna.UI2.WinForms.Guna2Panel();
+            this.ContinueButton = new Guna.UI2.WinForms.Guna2GradientButton();
             this.guna2Panel2.SuspendLayout();
-            this.guna2Panel3.SuspendLayout();
-            this.guna2Panel4.SuspendLayout();
-            this.guna2Panel5.SuspendLayout();
-            this.guna2Panel6.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.PlayerPicture1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.PlayerPicture2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.PlayerPicture3)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.PlayerPicture4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.PlayerPicture5)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.PlayerPicture4)).BeginInit();
+            this.guna2Panel5.SuspendLayout();
+            this.guna2Panel6.SuspendLayout();
+            this.guna2Panel4.SuspendLayout();
+            this.guna2Panel3.SuspendLayout();
+            this.guna2Panel7.SuspendLayout();
             this.SuspendLayout();
             // 
             // guna2GradientButton3
@@ -151,25 +153,38 @@
             // 
             // guna2Panel2
             // 
-            this.guna2Panel2.BackColor = System.Drawing.SystemColors.AppWorkspace;
+            this.guna2Panel2.BackColor = System.Drawing.Color.Transparent;
             this.guna2Panel2.Controls.Add(this.PlayerPicture1);
             this.guna2Panel2.Controls.Add(this.guna2HtmlLabel1);
             this.guna2Panel2.Controls.Add(this.PlayerBox1);
-            this.guna2Panel2.Location = new System.Drawing.Point(337, 80);
+            this.guna2Panel2.Location = new System.Drawing.Point(25, 12);
             this.guna2Panel2.Name = "guna2Panel2";
             this.guna2Panel2.Size = new System.Drawing.Size(556, 74);
             this.guna2Panel2.TabIndex = 19;
             // 
-            // guna2Panel3
+            // PlayerPicture1
             // 
-            this.guna2Panel3.BackColor = System.Drawing.SystemColors.AppWorkspace;
-            this.guna2Panel3.Controls.Add(this.PlayerPicture2);
-            this.guna2Panel3.Controls.Add(this.guna2HtmlLabel2);
-            this.guna2Panel3.Controls.Add(this.PlayerBox2);
-            this.guna2Panel3.Location = new System.Drawing.Point(337, 170);
-            this.guna2Panel3.Name = "guna2Panel3";
-            this.guna2Panel3.Size = new System.Drawing.Size(556, 74);
-            this.guna2Panel3.TabIndex = 20;
+            this.PlayerPicture1.BorderRadius = 2;
+            this.PlayerPicture1.ImageRotate = 0F;
+            this.PlayerPicture1.InitialImage = null;
+            this.PlayerPicture1.Location = new System.Drawing.Point(458, 4);
+            this.PlayerPicture1.Name = "PlayerPicture1";
+            this.PlayerPicture1.Size = new System.Drawing.Size(70, 66);
+            this.PlayerPicture1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.PlayerPicture1.TabIndex = 19;
+            this.PlayerPicture1.TabStop = false;
+            // 
+            // PlayerPicture2
+            // 
+            this.PlayerPicture2.BorderRadius = 2;
+            this.PlayerPicture2.ImageRotate = 0F;
+            this.PlayerPicture2.InitialImage = null;
+            this.PlayerPicture2.Location = new System.Drawing.Point(458, 4);
+            this.PlayerPicture2.Name = "PlayerPicture2";
+            this.PlayerPicture2.Size = new System.Drawing.Size(70, 66);
+            this.PlayerPicture2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.PlayerPicture2.TabIndex = 20;
+            this.PlayerPicture2.TabStop = false;
             // 
             // guna2HtmlLabel2
             // 
@@ -204,16 +219,17 @@
             this.PlayerBox2.TabIndex = 17;
             this.PlayerBox2.TextChanged += new System.EventHandler(this.PlayerBox2_TextChanged);
             // 
-            // guna2Panel4
+            // PlayerPicture3
             // 
-            this.guna2Panel4.BackColor = System.Drawing.SystemColors.AppWorkspace;
-            this.guna2Panel4.Controls.Add(this.PlayerPicture3);
-            this.guna2Panel4.Controls.Add(this.guna2HtmlLabel3);
-            this.guna2Panel4.Controls.Add(this.PlayerBox3);
-            this.guna2Panel4.Location = new System.Drawing.Point(337, 260);
-            this.guna2Panel4.Name = "guna2Panel4";
-            this.guna2Panel4.Size = new System.Drawing.Size(556, 74);
-            this.guna2Panel4.TabIndex = 20;
+            this.PlayerPicture3.BorderRadius = 2;
+            this.PlayerPicture3.ImageRotate = 0F;
+            this.PlayerPicture3.InitialImage = null;
+            this.PlayerPicture3.Location = new System.Drawing.Point(458, 4);
+            this.PlayerPicture3.Name = "PlayerPicture3";
+            this.PlayerPicture3.Size = new System.Drawing.Size(70, 66);
+            this.PlayerPicture3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.PlayerPicture3.TabIndex = 20;
+            this.PlayerPicture3.TabStop = false;
             // 
             // guna2HtmlLabel3
             // 
@@ -248,16 +264,17 @@
             this.PlayerBox3.TabIndex = 17;
             this.PlayerBox3.TextChanged += new System.EventHandler(this.PlayerBox3_TextChanged);
             // 
-            // guna2Panel5
+            // PlayerPicture5
             // 
-            this.guna2Panel5.BackColor = System.Drawing.SystemColors.AppWorkspace;
-            this.guna2Panel5.Controls.Add(this.PlayerPicture5);
-            this.guna2Panel5.Controls.Add(this.guna2HtmlLabel4);
-            this.guna2Panel5.Controls.Add(this.PlayerBox5);
-            this.guna2Panel5.Location = new System.Drawing.Point(337, 440);
-            this.guna2Panel5.Name = "guna2Panel5";
-            this.guna2Panel5.Size = new System.Drawing.Size(556, 74);
-            this.guna2Panel5.TabIndex = 21;
+            this.PlayerPicture5.BorderRadius = 2;
+            this.PlayerPicture5.ImageRotate = 0F;
+            this.PlayerPicture5.InitialImage = null;
+            this.PlayerPicture5.Location = new System.Drawing.Point(458, 4);
+            this.PlayerPicture5.Name = "PlayerPicture5";
+            this.PlayerPicture5.Size = new System.Drawing.Size(70, 66);
+            this.PlayerPicture5.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.PlayerPicture5.TabIndex = 22;
+            this.PlayerPicture5.TabStop = false;
             // 
             // guna2HtmlLabel4
             // 
@@ -292,16 +309,17 @@
             this.PlayerBox5.TabIndex = 17;
             this.PlayerBox5.TextChanged += new System.EventHandler(this.PlayerBox5_TextChanged);
             // 
-            // guna2Panel6
+            // PlayerPicture4
             // 
-            this.guna2Panel6.BackColor = System.Drawing.SystemColors.AppWorkspace;
-            this.guna2Panel6.Controls.Add(this.PlayerPicture4);
-            this.guna2Panel6.Controls.Add(this.guna2HtmlLabel5);
-            this.guna2Panel6.Controls.Add(this.PlayerBox4);
-            this.guna2Panel6.Location = new System.Drawing.Point(337, 350);
-            this.guna2Panel6.Name = "guna2Panel6";
-            this.guna2Panel6.Size = new System.Drawing.Size(556, 74);
-            this.guna2Panel6.TabIndex = 22;
+            this.PlayerPicture4.BorderRadius = 2;
+            this.PlayerPicture4.ImageRotate = 0F;
+            this.PlayerPicture4.InitialImage = null;
+            this.PlayerPicture4.Location = new System.Drawing.Point(458, 4);
+            this.PlayerPicture4.Name = "PlayerPicture4";
+            this.PlayerPicture4.Size = new System.Drawing.Size(70, 66);
+            this.PlayerPicture4.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.PlayerPicture4.TabIndex = 21;
+            this.PlayerPicture4.TabStop = false;
             // 
             // guna2HtmlLabel5
             // 
@@ -379,79 +397,98 @@
             this.TeamConfirm.Visible = false;
             this.TeamConfirm.Click += new System.EventHandler(this.TeamConfirm_Click);
             // 
-            // PlayerPicture1
+            // guna2Panel5
             // 
-            this.PlayerPicture1.BorderRadius = 2;
-            this.PlayerPicture1.ImageRotate = 0F;
-            this.PlayerPicture1.InitialImage = ((System.Drawing.Image)(resources.GetObject("PlayerPicture1.InitialImage")));
-            this.PlayerPicture1.Location = new System.Drawing.Point(458, 4);
-            this.PlayerPicture1.Name = "PlayerPicture1";
-            this.PlayerPicture1.Size = new System.Drawing.Size(70, 66);
-            this.PlayerPicture1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.PlayerPicture1.TabIndex = 19;
-            this.PlayerPicture1.TabStop = false;
+            this.guna2Panel5.BackColor = System.Drawing.Color.Transparent;
+            this.guna2Panel5.Controls.Add(this.PlayerPicture5);
+            this.guna2Panel5.Controls.Add(this.guna2HtmlLabel4);
+            this.guna2Panel5.Controls.Add(this.PlayerBox5);
+            this.guna2Panel5.Location = new System.Drawing.Point(25, 372);
+            this.guna2Panel5.Name = "guna2Panel5";
+            this.guna2Panel5.Size = new System.Drawing.Size(556, 74);
+            this.guna2Panel5.TabIndex = 21;
             // 
-            // PlayerPicture2
+            // guna2Panel6
             // 
-            this.PlayerPicture2.BorderRadius = 2;
-            this.PlayerPicture2.ImageRotate = 0F;
-            this.PlayerPicture2.InitialImage = ((System.Drawing.Image)(resources.GetObject("PlayerPicture2.InitialImage")));
-            this.PlayerPicture2.Location = new System.Drawing.Point(458, 4);
-            this.PlayerPicture2.Name = "PlayerPicture2";
-            this.PlayerPicture2.Size = new System.Drawing.Size(70, 66);
-            this.PlayerPicture2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.PlayerPicture2.TabIndex = 20;
-            this.PlayerPicture2.TabStop = false;
+            this.guna2Panel6.BackColor = System.Drawing.Color.Transparent;
+            this.guna2Panel6.Controls.Add(this.PlayerPicture4);
+            this.guna2Panel6.Controls.Add(this.guna2HtmlLabel5);
+            this.guna2Panel6.Controls.Add(this.PlayerBox4);
+            this.guna2Panel6.Location = new System.Drawing.Point(25, 282);
+            this.guna2Panel6.Name = "guna2Panel6";
+            this.guna2Panel6.Size = new System.Drawing.Size(556, 74);
+            this.guna2Panel6.TabIndex = 22;
             // 
-            // PlayerPicture3
+            // guna2Panel4
             // 
-            this.PlayerPicture3.BorderRadius = 2;
-            this.PlayerPicture3.ImageRotate = 0F;
-            this.PlayerPicture3.InitialImage = ((System.Drawing.Image)(resources.GetObject("PlayerPicture3.InitialImage")));
-            this.PlayerPicture3.Location = new System.Drawing.Point(458, 4);
-            this.PlayerPicture3.Name = "PlayerPicture3";
-            this.PlayerPicture3.Size = new System.Drawing.Size(70, 66);
-            this.PlayerPicture3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.PlayerPicture3.TabIndex = 20;
-            this.PlayerPicture3.TabStop = false;
+            this.guna2Panel4.BackColor = System.Drawing.Color.Transparent;
+            this.guna2Panel4.Controls.Add(this.PlayerPicture3);
+            this.guna2Panel4.Controls.Add(this.guna2HtmlLabel3);
+            this.guna2Panel4.Controls.Add(this.PlayerBox3);
+            this.guna2Panel4.Location = new System.Drawing.Point(25, 192);
+            this.guna2Panel4.Name = "guna2Panel4";
+            this.guna2Panel4.Size = new System.Drawing.Size(556, 74);
+            this.guna2Panel4.TabIndex = 20;
             // 
-            // PlayerPicture4
+            // guna2Panel3
             // 
-            this.PlayerPicture4.BorderRadius = 2;
-            this.PlayerPicture4.ImageRotate = 0F;
-            this.PlayerPicture4.InitialImage = ((System.Drawing.Image)(resources.GetObject("PlayerPicture4.InitialImage")));
-            this.PlayerPicture4.Location = new System.Drawing.Point(458, 4);
-            this.PlayerPicture4.Name = "PlayerPicture4";
-            this.PlayerPicture4.Size = new System.Drawing.Size(70, 66);
-            this.PlayerPicture4.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.PlayerPicture4.TabIndex = 21;
-            this.PlayerPicture4.TabStop = false;
+            this.guna2Panel3.BackColor = System.Drawing.Color.Transparent;
+            this.guna2Panel3.Controls.Add(this.PlayerPicture2);
+            this.guna2Panel3.Controls.Add(this.guna2HtmlLabel2);
+            this.guna2Panel3.Controls.Add(this.PlayerBox2);
+            this.guna2Panel3.Location = new System.Drawing.Point(25, 102);
+            this.guna2Panel3.Name = "guna2Panel3";
+            this.guna2Panel3.Size = new System.Drawing.Size(556, 74);
+            this.guna2Panel3.TabIndex = 20;
             // 
-            // PlayerPicture5
+            // guna2Panel7
             // 
-            this.PlayerPicture5.BorderRadius = 2;
-            this.PlayerPicture5.ImageRotate = 0F;
-            this.PlayerPicture5.InitialImage = ((System.Drawing.Image)(resources.GetObject("PlayerPicture5.InitialImage")));
-            this.PlayerPicture5.Location = new System.Drawing.Point(458, 4);
-            this.PlayerPicture5.Name = "PlayerPicture5";
-            this.PlayerPicture5.Size = new System.Drawing.Size(70, 66);
-            this.PlayerPicture5.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.PlayerPicture5.TabIndex = 22;
-            this.PlayerPicture5.TabStop = false;
+            this.guna2Panel7.BackColor = System.Drawing.Color.Transparent;
+            this.guna2Panel7.BorderColor = System.Drawing.Color.Transparent;
+            this.guna2Panel7.BorderRadius = 15;
+            this.guna2Panel7.Controls.Add(this.guna2Panel2);
+            this.guna2Panel7.Controls.Add(this.guna2Panel3);
+            this.guna2Panel7.Controls.Add(this.guna2Panel6);
+            this.guna2Panel7.Controls.Add(this.guna2Panel4);
+            this.guna2Panel7.Controls.Add(this.guna2Panel5);
+            this.guna2Panel7.FillColor = System.Drawing.SystemColors.AppWorkspace;
+            this.guna2Panel7.Location = new System.Drawing.Point(309, 66);
+            this.guna2Panel7.Name = "guna2Panel7";
+            this.guna2Panel7.Size = new System.Drawing.Size(608, 462);
+            this.guna2Panel7.TabIndex = 24;
+            // 
+            // ContinueButton
+            // 
+            this.ContinueButton.Animated = true;
+            this.ContinueButton.BackColor = System.Drawing.Color.Transparent;
+            this.ContinueButton.BorderRadius = 5;
+            this.ContinueButton.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
+            this.ContinueButton.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
+            this.ContinueButton.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.ContinueButton.DisabledState.FillColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.ContinueButton.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.ContinueButton.Font = new System.Drawing.Font("JetBrains Mono", 12F);
+            this.ContinueButton.ForeColor = System.Drawing.Color.White;
+            this.ContinueButton.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.ForwardDiagonal;
+            this.ContinueButton.Location = new System.Drawing.Point(502, 630);
+            this.ContinueButton.Name = "ContinueButton";
+            this.ContinueButton.Size = new System.Drawing.Size(254, 29);
+            this.ContinueButton.TabIndex = 25;
+            this.ContinueButton.Text = "Продолжить";
+            this.ContinueButton.UseTransparentBackground = true;
+            this.ContinueButton.Visible = false;
+            this.ContinueButton.Click += new System.EventHandler(this.guna2GradientButton1_Click);
             // 
             // TrainerTeamsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(984, 761);
+            this.Controls.Add(this.ContinueButton);
+            this.Controls.Add(this.guna2Panel7);
             this.Controls.Add(this.TeamConfirm);
             this.Controls.Add(this.CreateTeamButton);
             this.Controls.Add(this.TeamNameBox);
-            this.Controls.Add(this.guna2Panel5);
-            this.Controls.Add(this.guna2Panel4);
-            this.Controls.Add(this.guna2Panel6);
-            this.Controls.Add(this.guna2Panel3);
-            this.Controls.Add(this.guna2Panel2);
             this.Controls.Add(this.guna2Panel1);
             this.Controls.Add(this.guna2GradientButton3);
             this.Name = "TrainerTeamsForm";
@@ -459,15 +496,16 @@
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form2_FormClosing);
             this.Load += new System.EventHandler(this.Form2_Load);
             this.guna2Panel2.ResumeLayout(false);
-            this.guna2Panel3.ResumeLayout(false);
-            this.guna2Panel4.ResumeLayout(false);
-            this.guna2Panel5.ResumeLayout(false);
-            this.guna2Panel6.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.PlayerPicture1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.PlayerPicture2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.PlayerPicture3)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.PlayerPicture4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.PlayerPicture5)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.PlayerPicture4)).EndInit();
+            this.guna2Panel5.ResumeLayout(false);
+            this.guna2Panel6.ResumeLayout(false);
+            this.guna2Panel4.ResumeLayout(false);
+            this.guna2Panel3.ResumeLayout(false);
+            this.guna2Panel7.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -480,16 +518,12 @@
         private Guna.UI2.WinForms.Guna2TextBox PlayerBox1;
         private Guna.UI2.WinForms.Guna2HtmlLabel guna2HtmlLabel1;
         private Guna.UI2.WinForms.Guna2Panel guna2Panel2;
-        private Guna.UI2.WinForms.Guna2Panel guna2Panel3;
         private Guna.UI2.WinForms.Guna2HtmlLabel guna2HtmlLabel2;
         private Guna.UI2.WinForms.Guna2TextBox PlayerBox2;
-        private Guna.UI2.WinForms.Guna2Panel guna2Panel4;
         private Guna.UI2.WinForms.Guna2HtmlLabel guna2HtmlLabel3;
         private Guna.UI2.WinForms.Guna2TextBox PlayerBox3;
-        private Guna.UI2.WinForms.Guna2Panel guna2Panel5;
         private Guna.UI2.WinForms.Guna2HtmlLabel guna2HtmlLabel4;
         private Guna.UI2.WinForms.Guna2TextBox PlayerBox5;
-        private Guna.UI2.WinForms.Guna2Panel guna2Panel6;
         private Guna.UI2.WinForms.Guna2HtmlLabel guna2HtmlLabel5;
         private Guna.UI2.WinForms.Guna2TextBox PlayerBox4;
         private Guna.UI2.WinForms.Guna2TextBox TeamNameBox;
@@ -499,5 +533,11 @@
         private Guna.UI2.WinForms.Guna2PictureBox PlayerPicture3;
         private Guna.UI2.WinForms.Guna2PictureBox PlayerPicture5;
         private Guna.UI2.WinForms.Guna2PictureBox PlayerPicture4;
+        private Guna.UI2.WinForms.Guna2Panel guna2Panel5;
+        private Guna.UI2.WinForms.Guna2Panel guna2Panel6;
+        private Guna.UI2.WinForms.Guna2Panel guna2Panel4;
+        private Guna.UI2.WinForms.Guna2Panel guna2Panel3;
+        private Guna.UI2.WinForms.Guna2Panel guna2Panel7;
+        private Guna.UI2.WinForms.Guna2GradientButton ContinueButton;
     }
 }

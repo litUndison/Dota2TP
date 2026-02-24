@@ -102,6 +102,13 @@
     <Compile Include="EnterForm.Designer.cs">
       <DependentUpon>EnterForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Functions\FieldChecker.cs" />
+    <Compile Include="PlayerTeamsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PlayerTeamsForm.Designer.cs">
+      <DependentUpon>PlayerTeamsForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="TrainerTeamsForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -116,6 +123,9 @@
     <Compile Include="DataBaseManager.cs" />
     <EmbeddedResource Include="EnterForm.resx">
       <DependentUpon>EnterForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerTeamsForm.resx">
+      <DependentUpon>PlayerTeamsForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="TrainerTeamsForm.resx">
       <DependentUpon>TrainerTeamsForm.cs</DependentUpon>

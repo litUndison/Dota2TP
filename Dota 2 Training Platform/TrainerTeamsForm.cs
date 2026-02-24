@@ -11,13 +11,16 @@ using System.Windows.Forms;
 using System.Xml;
 using DataBaseManager;
 using Dota_2_Training_Platform.Models;
+using Dota_2_Training_Platform.Functions;
 using Guna.UI2.WinForms;
+using System.Web.WebSockets;
 
 namespace Dota_2_Training_Platform
 {
     public partial class TrainerTeamsForm : Form
     {
         UserModel currentUser;
+        TeamModel currentTeam;
         List<TeamModel> currentTeams = new List<TeamModel>();
         Color color;
         string correctTeamSymbols = "абвгдеёжзийклмнопрстуфхцчшщъыьэюя 1234567890abcdefghijklmnopqrstuvwxyz-_";
@@ -51,9 +54,9 @@ namespace Dota_2_Training_Platform
 
         private void CreateTeamButton_Click(object sender, EventArgs e) // добавление команды
         {
-            MessageBox.Show("Поля доступны для редактирования");
             Guna2TextBox[] playerBoxes = new Guna2TextBox[] { PlayerBox1, PlayerBox2, PlayerBox3, PlayerBox4, PlayerBox5 };
             Guna2HtmlLabel[] nameboxes = { guna2HtmlLabel1, guna2HtmlLabel2, guna2HtmlLabel3, guna2HtmlLabel4, guna2HtmlLabel5 };
+            Guna2PictureBox[] imageboxes = { PlayerPicture1, PlayerPicture2, PlayerPicture3, PlayerPicture4, PlayerPicture5 };
             for (int i = 0; i < playerBoxes.Length; i++)
             {
                 playerBoxes[i].ReadOnly = false;
@@ -65,6 +68,11 @@ namespace Dota_2_Training_Platform
                 nameboxes[i].Text = $"Игрок {i+1}";
             }
             TeamConfirm.Visible = true;
+            for (int i = 0; i < imageboxes.Length; i++)
+            {
+                imageboxes[i].Image = null;
+            }
+            MessageBox.Show("Поля доступны для ввода");
         }
         private async void TeamConfirm_Click(object sender, EventArgs e)
         {
@@ -112,6 +120,8 @@ namespace Dota_2_Training_Platform
 
             await Task.Run(() => dbManager.CreateTeam(TeamNameBox.Text, currentUser.SteamID, players));
 
+            TeamConfirm.Visible = false;
+
             PrintAllTeams();
         }
 
@@ -127,9 +137,14 @@ namespace Dota_2_Training_Platform
 
             foreach (TeamModel team in currentTeams)
             {
-                Button button = new Button();
+                Guna2Button button = new Guna2Button();
+                button.Animated = true;
+                button.BorderRadius = 10;
+                Font font = new Font(guna2HtmlLabel1.Font, FontStyle.Regular);
+                button.Font = font;
                 button.Text = team.Name;
-                button.Width = 150;
+                button.Width = 250;
+                button.Height = 35;
 
                 button.Top = guna2Panel1.Controls.Count == 0
                     ? 10
@@ -144,7 +159,7 @@ namespace Dota_2_Training_Platform
 
         private void LoadTeam(object sender, EventArgs e)
         {
-            var button = (Button)sender;
+            var button = (Guna2Button)sender;
             var team = (TeamModel)button.Tag;
 
             ShowAllMembers(team);
@@ -167,6 +182,7 @@ namespace Dota_2_Training_Platform
 
             TeamNameBox.ReadOnly = true;
 
+            TeamNameBox.Text = team.Name;
             // Заполнение
             for (int i = 0; i < team.Players.Count && i < playerBoxes.Length; i++)
             {
@@ -178,62 +194,47 @@ namespace Dota_2_Training_Platform
                     imageboxes[i].LoadAsync(team.Players[i].Avatarfull);
                 }
             }
+
+            currentTeam = team;
         }
 
         private void TeamNameBox_TextChanged(object sender, EventArgs e)
         {
-            FieldCheck(PlayerBox1, correctTeamSymbols);
+            FieldChecker.FieldCheck(PlayerBox1, correctTeamSymbols);
             //string.IsNullOrWhiteSpace(TeamNameBox.Text)
         }
 
         private void PlayerBox1_TextChanged(object sender, EventArgs e)
         {
-            FieldCheck(PlayerBox1, correctSteamIDSymbols);
+            FieldChecker.FieldCheck(PlayerBox1, correctSteamIDSymbols);
         }
 
         private void PlayerBox2_TextChanged(object sender, EventArgs e)
         {
-            FieldCheck(PlayerBox2, correctSteamIDSymbols);
+            FieldChecker.FieldCheck(PlayerBox2, correctSteamIDSymbols);
         }
 
         private void PlayerBox3_TextChanged(object sender, EventArgs e)
         {
-            FieldCheck(PlayerBox3, correctSteamIDSymbols);
+            FieldChecker.FieldCheck(PlayerBox3, correctSteamIDSymbols);
         }
 
         private void PlayerBox4_TextChanged(object sender, EventArgs e)
         {
-            FieldCheck(PlayerBox4, correctSteamIDSymbols);
+            FieldChecker.FieldCheck(PlayerBox4, correctSteamIDSymbols);
         }
 
         private void PlayerBox5_TextChanged(object sender, EventArgs e)
         {
-            FieldCheck(PlayerBox5, correctSteamIDSymbols);
+            FieldChecker.FieldCheck(PlayerBox5, correctSteamIDSymbols);
         }
 
-
-        private void FieldCheck(Guna2TextBox currentTextBox, string validationString)
+        private void guna2GradientButton1_Click(object sender, EventArgs e) // ContinueButton
         {
-            if (currentTextBox.Text != null && currentTextBox.Text.Length != 0)
-            {
-                for (int i = 0; i < currentTextBox.Text.Length; i++)
-                {
-                    if (!validationString.Contains(currentTextBox.Text[i].ToString().ToLower()))
-                    {
-                        currentTextBox.Text = currentTextBox.Text.Remove(i, 1);
-                        i--;
-                        currentTextBox.SelectionStart = currentTextBox.Text.Length;
-                        currentTextBox.BorderColor = Color.Red;
-                        currentTextBox.FocusedState.BorderColor = Color.Red;
-                        continue;
-                    }
-                    currentTextBox.BorderColor = Color.Gray;
-                    currentTextBox.FocusedState.BorderColor = color;
-                }
-            }
+            // создать новую форму в которую буду передавать currentTeam и currentUser
         }
 
-        
+
 
         //private void DoSmth(object sender, EventArgs e)
         //{

@@ -626,7 +626,7 @@ namespace DataBaseManager
             {
                 connection.Open();
 
-                // Получаем команды, где steamId является игроком
+                //Получаем команды, где steamId является игроком
                 using (var cmd = connection.CreateCommand())
                 {
                     cmd.CommandText =
@@ -649,7 +649,7 @@ namespace DataBaseManager
                                 reader.GetString(2)
                             );
 
-                            // Избегаем дублирования, если вдруг несколько записей для одного игрока
+                            //Избегаем дублирования, если вдруг несколько записей для одного игрока
                             if (!teams.Exists(x => x.Id == team.Id))
                             {
                                 teams.Add(team);
@@ -658,18 +658,17 @@ namespace DataBaseManager
                     }
                 }
 
-                // Подгружаем игроков для каждой команды
+                //Подгружаем игроков для каждой команды
                 foreach (var team in teams)
                 {
                     using (var cmd = connection.CreateCommand())
                     {
                         cmd.CommandText =
                         @"
-                SELECT p.Name, p.AccountId, p.SteamId, p.Password, p.Avatar
-                FROM TeamPlayers tp
-                JOIN Players p ON p.SteamId = tp.PlayerSteamId
-                WHERE tp.TeamId = @teamId
-                ";
+                        SELECT Name, AccountId, PlayerSteamId, Avatar
+                        FROM TeamPlayers
+                        WHERE TeamId = @teamId
+                        ";
 
                         cmd.Parameters.AddWithValue("@teamId", team.Id);
 
@@ -681,8 +680,8 @@ namespace DataBaseManager
                                     reader.GetString(0),
                                     reader.GetString(1),
                                     reader.GetString(2),
-                                    reader.GetString(3),
-                                    reader.GetString(4)
+                                    "",
+                                    reader.GetString(3)
                                 ));
                             }
                         }
@@ -700,7 +699,7 @@ namespace DataBaseManager
             {
                 connection.Open();
 
-                // Получаем тренера команды
+                //Получаем тренера команды
                 string trainerSteamId;
                 using (var cmd = connection.CreateCommand())
                 {
@@ -715,7 +714,7 @@ namespace DataBaseManager
                     return false;
                 }
 
-                // Проверяем количество игроков
+                //Проверяем количество игроков
                 using (var cmd = connection.CreateCommand())
                 {
                     cmd.CommandText = "SELECT COUNT(*) FROM TeamPlayers WHERE TeamId = @teamId";
@@ -727,7 +726,7 @@ namespace DataBaseManager
                     }
                 }
 
-                // Проверяем, есть ли игрок уже в команде
+                //Проверяем, есть ли игрок уже в команде
                 using (var cmd = connection.CreateCommand())
                 {
                     cmd.CommandText = @"
@@ -744,7 +743,7 @@ namespace DataBaseManager
                     }
                 }
 
-                // Добавляем игрока
+                //Добавляем игрока
                 using (var cmd = connection.CreateCommand())
                 {
                     cmd.CommandText = @"

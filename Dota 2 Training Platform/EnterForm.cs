@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using DataBaseManager;
 using Dota_2_Training_Platform.Models;
+using Dota_2_Training_Platform.Functions;
 
 namespace Dota_2_Training_Platform
 {
@@ -28,7 +29,7 @@ namespace Dota_2_Training_Platform
 
         TypeOfEntering entering;
         Color color;
-        TrainerTeamsForm form2;
+        Form form2;
 
 
         UserModel currentUser;
@@ -50,6 +51,11 @@ namespace Dota_2_Training_Platform
             {
                 case TypeOfEntering.Player: // у игрока будет другая форма, и интерфейс тоже вроде
                     {
+                        form2 = new PlayerTeamsForm(currentUser);
+                        form2.StartPosition = FormStartPosition.Manual;
+                        form2.Location = this.DesktopLocation;
+                        form2.Show();
+                        this.Hide();
                         break;
                     }
                 case TypeOfEntering.Trainer:
@@ -67,26 +73,6 @@ namespace Dota_2_Training_Platform
 
         #region OtherFunctions
 
-        private void FieldCheck(Guna2TextBox currentTextBox, string validationString)
-        {
-            if (currentTextBox.Text != null && currentTextBox.Text.Length != 0)
-            {
-                for (int i = 0; i < currentTextBox.Text.Length; i++)
-                {
-                    if (!validationString.Contains(currentTextBox.Text[i].ToString().ToLower()))
-                    {
-                        currentTextBox.Text = currentTextBox.Text.Remove(i, 1);
-                        i--;
-                        currentTextBox.SelectionStart = currentTextBox.Text.Length;
-                        currentTextBox.BorderColor = Color.Red;
-                        currentTextBox.FocusedState.BorderColor = Color.Red;
-                        continue;
-                    }
-                    currentTextBox.BorderColor = Color.Gray;
-                    currentTextBox.FocusedState.BorderColor = color;
-                }
-            }
-        }
 
         #endregion
 
@@ -147,11 +133,11 @@ namespace Dota_2_Training_Platform
 
         private void SteamIDTextBox_TextChanged(object sender, EventArgs e) // SteamIDTextBox
         {
-            FieldCheck(SteamIDTextBox, correctSteamIDSymbols);
+            FieldChecker.FieldCheck(SteamIDTextBox, correctSteamIDSymbols);
         }
         private void PasswordTextBox_TextChanged(object sender, EventArgs e) //PasswordTextBox
         {
-            FieldCheck(PasswordTextBox, correctPasswordSymbols);
+            FieldChecker.FieldCheck(PasswordTextBox, correctPasswordSymbols);
         }
 
         private void TrainerButton_Click(object sender, EventArgs e) // Trainer button
@@ -187,7 +173,7 @@ namespace Dota_2_Training_Platform
                         if (PlayerSignIn(SteamIDTextBox.Text, PasswordTextBox.Text))
                         {
                             OpenForm(TypeOfEntering.Player);
-                            MessageBox.Show("Вход успешен");
+                            //MessageBox.Show("Вход успешен");
                         }
                         else
                         {
@@ -210,7 +196,7 @@ namespace Dota_2_Training_Platform
                         if (TrainerSignIn(SteamIDTextBox.Text, PasswordTextBox.Text))
                         {
                             OpenForm(TypeOfEntering.Trainer);
-                            MessageBox.Show("Вход успешен");
+                            //MessageBox.Show("Вход успешен");
                         }
                         else
                         {
