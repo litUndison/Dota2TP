@@ -78,6 +78,10 @@ namespace Dota_2_Training_Platform
             {
                 imageboxes[i].Image = null;
             }
+            if (!TeamInfoPanel.Visible)
+            {
+                TeamInfoPanel.Visible = true;
+            }
             MessageBox.Show("Поля доступны для ввода");
         }
         private async void TeamConfirm_Click(object sender, EventArgs e)
@@ -168,6 +172,11 @@ namespace Dota_2_Training_Platform
         {
             var button = (Guna2Button)sender;
             var team = (TeamModel)button.Tag;
+
+            if(!TeamInfoPanel.Visible)
+            {
+                TeamInfoPanel.Visible = true;
+            }
 
             ShowAllMembers(team);
         }

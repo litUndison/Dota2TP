@@ -47,13 +47,14 @@
             this.RegistrationButton.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
             this.RegistrationButton.DisabledState.FillColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
             this.RegistrationButton.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
-            this.RegistrationButton.Font = new System.Drawing.Font("JetBrains Mono", 12F);
+            this.RegistrationButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.RegistrationButton.ForeColor = System.Drawing.Color.White;
             this.RegistrationButton.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.ForwardDiagonal;
+            this.RegistrationButton.IndicateFocus = true;
             this.RegistrationButton.Location = new System.Drawing.Point(89, 297);
             this.RegistrationButton.Name = "RegistrationButton";
             this.RegistrationButton.Size = new System.Drawing.Size(160, 43);
-            this.RegistrationButton.TabIndex = 25;
+            this.RegistrationButton.TabIndex = 6;
             this.RegistrationButton.Text = "Регистрация";
             this.RegistrationButton.UseTransparentBackground = true;
             this.RegistrationButton.Click += new System.EventHandler(this.RegistrationButton_Click);
@@ -71,14 +72,14 @@
             this.SteamIDTextBox.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
             this.SteamIDTextBox.DisabledState.PlaceholderForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
             this.SteamIDTextBox.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
-            this.SteamIDTextBox.Font = new System.Drawing.Font("JetBrains Mono", 10F);
+            this.SteamIDTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
             this.SteamIDTextBox.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
             this.SteamIDTextBox.Location = new System.Drawing.Point(69, 76);
             this.SteamIDTextBox.Name = "SteamIDTextBox";
             this.SteamIDTextBox.PlaceholderText = "SteamID";
             this.SteamIDTextBox.SelectedText = "";
             this.SteamIDTextBox.Size = new System.Drawing.Size(200, 38);
-            this.SteamIDTextBox.TabIndex = 22;
+            this.SteamIDTextBox.TabIndex = 1;
             this.SteamIDTextBox.TextChanged += new System.EventHandler(this.SteamIDTextBox_TextChanged);
             // 
             // AuthorizationButton
@@ -91,13 +92,14 @@
             this.AuthorizationButton.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
             this.AuthorizationButton.DisabledState.FillColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
             this.AuthorizationButton.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
-            this.AuthorizationButton.Font = new System.Drawing.Font("JetBrains Mono", 12F);
+            this.AuthorizationButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.AuthorizationButton.ForeColor = System.Drawing.Color.White;
             this.AuthorizationButton.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.ForwardDiagonal;
+            this.AuthorizationButton.IndicateFocus = true;
             this.AuthorizationButton.Location = new System.Drawing.Point(89, 237);
             this.AuthorizationButton.Name = "AuthorizationButton";
             this.AuthorizationButton.Size = new System.Drawing.Size(160, 43);
-            this.AuthorizationButton.TabIndex = 24;
+            this.AuthorizationButton.TabIndex = 5;
             this.AuthorizationButton.Text = "Вход";
             this.AuthorizationButton.UseTransparentBackground = true;
             this.AuthorizationButton.Click += new System.EventHandler(this.AuthorizationButton_Click);
@@ -115,14 +117,14 @@
             this.PasswordTextBox.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
             this.PasswordTextBox.DisabledState.PlaceholderForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
             this.PasswordTextBox.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
-            this.PasswordTextBox.Font = new System.Drawing.Font("JetBrains Mono", 10F);
+            this.PasswordTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
             this.PasswordTextBox.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
             this.PasswordTextBox.Location = new System.Drawing.Point(69, 120);
             this.PasswordTextBox.Name = "PasswordTextBox";
             this.PasswordTextBox.PlaceholderText = "Пароль";
             this.PasswordTextBox.SelectedText = "";
             this.PasswordTextBox.Size = new System.Drawing.Size(200, 38);
-            this.PasswordTextBox.TabIndex = 23;
+            this.PasswordTextBox.TabIndex = 2;
             this.PasswordTextBox.TextChanged += new System.EventHandler(this.PasswordTextBox_TextChanged);
             // 
             // TrainerButton
@@ -136,13 +138,14 @@
             this.TrainerButton.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
             this.TrainerButton.DisabledState.FillColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
             this.TrainerButton.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
-            this.TrainerButton.Font = new System.Drawing.Font("JetBrains Mono", 10F);
+            this.TrainerButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
             this.TrainerButton.ForeColor = System.Drawing.Color.White;
             this.TrainerButton.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.ForwardDiagonal;
+            this.TrainerButton.IndicateFocus = true;
             this.TrainerButton.Location = new System.Drawing.Point(69, 164);
             this.TrainerButton.Name = "TrainerButton";
             this.TrainerButton.Size = new System.Drawing.Size(101, 24);
-            this.TrainerButton.TabIndex = 27;
+            this.TrainerButton.TabIndex = 3;
             this.TrainerButton.Text = "Тренер";
             this.TrainerButton.UseTransparentBackground = true;
             this.TrainerButton.Click += new System.EventHandler(this.TrainerButton_Click);
@@ -158,13 +161,14 @@
             this.PlayerButton.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
             this.PlayerButton.DisabledState.FillColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
             this.PlayerButton.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
-            this.PlayerButton.Font = new System.Drawing.Font("JetBrains Mono", 10F);
+            this.PlayerButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
             this.PlayerButton.ForeColor = System.Drawing.Color.White;
             this.PlayerButton.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.ForwardDiagonal;
+            this.PlayerButton.IndicateFocus = true;
             this.PlayerButton.Location = new System.Drawing.Point(168, 164);
             this.PlayerButton.Name = "PlayerButton";
             this.PlayerButton.Size = new System.Drawing.Size(101, 24);
-            this.PlayerButton.TabIndex = 28;
+            this.PlayerButton.TabIndex = 4;
             this.PlayerButton.Text = "Игрок";
             this.PlayerButton.UseTransparentBackground = true;
             this.PlayerButton.Click += new System.EventHandler(this.PlayerButton_Click);

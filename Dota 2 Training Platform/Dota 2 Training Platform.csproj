@@ -124,7 +124,18 @@
     <Compile Include="MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="MatchDetailsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MatchDetailsForm.Designer.cs">
+      <DependentUpon>MatchDetailsForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DotaHeroModel.cs" />
+    <Compile Include="Models\DotaItemModel.cs" />
+    <Compile Include="Models\DotaMatchDetailsModel.cs" />
     <Compile Include="Models\MatchModel.cs" />
+    <Compile Include="Models\MatchPlayerModel.cs" />
+    <Compile Include="Models\PlayerBenchmarks.cs" />
     <Compile Include="PlayerTeamsForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -148,6 +159,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MatchDetailsForm.resx">
+      <DependentUpon>MatchDetailsForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="PlayerTeamsForm.resx">
       <DependentUpon>PlayerTeamsForm.cs</DependentUpon>

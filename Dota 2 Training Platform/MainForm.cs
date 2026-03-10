@@ -1,5 +1,6 @@
-﻿using Dota_2_Training_Platform.Models;
-using DataBaseManager;
+﻿using DataBaseManager;
+using Dota_2_Training_Platform.Functions;
+using Dota_2_Training_Platform.Models;
 using Guna.UI2.WinForms;
 using System;
 using System.Collections.Generic;
@@ -7,10 +8,10 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Dota_2_Training_Platform.Functions;
 
 namespace Dota_2_Training_Platform
 {
@@ -83,7 +84,7 @@ namespace Dota_2_Training_Platform
 
             #endregion
 
-
+            
             LoadTeam();
 
             TrainerPicture.LoadAsync(currentUser.Avatarfull);
@@ -276,14 +277,15 @@ namespace Dota_2_Training_Platform
             form.PrintAllTeams();
         }
 
-        private void SelectPlayerComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        private async void SelectPlayerComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             SelectedPlayerMatches.Controls.Clear();
-            if (SelectPlayerComboBox.SelectedIndex != -1)
+            if (SelectPlayerComboBox.SelectedIndex == -1)
             {
-                SelectedPlayerPicture.Image = pictureBoxes[SelectPlayerComboBox.SelectedIndex].Image;
+                return;
             }
-
+            SelectedPlayerPicture.Image = pictureBoxes[SelectPlayerComboBox.SelectedIndex].Image;
+            await LoadPlayerMatches(currentTeam.Players[SelectPlayerComboBox.SelectedIndex].AccountID);
             //должна происходить загрузка игр выбранного игрока
 
 
@@ -310,6 +312,97 @@ namespace Dota_2_Training_Platform
 
             //    guna2Panel1.Controls.Add(button);
             //}
+        }
+
+        private async Task LoadPlayerMatches(string steamId)
+        {
+            SelectedPlayerMatches.Controls.Clear();
+
+            var result = await ApiCourier.TryGetPlayerMatches(steamId, 10);
+
+            if (!result.IsSuccess)
+            {
+                MessageBox.Show(result.ErrorMessage);
+                return;
+            }
+
+            var matches = result.Data;
+
+            // если профиль скрыт (OpenDota возвращает [])
+            if (matches == null || matches.Count == 0)
+            {
+                Label label = new Label();
+                label.Text = "Профиль игрока скрыт";
+                label.ForeColor = Color.Black;
+                label.Font = new Font("Segoe UI", 12, FontStyle.Bold);
+                label.AutoSize = false;
+                label.Width = 360;
+                label.Top = 20;
+                label.Left = 2;
+                label.TextAlign = ContentAlignment.MiddleCenter;
+
+                SelectedPlayerMatches.Controls.Add(label);
+                return;
+            }
+
+            foreach (var match in matches)
+            {
+                bool isRadiant = match.PlayerSlot < 128;
+                bool playerWon = (isRadiant && match.RadiantWin) || (!isRadiant && !match.RadiantWin);
+                string winnerSide = match.RadiantWin ? "Radiant" : "Dire";
+
+                DateTime matchDate =
+                    DateTimeOffset.FromUnixTimeSeconds(match.StartTime).LocalDateTime;
+
+                TimeSpan duration = TimeSpan.FromSeconds(match.Duration);
+
+                string text =
+                    //$"Победитель: {winnerSide}\n" +
+                    $"Время старта: {matchDate:dd.MM.yyyy HH:mm}\nДлительность: {duration:mm\\:ss}\nID:{match.MatchId}";
+
+                Guna2Button button = new Guna2Button();
+                button.Animated = true;
+                button.BorderRadius = 0;
+                button.Font = new Font(PlayerName1.Font, FontStyle.Regular); 
+
+                button.Text = text;
+                button.Width = 360;
+                button.Height = 70;
+
+                button.Top = SelectedPlayerMatches.Controls.Count == 0
+                    ? 2
+                    : SelectedPlayerMatches.Controls[SelectedPlayerMatches.Controls.Count - 1].Bottom + 2;
+                button.Left = 2;
+
+                button.Tag = match.MatchId;
+
+                button.FillColor = playerWon
+                    ? Color.FromArgb(40, 120, 60)   // победа
+                    : Color.FromArgb(115, 30, 30);  // поражение
+
+                button.Click += LoadMatchInfo;
+
+                SelectedPlayerMatches.Controls.Add(button);
+            }
+        }
+
+        private async void LoadMatchInfo(object sender, EventArgs e)
+        {
+            var button = sender as Guna2Button;
+            long matchId = (long)button.Tag;
+
+            var result = await ApiCourier.TryGetMatch(matchId);
+
+            if (!result.IsSuccess)
+            {
+                MessageBox.Show(result.ErrorMessage);
+                return;
+            }
+
+            var match = result.Data;
+
+            MatchDetailsForm form = new MatchDetailsForm(match);
+            form.Show();
         }
 
         private void LoadMatch(object sender, EventArgs e)

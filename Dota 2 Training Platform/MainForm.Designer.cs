@@ -62,10 +62,10 @@
             this.PlayerName1 = new Guna.UI2.WinForms.Guna2HtmlLabel();
             this.PlayerPicture1 = new Guna.UI2.WinForms.Guna2PictureBox();
             this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.tabPage4 = new System.Windows.Forms.TabPage();
-            this.SelectPlayerComboBox = new Guna.UI2.WinForms.Guna2ComboBox();
-            this.SelectedPlayerMatches = new Guna.UI2.WinForms.Guna2Panel();
             this.SelectedPlayerPicture = new Guna.UI2.WinForms.Guna2PictureBox();
+            this.SelectedPlayerMatches = new Guna.UI2.WinForms.Guna2Panel();
+            this.SelectPlayerComboBox = new Guna.UI2.WinForms.Guna2ComboBox();
+            this.tabPage4 = new System.Windows.Forms.TabPage();
             this.guna2TabControl1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.PanelWithButtons.SuspendLayout();
@@ -91,11 +91,12 @@
             this.guna2TabControl1.Controls.Add(this.tabPage2);
             this.guna2TabControl1.Controls.Add(this.tabPage3);
             this.guna2TabControl1.Controls.Add(this.tabPage4);
+            this.guna2TabControl1.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.guna2TabControl1.ItemSize = new System.Drawing.Size(180, 40);
             this.guna2TabControl1.Location = new System.Drawing.Point(0, 0);
             this.guna2TabControl1.Name = "guna2TabControl1";
             this.guna2TabControl1.SelectedIndex = 0;
-            this.guna2TabControl1.Size = new System.Drawing.Size(1185, 748);
+            this.guna2TabControl1.Size = new System.Drawing.Size(1185, 765);
             this.guna2TabControl1.TabButtonHoverState.BorderColor = System.Drawing.Color.Empty;
             this.guna2TabControl1.TabButtonHoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(52)))), ((int)(((byte)(70)))));
             this.guna2TabControl1.TabButtonHoverState.Font = new System.Drawing.Font("Segoe UI Semibold", 10F);
@@ -127,12 +128,13 @@
             this.tabPage2.Controls.Add(this.guna2Panel3);
             this.tabPage2.Controls.Add(this.guna2Panel2);
             this.tabPage2.Controls.Add(this.guna2Panel1);
+            this.tabPage2.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tabPage2.Location = new System.Drawing.Point(184, 4);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(997, 740);
+            this.tabPage2.Size = new System.Drawing.Size(997, 757);
             this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "Управление командой";
+            this.tabPage2.Text = "Команда";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
             // PanelWithButtons
@@ -140,7 +142,7 @@
             this.PanelWithButtons.Controls.Add(this.ExitButton);
             this.PanelWithButtons.Controls.Add(this.ToEnterFormButton);
             this.PanelWithButtons.Controls.Add(this.ChangeTeamButton);
-            this.PanelWithButtons.Location = new System.Drawing.Point(821, 607);
+            this.PanelWithButtons.Location = new System.Drawing.Point(877, 622);
             this.PanelWithButtons.Name = "PanelWithButtons";
             this.PanelWithButtons.Size = new System.Drawing.Size(180, 135);
             this.PanelWithButtons.TabIndex = 30;
@@ -154,7 +156,7 @@
             this.ExitButton.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(130)))), ((int)(((byte)(42)))), ((int)(((byte)(57)))));
             this.ExitButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ExitButton.ForeColor = System.Drawing.Color.Silver;
-            this.ExitButton.Location = new System.Drawing.Point(0, 90);
+            this.ExitButton.Location = new System.Drawing.Point(0, 89);
             this.ExitButton.Name = "ExitButton";
             this.ExitButton.Size = new System.Drawing.Size(180, 45);
             this.ExitButton.TabIndex = 2;
@@ -601,20 +603,32 @@
             this.tabPage3.Location = new System.Drawing.Point(184, 4);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(997, 740);
+            this.tabPage3.Size = new System.Drawing.Size(997, 757);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Анализ статистики";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
-            // tabPage4
+            // SelectedPlayerPicture
             // 
-            this.tabPage4.Location = new System.Drawing.Point(184, 4);
-            this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage4.Size = new System.Drawing.Size(997, 740);
-            this.tabPage4.TabIndex = 3;
-            this.tabPage4.Text = "Тренировки";
-            this.tabPage4.UseVisualStyleBackColor = true;
+            this.SelectedPlayerPicture.BorderRadius = 2;
+            this.SelectedPlayerPicture.FillColor = System.Drawing.Color.Gray;
+            this.SelectedPlayerPicture.ImageRotate = 0F;
+            this.SelectedPlayerPicture.InitialImage = null;
+            this.SelectedPlayerPicture.Location = new System.Drawing.Point(23, 11);
+            this.SelectedPlayerPicture.Name = "SelectedPlayerPicture";
+            this.SelectedPlayerPicture.Size = new System.Drawing.Size(80, 80);
+            this.SelectedPlayerPicture.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.SelectedPlayerPicture.TabIndex = 23;
+            this.SelectedPlayerPicture.TabStop = false;
+            // 
+            // SelectedPlayerMatches
+            // 
+            this.SelectedPlayerMatches.AutoScroll = true;
+            this.SelectedPlayerMatches.BackColor = System.Drawing.Color.Gainsboro;
+            this.SelectedPlayerMatches.Location = new System.Drawing.Point(6, 97);
+            this.SelectedPlayerMatches.Name = "SelectedPlayerMatches";
+            this.SelectedPlayerMatches.Size = new System.Drawing.Size(380, 643);
+            this.SelectedPlayerMatches.TabIndex = 1;
             // 
             // SelectPlayerComboBox
             // 
@@ -627,37 +641,27 @@
             this.SelectPlayerComboBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.SelectPlayerComboBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(68)))), ((int)(((byte)(88)))), ((int)(((byte)(112)))));
             this.SelectPlayerComboBox.ItemHeight = 30;
-            this.SelectPlayerComboBox.Location = new System.Drawing.Point(123, 35);
+            this.SelectPlayerComboBox.Location = new System.Drawing.Point(127, 31);
             this.SelectPlayerComboBox.Name = "SelectPlayerComboBox";
             this.SelectPlayerComboBox.Size = new System.Drawing.Size(205, 36);
             this.SelectPlayerComboBox.TabIndex = 0;
             this.SelectPlayerComboBox.SelectedIndexChanged += new System.EventHandler(this.SelectPlayerComboBox_SelectedIndexChanged);
             // 
-            // SelectedPlayerMatches
+            // tabPage4
             // 
-            this.SelectedPlayerMatches.Location = new System.Drawing.Point(6, 97);
-            this.SelectedPlayerMatches.Name = "SelectedPlayerMatches";
-            this.SelectedPlayerMatches.Size = new System.Drawing.Size(351, 563);
-            this.SelectedPlayerMatches.TabIndex = 1;
-            // 
-            // SelectedPlayerPicture
-            // 
-            this.SelectedPlayerPicture.BorderRadius = 2;
-            this.SelectedPlayerPicture.FillColor = System.Drawing.Color.Gray;
-            this.SelectedPlayerPicture.ImageRotate = 0F;
-            this.SelectedPlayerPicture.InitialImage = null;
-            this.SelectedPlayerPicture.Location = new System.Drawing.Point(20, 11);
-            this.SelectedPlayerPicture.Name = "SelectedPlayerPicture";
-            this.SelectedPlayerPicture.Size = new System.Drawing.Size(80, 80);
-            this.SelectedPlayerPicture.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.SelectedPlayerPicture.TabIndex = 23;
-            this.SelectedPlayerPicture.TabStop = false;
+            this.tabPage4.Location = new System.Drawing.Point(184, 4);
+            this.tabPage4.Name = "tabPage4";
+            this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage4.Size = new System.Drawing.Size(997, 757);
+            this.tabPage4.TabIndex = 3;
+            this.tabPage4.Text = "Тренировки";
+            this.tabPage4.UseVisualStyleBackColor = true;
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1184, 741);
+            this.ClientSize = new System.Drawing.Size(1184, 756);
             this.Controls.Add(this.guna2TabControl1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;

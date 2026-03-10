@@ -24,7 +24,7 @@ namespace Dota_2_Training_Platform
             Trainer
         }
 
-        TypeOfEntering entering;
+        TypeOfEntering? entering = null;
         Color color;
         Form form2;
 
@@ -35,14 +35,23 @@ namespace Dota_2_Training_Platform
             InitializeComponent();
         }
 
-        private void Form1_Load(object sender, EventArgs e)
+        private async void Form1_Load(object sender, EventArgs e)
         {
+            
             color = SteamIDTextBox.FocusedState.BorderColor;
             dbManager.InitializeDatabase();
 
             var screenBounds = Screen.FromControl(this).WorkingArea;
 
             this.Location = new Point(screenBounds.Left + (screenBounds.Width - this.Width) / 2, screenBounds.Top + (screenBounds.Height - this.Height) / 2);
+            
+            //await ApiCourier.LoadHeroes();
+            //await ApiCourier.LoadItems();
+
+            //foreach(var element in ApiCourier.Heroes)
+            //{
+            //    MessageBox.Show($"{element.Key} : {element.Value}");
+            //}
         }
 
         private void OpenForm(TypeOfEntering typeOfEntering)
