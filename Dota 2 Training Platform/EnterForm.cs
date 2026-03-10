@@ -38,34 +38,38 @@ namespace Dota_2_Training_Platform
         private void Form1_Load(object sender, EventArgs e)
         {
             color = SteamIDTextBox.FocusedState.BorderColor;
-            dbManager.Start();
-            //dbManager.ReadAllPlayers();
+            dbManager.InitializeDatabase();
+
+            var screenBounds = Screen.FromControl(this).WorkingArea;
+
+            this.Location = new Point(screenBounds.Left + (screenBounds.Width - this.Width) / 2, screenBounds.Top + (screenBounds.Height - this.Height) / 2);
         }
 
         private void OpenForm(TypeOfEntering typeOfEntering)
         {
-            switch(typeOfEntering)
+            switch (typeOfEntering)
             {
                 case TypeOfEntering.Player: // у игрока будет другая форма, и интерфейс тоже вроде
                     {
-                        form2 = new PlayerTeamsForm(currentUser);
-                        form2.StartPosition = FormStartPosition.Manual;
-                        form2.Location = this.DesktopLocation;
-                        form2.Show();
-                        this.Hide();
+                        form2 = new PlayerTeamsForm(currentUser, this);
+
                         break;
                     }
                 case TypeOfEntering.Trainer:
                     {
-                        form2 = new TrainerTeamsForm(currentUser);
-                        form2.StartPosition = FormStartPosition.Manual;
-                        form2.Location = this.DesktopLocation;
-                        form2.Show();
-                        this.Hide();
+                        form2 = new TrainerTeamsForm(currentUser, this);
+
                         break;
                     }
             }
-            
+            form2.StartPosition = FormStartPosition.Manual;
+
+            int x = this.DesktopLocation.X + (this.Width - form2.Width) / 2;
+            int y = this.DesktopLocation.Y + (this.Height - form2.Height) / 2;
+
+            form2.Location = new Point(x, y);
+            form2.Show();
+            this.Hide();
         }
 
         #region OtherFunctions
@@ -153,7 +157,7 @@ namespace Dota_2_Training_Platform
 
         private void AuthorizationButton_Click(object sender, EventArgs e)
         {
-            switch(entering)
+            switch (entering)
             {
                 case TypeOfEntering.Player:
                     {
@@ -245,5 +249,9 @@ namespace Dota_2_Training_Platform
             }
         }
 
+        private void EnterForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Application.Exit();
+        }
     }
 }

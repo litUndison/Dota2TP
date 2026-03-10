@@ -15,19 +15,18 @@ namespace DataBaseManager
         static public List<UserModel> Players { get; private set; } = new List<UserModel>();
         static public List<UserModel> Trainers { get; private set; } = new List<UserModel>();
         private static readonly string dbPath = "users.db";
-        private static readonly string connectionString;
-
-        public static void Start() { }
+        private static string connectionString;
         static dbManager()
         {
-            connectionString = $"Data Source={dbPath};Version=3;";
-            InitializeDatabase();
+            //connectionString = $"Data Source={dbPath};Version=3;";
+            //InitializeDatabase();
             //ReadAllPlayers();
             //ReadAllTrainers();
         }
 
-        private static void InitializeDatabase()
+        public static void InitializeDatabase()
         {
+            connectionString = $"Data Source={dbPath};Version=3;";
             if (!File.Exists(dbPath))
             {
                 File.Create(dbPath).Dispose();
@@ -820,143 +819,161 @@ namespace DataBaseManager
             return teams;
         }
 
-        public static async Task<bool> UpdateTeamFullAsync(TeamModel team, string newTeamName, List<string> newSteamOrAccountIds)
+        public static async Task<TeamModel> UpdateTeamFullAsync(
+    TeamModel team,
+    string newTeamName,
+    string acc1,
+    string acc2,
+    string acc3,
+    string acc4,
+    string acc5)
         {
+            var newAccounts = new List<string> { acc1, acc2, acc3, acc4, acc5 };
+
             using (var connection = new SQLiteConnection(connectionString))
             {
-                connection.Open();
+                await connection.OpenAsync();
 
                 using (var transaction = connection.BeginTransaction())
                 {
                     try
                     {
                         // ==============================
-                        // Обновляем имя команды
+                        // 1. Обновляем имя команды
                         // ==============================
                         if (team.Name != newTeamName)
                         {
                             using (var cmd = connection.CreateCommand())
                             {
-                                cmd.CommandText =
-                                    "UPDATE Teams SET Name = @name WHERE Id = @id";
-
+                                cmd.CommandText = "UPDATE Teams SET Name = @name WHERE Id = @id";
                                 cmd.Parameters.AddWithValue("@name", newTeamName);
                                 cmd.Parameters.AddWithValue("@id", team.Id);
-                                cmd.ExecuteNonQuery();
+                                await cmd.ExecuteNonQueryAsync();
                             }
+                            team.Name = newTeamName; // Обновляем локально
                         }
 
                         // ==============================
-                        // Нормализация ID через API
+                        // 2. Проверка дубликатов
                         // ==============================
-                        var normalizedSteamIds = new List<string>();
-
-                        foreach (var id in newSteamOrAccountIds)
-                        {
-                            var apiResult = await ApiCourier.TryGetUserInfo(id);
-
-                            if (!apiResult.IsSuccess)
-                                throw new Exception($"Игрок {id} не найден");
-
-                            normalizedSteamIds.Add(apiResult.Data.profile.steamid.ToString());
-                        }
-
-                        // ==============================
-                        // Проверка на дубликаты
-                        // ==============================
-                        if (normalizedSteamIds.Count != normalizedSteamIds.Distinct().Count())
+                        var nonEmptyAccounts = newAccounts.Where(a => !string.IsNullOrEmpty(a) && a != "0").ToList();
+                        if (nonEmptyAccounts.Count != nonEmptyAccounts.Distinct().Count())
                             throw new Exception("Нельзя добавить одного и того же игрока дважды");
 
                         // ==============================
-                        // Проверка лимита 5 игроков
+                        // 3. Проверка на тренера
                         // ==============================
-                        if (normalizedSteamIds.Count > 5)
-                            throw new Exception("В команде не может быть более 5 игроков");
-
-                        // ==============================
-                        // Проверка: нельзя добавить тренера этой команды
-                        // ==============================
-                        if (normalizedSteamIds.Contains(team.TrainerSteamId))
+                        if (nonEmptyAccounts.Contains(team.TrainerSteamId))
                             throw new Exception("Тренер команды не может быть игроком");
 
-                        // ==============================
-                        // Проверка: нельзя добавить любого тренера
-                        // ==============================
-                        foreach (var steamId in normalizedSteamIds)
+                        foreach (var acc in nonEmptyAccounts)
                         {
                             using (var cmd = connection.CreateCommand())
                             {
-                                cmd.CommandText =
-                                    "SELECT COUNT(*) FROM Trainers WHERE SteamId = @steamId";
-
-                                cmd.Parameters.AddWithValue("@steamId", steamId);
-
-                                if (Convert.ToInt32(cmd.ExecuteScalar()) > 0)
+                                cmd.CommandText = "SELECT COUNT(*) FROM Trainers WHERE SteamId = @steamId";
+                                cmd.Parameters.AddWithValue("@steamId", acc);
+                                if (Convert.ToInt32(await cmd.ExecuteScalarAsync()) > 0)
                                     throw new Exception("Нельзя добавить тренера как игрока");
                             }
                         }
 
                         // ==============================
-                        // Проверка: состав изменился?
+                        // 4. Обновляем состав
                         // ==============================
-                        var oldPlayers = team.Players
-                            .Select(p => p.SteamID)
-                            .OrderBy(x => x)
-                            .ToList();
-
-                        var newPlayersSorted = normalizedSteamIds
-                            .OrderBy(x => x)
-                            .ToList();
-
-                        if (oldPlayers.SequenceEqual(newPlayersSorted))
+                        for (int slot = 0; slot < 5; slot++)
                         {
-                            transaction.Commit();
-                            return true;
-                        }
+                            string newAcc = newAccounts[slot];
+                            UserModel existingPlayer = slot < team.Players.Count ? team.Players[slot] : null;
 
-                        // ==============================
-                        // Полная замена состава
-                        // ==============================
-                        using (var cmd = connection.CreateCommand())
-                        {
-                            cmd.CommandText =
-                                "DELETE FROM TeamPlayers WHERE TeamId = @teamId";
-
-                            cmd.Parameters.AddWithValue("@teamId", team.Id);
-                            cmd.ExecuteNonQuery();
-                        }
-
-                        foreach (var steamId in normalizedSteamIds)
-                        {
-                            var apiResult = await ApiCourier.TryGetUserInfo(steamId);
-                            var p = apiResult.Data.profile;
-
-                            using (var cmd = connection.CreateCommand())
+                            // Если пустой слот → удаляем
+                            if (string.IsNullOrEmpty(newAcc) || newAcc == "0")
                             {
-                                cmd.CommandText = @"
-                            INSERT INTO TeamPlayers
-                            (TeamId, Name, AccountId, PlayerSteamId, Avatar)
-                            VALUES
-                            (@teamId, @name, @accountId, @steamId, @avatar)";
+                                if (existingPlayer != null)
+                                {
+                                    using (var cmd = connection.CreateCommand())
+                                    {
+                                        cmd.CommandText = "DELETE FROM TeamPlayers WHERE TeamId = @teamId AND AccountId = @accountId";
+                                        cmd.Parameters.AddWithValue("@teamId", team.Id);
+                                        cmd.Parameters.AddWithValue("@accountId", existingPlayer.AccountID);
+                                        await cmd.ExecuteNonQueryAsync();
+                                    }
+                                    team.Players[slot] = null;
+                                }
+                                continue;
+                            }
 
-                                cmd.Parameters.AddWithValue("@teamId", team.Id);
-                                cmd.Parameters.AddWithValue("@name", p.personaname);
-                                cmd.Parameters.AddWithValue("@accountId", p.account_id);
-                                cmd.Parameters.AddWithValue("@steamId", p.steamid);
-                                cmd.Parameters.AddWithValue("@avatar", p.avatarfull);
+                            // Если игрок не меняется → пропускаем
+                            if (existingPlayer != null && existingPlayer.AccountID == newAcc)
+                                continue;
 
-                                cmd.ExecuteNonQuery();
+                            // Получаем данные через API
+                            var apiResult = await ApiCourier.TryGetUserInfo(newAcc);
+                            if (!apiResult.IsSuccess)
+                                throw new Exception($"Игрок {newAcc} не найден");
+
+                            var p = apiResult.Data.profile;
+                            var user = new UserModel(p.personaname.ToString(), p.account_id.ToString(), p.steamid.ToString(), "", p.avatarfull.ToString());
+
+                            // Обновляем или вставляем
+                            if (existingPlayer != null)
+                            {
+                                using (var cmd = connection.CreateCommand())
+                                {
+                                    cmd.CommandText = @"
+                                UPDATE TeamPlayers
+                                SET Name = @name,
+                                    AccountId = @accountId,
+                                    PlayerSteamId = @steamId,
+                                    Avatar = @avatar
+                                WHERE TeamId = @teamId AND AccountId = @oldAcc";
+
+                                    cmd.Parameters.AddWithValue("@name", user.Name);
+                                    cmd.Parameters.AddWithValue("@accountId", user.AccountID);
+                                    cmd.Parameters.AddWithValue("@steamId", user.SteamID);
+                                    cmd.Parameters.AddWithValue("@avatar", user.Avatarfull);
+                                    cmd.Parameters.AddWithValue("@teamId", team.Id);
+                                    cmd.Parameters.AddWithValue("@oldAcc", existingPlayer.AccountID);
+
+                                    await cmd.ExecuteNonQueryAsync();
+                                }
+                                team.Players[slot] = user;
+                            }
+                            else
+                            {
+                                using (var cmd = connection.CreateCommand())
+                                {
+                                    cmd.CommandText = @"
+                                INSERT INTO TeamPlayers
+                                (TeamId, Name, AccountId, PlayerSteamId, Avatar)
+                                VALUES
+                                (@teamId, @name, @accountId, @steamId, @avatar)";
+
+                                    cmd.Parameters.AddWithValue("@teamId", team.Id);
+                                    cmd.Parameters.AddWithValue("@name", user.Name);
+                                    cmd.Parameters.AddWithValue("@accountId", user.AccountID);
+                                    cmd.Parameters.AddWithValue("@steamId", user.SteamID);
+                                    cmd.Parameters.AddWithValue("@avatar", user.Avatarfull);
+
+                                    await cmd.ExecuteNonQueryAsync();
+                                }
+
+                                if (slot < team.Players.Count)
+                                    team.Players[slot] = user;
+                                else
+                                    team.Players.Add(user);
                             }
                         }
 
+                        // Очистка пустых слотов в памяти
+                        team.Players = team.Players.Take(5).Where(p => p != null).ToList();
+
                         transaction.Commit();
-                        return true;
+                        return team;
                     }
-                    catch (Exception ex)
+                    catch
                     {
                         transaction.Rollback();
-                        MessageBox.Show(ex.Message);
-                        return false;
+                        throw; // Выбрасываем исключение наружу
                     }
                 }
             }

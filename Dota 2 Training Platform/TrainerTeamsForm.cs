@@ -24,12 +24,13 @@ namespace Dota_2_Training_Platform
         List<TeamModel> currentTeams = new List<TeamModel>();
         Color color;
 
-        Form form2 = null;
+        Form StartForm = null;
 
 
         bool selfExit = false; //если самовыход = true, то закрывается только текущее окно. Без закрытия всей программы. Немного криво, ну лан))
-        public TrainerTeamsForm(UserModel currentUser)
+        public TrainerTeamsForm(UserModel currentUser, Form StartForm)
         {
+            this.StartForm = StartForm;
             this.currentUser = currentUser;
             InitializeComponent();
         }
@@ -43,13 +44,13 @@ namespace Dota_2_Training_Platform
 
         private void Form2_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if(!selfExit)
+            if (!selfExit)
                 Application.Exit();
         }
 
         private void guna2GradientButton3_Click(object sender, EventArgs e) // Назад на Form1
         {
-            EnterForm enterForm = new EnterForm();
+            EnterForm enterForm = StartForm as EnterForm;
             enterForm.StartPosition = FormStartPosition.Manual;
             enterForm.Location = this.DesktopLocation;
             enterForm.Show();
@@ -70,7 +71,7 @@ namespace Dota_2_Training_Platform
             TeamNameBox.ReadOnly = false;
             for (int i = 0; i < nameboxes.Length; i++)
             {
-                nameboxes[i].Text = $"Игрок {i+1}";
+                nameboxes[i].Text = $"Игрок {i + 1}";
             }
             TeamConfirm.Visible = true;
             for (int i = 0; i < imageboxes.Length; i++)
@@ -128,15 +129,16 @@ namespace Dota_2_Training_Platform
             TeamConfirm.Visible = false;
 
             PrintAllTeams();
+            ShowAllMembers((TeamModel)guna2Panel1.Controls[guna2Panel1.Controls.Count - 1].Tag);
         }
 
 
 
 
 
-        private void PrintAllTeams()
+        public void PrintAllTeams()
         {
-            guna2Panel1.Controls.Clear(); // ВОТ ЭТО ОБЯЗАТЕЛЬНО
+            guna2Panel1.Controls.Clear();
 
             currentTeams = dbManager.GetTrainerTeams(currentUser.SteamID);
 
@@ -155,7 +157,7 @@ namespace Dota_2_Training_Platform
                     ? 10
                     : guna2Panel1.Controls[guna2Panel1.Controls.Count - 1].Bottom + 2;
 
-                button.Tag = team; // ВАЖНО
+                button.Tag = team;
                 button.Click += LoadTeam;
 
                 guna2Panel1.Controls.Add(button);
@@ -238,12 +240,21 @@ namespace Dota_2_Training_Platform
 
         private void guna2GradientButton1_Click(object sender, EventArgs e) // ContinueButton
         {
-            form2 = new MainForm(currentTeam, currentUser);
-            form2.StartPosition = FormStartPosition.Manual;
-            form2.Location = this.DesktopLocation;
-            form2.Show();
+            Form form2 = new MainForm(currentTeam, currentUser, StartForm, this);
             selfExit = true;
-            this.Close();
+            form2.StartPosition = FormStartPosition.Manual;
+
+            int x = this.DesktopLocation.X + (this.Width - form2.Width) / 2;
+            int y = this.DesktopLocation.Y + (this.Height - form2.Height) / 2;
+
+            form2.Location = new Point(x, y);
+            form2.Show();
+            this.Hide();
+        }
+
+        private void guna2HtmlLabel4_Click(object sender, EventArgs e)
+        {
+
         }
 
 

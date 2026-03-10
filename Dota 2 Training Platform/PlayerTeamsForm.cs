@@ -22,12 +22,15 @@ namespace Dota_2_Training_Platform
         Color color;
         string correctTeamSymbols = "абвгдеёжзийклмнопрстуфхцчшщъыьэюя 1234567890abcdefghijklmnopqrstuvwxyz-_";
         string correctSteamIDSymbols = "1234567890";
+        Form StartForm;
 
         bool selfExit = false;
-        public PlayerTeamsForm(UserModel currentUser)
+        public PlayerTeamsForm(UserModel currentUser, Form startForm)
         {
             this.currentUser = currentUser;
             InitializeComponent();
+            StartForm = startForm;
+
         }
 
         private void PlayerTeamsForm_Load(object sender, EventArgs e)
@@ -126,7 +129,7 @@ namespace Dota_2_Training_Platform
             ContinueButton.Visible = true;
             for (int i = 0; i < nameboxes.Length; i++)
             {
-                if(nameboxes[i].Text == currentUser.Name)
+                if (nameboxes[i].Text == currentUser.Name)
                 {
                     nameboxes[i].ForeColor = Color.Blue;
                     selectors[i].Visible = true;

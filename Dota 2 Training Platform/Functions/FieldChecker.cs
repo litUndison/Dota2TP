@@ -25,7 +25,7 @@ namespace Dota_2_Training_Platform.Functions
         public static void FieldCheck(Guna2TextBox currentTextBox, CheckType type)
         {
             string validationString = string.Empty;
-            switch(type)
+            switch (type)
             {
                 case CheckType.Password:
                     {
@@ -52,12 +52,12 @@ namespace Dota_2_Training_Platform.Functions
                         currentTextBox.Text = currentTextBox.Text.Remove(i, 1);
                         i--;
                         currentTextBox.SelectionStart = currentTextBox.Text.Length;
-                        currentTextBox.BorderColor = Color.Red;
-                        currentTextBox.FocusedState.BorderColor = Color.Red;
+                        //currentTextBox.BorderColor = Color.Red;
+                        //currentTextBox.FocusedState.BorderColor = Color.Red;
                         continue;
                     }
-                    currentTextBox.BorderColor = Color.Gray;
-                    currentTextBox.FocusedState.BorderColor = Color.FromArgb(94, 148, 255);
+                    //currentTextBox.BorderColor = Color.Gray;
+                    //currentTextBox.FocusedState.BorderColor = Color.FromArgb(94, 148, 255);
                 }
             }
         }
