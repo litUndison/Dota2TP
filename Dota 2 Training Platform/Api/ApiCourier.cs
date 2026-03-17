@@ -1,12 +1,13 @@
-﻿using System;
+﻿using Dota_2_Training_Platform.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Net.Http;
+using System.Text;
 using System.Text.Json;
+using System.Threading.Tasks;
 using System.Windows.Forms;
-using Dota_2_Training_Platform.Models;
+using System.Xml.Linq;
 
 namespace Dota_2_Training_Platform
 {
@@ -234,14 +235,14 @@ namespace Dota_2_Training_Platform
             var response = await _apiHttpClient.GetAsync(url);
             string json = await response.Content.ReadAsStringAsync();
 
-            var heroes = JsonSerializer.Deserialize<List<DotaHeroModel>>(json);
+            var heroes = JsonSerializer.Deserialize<Dictionary<string, DotaHeroModel>>(json);
 
             Heroes.Clear();
 
-            foreach (var hero in heroes)
+            foreach (var hero in heroes.Values)
             {
                 Heroes[hero.id] = hero;
-
+                Heroes[hero.id].img = hero.img.Replace(".png?", ".png");
             }
         }
 
@@ -250,8 +251,9 @@ namespace Dota_2_Training_Platform
             if (!Heroes.ContainsKey(heroId))
                 return "";
 
-            string imgPath = Heroes[heroId].img;
-            return $"cdn.cloudflare.steamstatic.com{imgPath}";
+            string name = Heroes[heroId].name;
+            name = name.Replace("npc_dota_hero_", "");
+            return $"https://cdn.cloudflare.steamstatic.com/apps/dota2/images/dota_react/heroes/{name}.png";
         }
 
 

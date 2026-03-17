@@ -45,8 +45,8 @@ namespace Dota_2_Training_Platform
 
             this.Location = new Point(screenBounds.Left + (screenBounds.Width - this.Width) / 2, screenBounds.Top + (screenBounds.Height - this.Height) / 2);
             
-            //await ApiCourier.LoadHeroes();
-            //await ApiCourier.LoadItems();
+            await ApiCourier.LoadHeroes();
+            await ApiCourier.LoadItems();
 
             //foreach(var element in ApiCourier.Heroes)
             //{

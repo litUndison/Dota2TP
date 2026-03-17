@@ -33,6 +33,7 @@ namespace Dota_2_Training_Platform
             RadiantScore.Text = match.radiant_score.ToString();
             DireScore.Text = match.dire_score.ToString();
             WinnerLabel.Text = match.radiant_win ? "Победа сил Света" : "Победа сил Тьмы"; //Radiant / dire
+            WinnerLabel.ForeColor = match.radiant_win ? Color.FromArgb(255, 105, 136, 34) : Color.FromArgb(255, 172, 60, 42); //Radiant / dire
 
             TimeSpan duration = TimeSpan.FromSeconds(match.duration);
             DurationLabel.Text = duration.ToString(@"mm\:ss");
@@ -84,15 +85,13 @@ namespace Dota_2_Training_Platform
                 // 1 Иконка героя
                 PictureBox heroPic = new PictureBox
                 {
-                    Width = 60,
+                    BackColor = Color.FromArgb(255, 120, 120, 120),
+                    Width = 128,
                     Height = 60,
                     SizeMode = PictureBoxSizeMode.StretchImage,
-                    //ImageLocation = ApiCourier.GetHeroImage(player.hero_id) // метод получения картинки героя
+                    Image = Properties.Resources.Loading // метод получения картинки героя
                 };
-                //MessageBox.Show(player.hero_id.ToString());
-                //MessageBox.Show(ApiCourier.Heroes[player.hero_id].img);
-                //MessageBox.Show(ApiCourier.Heroes[player.hero_id].id.ToString());
-                //MessageBox.Show(ApiCourier.GetHeroImage(player.hero_id));
+                LoadHeroImage(heroPic, player.hero_id);
                 //heroPic.LoadAsync(ApiCourier.GetHeroImage(player.hero_id));
                 heroPic.Location = new Point(x, 0);
                 x += heroPic.Width;
@@ -107,8 +106,9 @@ namespace Dota_2_Training_Platform
                 // 2 Имя игрока
                 Label nameLabel = new Label
                 {
+                    BackColor = Color.FromArgb(255, 130, 130, 130),
                     Text = player.personaname,
-                    Width = 117,
+                    Width = 135,
                     Height = 60,
                     Location = new Point(x, 0),
                     TextAlign = ContentAlignment.MiddleLeft
@@ -119,8 +119,9 @@ namespace Dota_2_Training_Platform
                 // 3 Kills
                 Label killsLabel = new Label
                 {
+                    BackColor = Color.FromArgb(255, 120, 120, 120),
                     Text = player.kills.ToString(),
-                    Width = 43,
+                    Width = 41,
                     Height = 60,
                     Location = new Point(x, 0),
                     TextAlign = ContentAlignment.MiddleCenter
@@ -131,8 +132,9 @@ namespace Dota_2_Training_Platform
                 // 4 Deaths
                 Label deathsLabel = new Label
                 {
+                    BackColor = Color.FromArgb(255, 130, 130, 130),
                     Text = player.deaths.ToString(),
-                    Width = 43,
+                    Width = 41,
                     Height = 60,
                     Location = new Point(x, 0),
                     TextAlign = ContentAlignment.MiddleCenter
@@ -143,8 +145,9 @@ namespace Dota_2_Training_Platform
                 // 5 Assists
                 Label assistsLabel = new Label
                 {
+                    BackColor = Color.FromArgb(255, 120, 120, 120),
                     Text = player.assists.ToString(),
-                    Width = 43,
+                    Width = 41,
                     Height = 60,
                     Location = new Point(x, 0),
                     TextAlign = ContentAlignment.MiddleCenter
@@ -155,8 +158,9 @@ namespace Dota_2_Training_Platform
                 // 6 Net Worth
                 Label netWorthLabel = new Label
                 {
+                    BackColor = Color.FromArgb(255, 130, 130, 130),
                     Text = player.net_worth.ToString(),
-                    Width = 46,
+                    Width = 71,
                     Height = 60,
                     Location = new Point(x, 0),
                     TextAlign = ContentAlignment.MiddleCenter
@@ -167,8 +171,9 @@ namespace Dota_2_Training_Platform
                 // 7 Last Hits
                 Label lhLabel = new Label
                 {
-                    Text = player.last_hits.ToString(),
-                    Width = 61,
+                    BackColor = Color.FromArgb(255, 120, 120, 120),
+                    Text = $"{player.last_hits}/{player.denies}",
+                    Width = 76,
                     Height = 60,
                     Location = new Point(x, 0),
                     TextAlign = ContentAlignment.MiddleCenter
@@ -179,8 +184,9 @@ namespace Dota_2_Training_Platform
                 // 8 Gold per Minute
                 Label gpmLabel = new Label
                 {
+                    BackColor = Color.FromArgb(255, 130, 130, 130),
                     Text = player.gold_per_min.ToString(),
-                    Width = 53,
+                    Width = 72,
                     Height = 60,
                     Location = new Point(x, 0),
                     TextAlign = ContentAlignment.MiddleCenter
@@ -191,8 +197,9 @@ namespace Dota_2_Training_Platform
                 // 9 Hero Damage
                 Label hdLabel = new Label
                 {
+                    BackColor = Color.FromArgb(255, 120, 120, 120),
                     Text = player.hero_damage.ToString(),
-                    Width = 65,
+                    Width = 80,
                     Height = 60,
                     Location = new Point(x, 0),
                     TextAlign = ContentAlignment.MiddleCenter
@@ -225,6 +232,30 @@ namespace Dota_2_Training_Platform
                         sb.AppendLine(ApiCourier.ItemsById[itemId].id.ToString()); // возвращает название предмета по ID
                 }
                 return sb.ToString();
+        }
+        private async void LoadHeroImage(PictureBox pic, int heroId)
+        {
+            try
+            {
+                string url = ApiCourier.GetHeroImage(heroId);
+
+                using (HttpClient client = new HttpClient())
+                {
+                    var stream = await client.GetStreamAsync(url);
+                    Image img = Image.FromStream(stream);
+
+                    pic.Invoke(new Action(() =>
+                    {
+                        pic.Image = img;
+                        pic.SizeMode = PictureBoxSizeMode.StretchImage; // теперь растягиваем
+                    }));
+                }
+            }
+            catch
+            {
+                // если ошибка — можно оставить gif или поставить fallback
             }
         }
+
+    }
 }

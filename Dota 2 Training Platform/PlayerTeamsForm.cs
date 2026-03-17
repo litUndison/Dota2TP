@@ -20,8 +20,6 @@ namespace Dota_2_Training_Platform
         TeamModel currentTeam;
         List<TeamModel> currentTeams = new List<TeamModel>();
         Color color;
-        string correctTeamSymbols = "абвгдеёжзийклмнопрстуфхцчшщъыьэюя 1234567890abcdefghijklmnopqrstuvwxyz-_";
-        string correctSteamIDSymbols = "1234567890";
         Form StartForm;
 
         bool selfExit = false;
