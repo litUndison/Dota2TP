@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(EnterForm));
             this.RegistrationButton = new Guna.UI2.WinForms.Guna2GradientButton();
             this.SteamIDTextBox = new Guna.UI2.WinForms.Guna2TextBox();
             this.AuthorizationButton = new Guna.UI2.WinForms.Guna2GradientButton();
@@ -41,12 +40,14 @@
             // 
             this.RegistrationButton.Animated = true;
             this.RegistrationButton.BackColor = System.Drawing.Color.Transparent;
-            this.RegistrationButton.BorderRadius = 15;
+            this.RegistrationButton.BorderRadius = 5;
             this.RegistrationButton.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
             this.RegistrationButton.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
             this.RegistrationButton.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
             this.RegistrationButton.DisabledState.FillColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
             this.RegistrationButton.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.RegistrationButton.FillColor = System.Drawing.Color.Silver;
+            this.RegistrationButton.FillColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.RegistrationButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.RegistrationButton.ForeColor = System.Drawing.Color.White;
             this.RegistrationButton.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.ForwardDiagonal;
@@ -86,12 +87,14 @@
             // 
             this.AuthorizationButton.Animated = true;
             this.AuthorizationButton.BackColor = System.Drawing.Color.Transparent;
-            this.AuthorizationButton.BorderRadius = 15;
+            this.AuthorizationButton.BorderRadius = 5;
             this.AuthorizationButton.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
             this.AuthorizationButton.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
             this.AuthorizationButton.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
             this.AuthorizationButton.DisabledState.FillColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
             this.AuthorizationButton.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.AuthorizationButton.FillColor = System.Drawing.Color.Silver;
+            this.AuthorizationButton.FillColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.AuthorizationButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.AuthorizationButton.ForeColor = System.Drawing.Color.White;
             this.AuthorizationButton.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.ForwardDiagonal;
@@ -138,6 +141,8 @@
             this.TrainerButton.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
             this.TrainerButton.DisabledState.FillColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
             this.TrainerButton.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.TrainerButton.FillColor = System.Drawing.Color.Silver;
+            this.TrainerButton.FillColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.TrainerButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
             this.TrainerButton.ForeColor = System.Drawing.Color.White;
             this.TrainerButton.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.ForwardDiagonal;
@@ -161,6 +166,8 @@
             this.PlayerButton.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
             this.PlayerButton.DisabledState.FillColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
             this.PlayerButton.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.PlayerButton.FillColor = System.Drawing.Color.Silver;
+            this.PlayerButton.FillColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.PlayerButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
             this.PlayerButton.ForeColor = System.Drawing.Color.White;
             this.PlayerButton.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.ForwardDiagonal;
@@ -177,8 +184,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.White;
-            this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
+            this.BackColor = System.Drawing.Color.Silver;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(334, 361);
             this.Controls.Add(this.PlayerButton);

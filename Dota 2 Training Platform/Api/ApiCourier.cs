@@ -289,7 +289,7 @@ namespace Dota_2_Training_Platform
                 return ""; // или путь к картинке "not found"
 
             string imgPath = ItemsById[itemId].img;
-            return $"cdn.cloudflare.steamstatic.com{imgPath}";
+            return $"https://cdn.steamstatic.com{imgPath}";
         }
     }
 

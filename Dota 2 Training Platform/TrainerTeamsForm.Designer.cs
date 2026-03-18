@@ -78,13 +78,14 @@
             this.guna2GradientButton3.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
             this.guna2GradientButton3.DisabledState.FillColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
             this.guna2GradientButton3.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.guna2GradientButton3.FillColor = System.Drawing.SystemColors.ActiveBorder;
+            this.guna2GradientButton3.FillColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.guna2GradientButton3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.guna2GradientButton3.ForeColor = System.Drawing.Color.White;
             this.guna2GradientButton3.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.ForwardDiagonal;
-            this.guna2GradientButton3.Location = new System.Drawing.Point(385, 659);
-            this.guna2GradientButton3.Margin = new System.Windows.Forms.Padding(4);
+            this.guna2GradientButton3.Location = new System.Drawing.Point(289, 535);
             this.guna2GradientButton3.Name = "guna2GradientButton3";
-            this.guna2GradientButton3.Size = new System.Drawing.Size(213, 36);
+            this.guna2GradientButton3.Size = new System.Drawing.Size(160, 29);
             this.guna2GradientButton3.TabIndex = 12;
             this.guna2GradientButton3.Text = "Назад";
             this.guna2GradientButton3.UseTransparentBackground = true;
@@ -100,13 +101,14 @@
             this.CreateTeamButton.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
             this.CreateTeamButton.DisabledState.FillColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
             this.CreateTeamButton.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.CreateTeamButton.FillColor = System.Drawing.SystemColors.ActiveBorder;
+            this.CreateTeamButton.FillColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.CreateTeamButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.CreateTeamButton.ForeColor = System.Drawing.Color.White;
             this.CreateTeamButton.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.ForwardDiagonal;
-            this.CreateTeamButton.Location = new System.Drawing.Point(0, 659);
-            this.CreateTeamButton.Margin = new System.Windows.Forms.Padding(4);
+            this.CreateTeamButton.Location = new System.Drawing.Point(0, 535);
             this.CreateTeamButton.Name = "CreateTeamButton";
-            this.CreateTeamButton.Size = new System.Drawing.Size(339, 36);
+            this.CreateTeamButton.Size = new System.Drawing.Size(254, 29);
             this.CreateTeamButton.TabIndex = 14;
             this.CreateTeamButton.Text = "Добавить команду";
             this.CreateTeamButton.UseTransparentBackground = true;
@@ -116,9 +118,8 @@
             // 
             this.guna2Panel1.AutoScroll = true;
             this.guna2Panel1.Location = new System.Drawing.Point(0, 0);
-            this.guna2Panel1.Margin = new System.Windows.Forms.Padding(4);
             this.guna2Panel1.Name = "guna2Panel1";
-            this.guna2Panel1.Size = new System.Drawing.Size(339, 651);
+            this.guna2Panel1.Size = new System.Drawing.Size(254, 529);
             this.guna2Panel1.TabIndex = 15;
             // 
             // PlayerBox1
@@ -133,13 +134,13 @@
             this.PlayerBox1.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
             this.PlayerBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.PlayerBox1.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
-            this.PlayerBox1.Location = new System.Drawing.Point(237, 15);
-            this.PlayerBox1.Margin = new System.Windows.Forms.Padding(5);
+            this.PlayerBox1.Location = new System.Drawing.Point(178, 12);
+            this.PlayerBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.PlayerBox1.Name = "PlayerBox1";
             this.PlayerBox1.PlaceholderText = "SteamID/AccountID";
             this.PlayerBox1.ReadOnly = true;
             this.PlayerBox1.SelectedText = "";
-            this.PlayerBox1.Size = new System.Drawing.Size(381, 62);
+            this.PlayerBox1.Size = new System.Drawing.Size(286, 50);
             this.PlayerBox1.TabIndex = 17;
             this.PlayerBox1.TextChanged += new System.EventHandler(this.PlayerBox1_TextChanged);
             // 
@@ -148,10 +149,9 @@
             this.guna2HtmlLabel1.AutoSize = false;
             this.guna2HtmlLabel1.BackColor = System.Drawing.Color.Transparent;
             this.guna2HtmlLabel1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.guna2HtmlLabel1.Location = new System.Drawing.Point(8, 15);
-            this.guna2HtmlLabel1.Margin = new System.Windows.Forms.Padding(4);
+            this.guna2HtmlLabel1.Location = new System.Drawing.Point(6, 12);
             this.guna2HtmlLabel1.Name = "guna2HtmlLabel1";
-            this.guna2HtmlLabel1.Size = new System.Drawing.Size(217, 62);
+            this.guna2HtmlLabel1.Size = new System.Drawing.Size(163, 50);
             this.guna2HtmlLabel1.TabIndex = 18;
             this.guna2HtmlLabel1.Text = "Игрок 1";
             this.guna2HtmlLabel1.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
@@ -162,10 +162,9 @@
             this.guna2Panel2.Controls.Add(this.PlayerPicture1);
             this.guna2Panel2.Controls.Add(this.guna2HtmlLabel1);
             this.guna2Panel2.Controls.Add(this.PlayerBox1);
-            this.guna2Panel2.Location = new System.Drawing.Point(20, 15);
-            this.guna2Panel2.Margin = new System.Windows.Forms.Padding(4);
+            this.guna2Panel2.Location = new System.Drawing.Point(15, 12);
             this.guna2Panel2.Name = "guna2Panel2";
-            this.guna2Panel2.Size = new System.Drawing.Size(774, 91);
+            this.guna2Panel2.Size = new System.Drawing.Size(580, 74);
             this.guna2Panel2.TabIndex = 19;
             // 
             // PlayerPicture1
@@ -173,10 +172,9 @@
             this.PlayerPicture1.BorderRadius = 2;
             this.PlayerPicture1.ImageRotate = 0F;
             this.PlayerPicture1.InitialImage = null;
-            this.PlayerPicture1.Location = new System.Drawing.Point(651, 5);
-            this.PlayerPicture1.Margin = new System.Windows.Forms.Padding(4);
+            this.PlayerPicture1.Location = new System.Drawing.Point(488, 4);
             this.PlayerPicture1.Name = "PlayerPicture1";
-            this.PlayerPicture1.Size = new System.Drawing.Size(93, 81);
+            this.PlayerPicture1.Size = new System.Drawing.Size(70, 66);
             this.PlayerPicture1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.PlayerPicture1.TabIndex = 19;
             this.PlayerPicture1.TabStop = false;
@@ -186,10 +184,9 @@
             this.PlayerPicture2.BorderRadius = 2;
             this.PlayerPicture2.ImageRotate = 0F;
             this.PlayerPicture2.InitialImage = null;
-            this.PlayerPicture2.Location = new System.Drawing.Point(651, 5);
-            this.PlayerPicture2.Margin = new System.Windows.Forms.Padding(4);
+            this.PlayerPicture2.Location = new System.Drawing.Point(488, 4);
             this.PlayerPicture2.Name = "PlayerPicture2";
-            this.PlayerPicture2.Size = new System.Drawing.Size(93, 81);
+            this.PlayerPicture2.Size = new System.Drawing.Size(70, 66);
             this.PlayerPicture2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.PlayerPicture2.TabIndex = 20;
             this.PlayerPicture2.TabStop = false;
@@ -199,10 +196,9 @@
             this.guna2HtmlLabel2.AutoSize = false;
             this.guna2HtmlLabel2.BackColor = System.Drawing.Color.Transparent;
             this.guna2HtmlLabel2.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.guna2HtmlLabel2.Location = new System.Drawing.Point(8, 15);
-            this.guna2HtmlLabel2.Margin = new System.Windows.Forms.Padding(4);
+            this.guna2HtmlLabel2.Location = new System.Drawing.Point(6, 12);
             this.guna2HtmlLabel2.Name = "guna2HtmlLabel2";
-            this.guna2HtmlLabel2.Size = new System.Drawing.Size(217, 62);
+            this.guna2HtmlLabel2.Size = new System.Drawing.Size(163, 50);
             this.guna2HtmlLabel2.TabIndex = 18;
             this.guna2HtmlLabel2.Text = "Игрок 2";
             this.guna2HtmlLabel2.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
@@ -219,13 +215,13 @@
             this.PlayerBox2.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
             this.PlayerBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.PlayerBox2.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
-            this.PlayerBox2.Location = new System.Drawing.Point(237, 15);
-            this.PlayerBox2.Margin = new System.Windows.Forms.Padding(5);
+            this.PlayerBox2.Location = new System.Drawing.Point(178, 12);
+            this.PlayerBox2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.PlayerBox2.Name = "PlayerBox2";
             this.PlayerBox2.PlaceholderText = "SteamID/AccountID";
             this.PlayerBox2.ReadOnly = true;
             this.PlayerBox2.SelectedText = "";
-            this.PlayerBox2.Size = new System.Drawing.Size(381, 62);
+            this.PlayerBox2.Size = new System.Drawing.Size(286, 50);
             this.PlayerBox2.TabIndex = 17;
             this.PlayerBox2.TextChanged += new System.EventHandler(this.PlayerBox2_TextChanged);
             // 
@@ -234,10 +230,9 @@
             this.PlayerPicture3.BorderRadius = 2;
             this.PlayerPicture3.ImageRotate = 0F;
             this.PlayerPicture3.InitialImage = null;
-            this.PlayerPicture3.Location = new System.Drawing.Point(651, 5);
-            this.PlayerPicture3.Margin = new System.Windows.Forms.Padding(4);
+            this.PlayerPicture3.Location = new System.Drawing.Point(488, 4);
             this.PlayerPicture3.Name = "PlayerPicture3";
-            this.PlayerPicture3.Size = new System.Drawing.Size(93, 81);
+            this.PlayerPicture3.Size = new System.Drawing.Size(70, 66);
             this.PlayerPicture3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.PlayerPicture3.TabIndex = 20;
             this.PlayerPicture3.TabStop = false;
@@ -247,10 +242,9 @@
             this.guna2HtmlLabel3.AutoSize = false;
             this.guna2HtmlLabel3.BackColor = System.Drawing.Color.Transparent;
             this.guna2HtmlLabel3.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.guna2HtmlLabel3.Location = new System.Drawing.Point(8, 15);
-            this.guna2HtmlLabel3.Margin = new System.Windows.Forms.Padding(4);
+            this.guna2HtmlLabel3.Location = new System.Drawing.Point(6, 12);
             this.guna2HtmlLabel3.Name = "guna2HtmlLabel3";
-            this.guna2HtmlLabel3.Size = new System.Drawing.Size(217, 62);
+            this.guna2HtmlLabel3.Size = new System.Drawing.Size(163, 50);
             this.guna2HtmlLabel3.TabIndex = 18;
             this.guna2HtmlLabel3.Text = "Игрок 3";
             this.guna2HtmlLabel3.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
@@ -267,13 +261,13 @@
             this.PlayerBox3.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
             this.PlayerBox3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.PlayerBox3.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
-            this.PlayerBox3.Location = new System.Drawing.Point(237, 15);
-            this.PlayerBox3.Margin = new System.Windows.Forms.Padding(5);
+            this.PlayerBox3.Location = new System.Drawing.Point(178, 12);
+            this.PlayerBox3.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.PlayerBox3.Name = "PlayerBox3";
             this.PlayerBox3.PlaceholderText = "SteamID/AccountID";
             this.PlayerBox3.ReadOnly = true;
             this.PlayerBox3.SelectedText = "";
-            this.PlayerBox3.Size = new System.Drawing.Size(381, 62);
+            this.PlayerBox3.Size = new System.Drawing.Size(286, 50);
             this.PlayerBox3.TabIndex = 17;
             this.PlayerBox3.TextChanged += new System.EventHandler(this.PlayerBox3_TextChanged);
             // 
@@ -282,10 +276,9 @@
             this.PlayerPicture5.BorderRadius = 2;
             this.PlayerPicture5.ImageRotate = 0F;
             this.PlayerPicture5.InitialImage = null;
-            this.PlayerPicture5.Location = new System.Drawing.Point(651, 5);
-            this.PlayerPicture5.Margin = new System.Windows.Forms.Padding(4);
+            this.PlayerPicture5.Location = new System.Drawing.Point(488, 4);
             this.PlayerPicture5.Name = "PlayerPicture5";
-            this.PlayerPicture5.Size = new System.Drawing.Size(93, 81);
+            this.PlayerPicture5.Size = new System.Drawing.Size(70, 66);
             this.PlayerPicture5.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.PlayerPicture5.TabIndex = 22;
             this.PlayerPicture5.TabStop = false;
@@ -295,10 +288,9 @@
             this.guna2HtmlLabel4.AutoSize = false;
             this.guna2HtmlLabel4.BackColor = System.Drawing.Color.Transparent;
             this.guna2HtmlLabel4.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.guna2HtmlLabel4.Location = new System.Drawing.Point(8, 15);
-            this.guna2HtmlLabel4.Margin = new System.Windows.Forms.Padding(4);
+            this.guna2HtmlLabel4.Location = new System.Drawing.Point(6, 12);
             this.guna2HtmlLabel4.Name = "guna2HtmlLabel4";
-            this.guna2HtmlLabel4.Size = new System.Drawing.Size(217, 62);
+            this.guna2HtmlLabel4.Size = new System.Drawing.Size(163, 50);
             this.guna2HtmlLabel4.TabIndex = 18;
             this.guna2HtmlLabel4.Text = "Игрок 4";
             this.guna2HtmlLabel4.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
@@ -316,13 +308,13 @@
             this.PlayerBox5.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
             this.PlayerBox5.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.PlayerBox5.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
-            this.PlayerBox5.Location = new System.Drawing.Point(237, 15);
-            this.PlayerBox5.Margin = new System.Windows.Forms.Padding(5);
+            this.PlayerBox5.Location = new System.Drawing.Point(178, 12);
+            this.PlayerBox5.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.PlayerBox5.Name = "PlayerBox5";
             this.PlayerBox5.PlaceholderText = "SteamID/AccountID";
             this.PlayerBox5.ReadOnly = true;
             this.PlayerBox5.SelectedText = "";
-            this.PlayerBox5.Size = new System.Drawing.Size(381, 62);
+            this.PlayerBox5.Size = new System.Drawing.Size(286, 50);
             this.PlayerBox5.TabIndex = 17;
             this.PlayerBox5.TextChanged += new System.EventHandler(this.PlayerBox5_TextChanged);
             // 
@@ -331,10 +323,9 @@
             this.PlayerPicture4.BorderRadius = 2;
             this.PlayerPicture4.ImageRotate = 0F;
             this.PlayerPicture4.InitialImage = null;
-            this.PlayerPicture4.Location = new System.Drawing.Point(651, 5);
-            this.PlayerPicture4.Margin = new System.Windows.Forms.Padding(4);
+            this.PlayerPicture4.Location = new System.Drawing.Point(488, 4);
             this.PlayerPicture4.Name = "PlayerPicture4";
-            this.PlayerPicture4.Size = new System.Drawing.Size(93, 81);
+            this.PlayerPicture4.Size = new System.Drawing.Size(70, 66);
             this.PlayerPicture4.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.PlayerPicture4.TabIndex = 21;
             this.PlayerPicture4.TabStop = false;
@@ -344,10 +335,9 @@
             this.guna2HtmlLabel5.AutoSize = false;
             this.guna2HtmlLabel5.BackColor = System.Drawing.Color.Transparent;
             this.guna2HtmlLabel5.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.guna2HtmlLabel5.Location = new System.Drawing.Point(9, 15);
-            this.guna2HtmlLabel5.Margin = new System.Windows.Forms.Padding(4);
+            this.guna2HtmlLabel5.Location = new System.Drawing.Point(7, 12);
             this.guna2HtmlLabel5.Name = "guna2HtmlLabel5";
-            this.guna2HtmlLabel5.Size = new System.Drawing.Size(216, 62);
+            this.guna2HtmlLabel5.Size = new System.Drawing.Size(162, 50);
             this.guna2HtmlLabel5.TabIndex = 18;
             this.guna2HtmlLabel5.Text = "Игрок 5";
             this.guna2HtmlLabel5.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
@@ -364,13 +354,13 @@
             this.PlayerBox4.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
             this.PlayerBox4.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.PlayerBox4.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
-            this.PlayerBox4.Location = new System.Drawing.Point(237, 15);
-            this.PlayerBox4.Margin = new System.Windows.Forms.Padding(5);
+            this.PlayerBox4.Location = new System.Drawing.Point(178, 12);
+            this.PlayerBox4.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.PlayerBox4.Name = "PlayerBox4";
             this.PlayerBox4.PlaceholderText = "SteamID/AccountID";
             this.PlayerBox4.ReadOnly = true;
             this.PlayerBox4.SelectedText = "";
-            this.PlayerBox4.Size = new System.Drawing.Size(381, 62);
+            this.PlayerBox4.Size = new System.Drawing.Size(286, 50);
             this.PlayerBox4.TabIndex = 17;
             this.PlayerBox4.TextChanged += new System.EventHandler(this.PlayerBox4_TextChanged);
             // 
@@ -386,13 +376,13 @@
             this.TeamNameBox.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
             this.TeamNameBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.TeamNameBox.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
-            this.TeamNameBox.Location = new System.Drawing.Point(627, 16);
-            this.TeamNameBox.Margin = new System.Windows.Forms.Padding(5);
+            this.TeamNameBox.Location = new System.Drawing.Point(470, 13);
+            this.TeamNameBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.TeamNameBox.Name = "TeamNameBox";
             this.TeamNameBox.PlaceholderText = "Название команды";
             this.TeamNameBox.ReadOnly = true;
             this.TeamNameBox.SelectedText = "";
-            this.TeamNameBox.Size = new System.Drawing.Size(381, 57);
+            this.TeamNameBox.Size = new System.Drawing.Size(286, 46);
             this.TeamNameBox.TabIndex = 17;
             this.TeamNameBox.TextChanged += new System.EventHandler(this.TeamNameBox_TextChanged);
             // 
@@ -406,13 +396,14 @@
             this.TeamConfirm.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
             this.TeamConfirm.DisabledState.FillColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
             this.TeamConfirm.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.TeamConfirm.FillColor = System.Drawing.SystemColors.ActiveBorder;
+            this.TeamConfirm.FillColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.TeamConfirm.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.TeamConfirm.ForeColor = System.Drawing.Color.White;
             this.TeamConfirm.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.ForwardDiagonal;
-            this.TeamConfirm.Location = new System.Drawing.Point(606, 659);
-            this.TeamConfirm.Margin = new System.Windows.Forms.Padding(4);
+            this.TeamConfirm.Location = new System.Drawing.Point(454, 535);
             this.TeamConfirm.Name = "TeamConfirm";
-            this.TeamConfirm.Size = new System.Drawing.Size(339, 36);
+            this.TeamConfirm.Size = new System.Drawing.Size(254, 29);
             this.TeamConfirm.TabIndex = 23;
             this.TeamConfirm.Text = "Подтвердить";
             this.TeamConfirm.UseTransparentBackground = true;
@@ -425,10 +416,9 @@
             this.guna2Panel5.Controls.Add(this.PlayerPicture5);
             this.guna2Panel5.Controls.Add(this.guna2HtmlLabel5);
             this.guna2Panel5.Controls.Add(this.PlayerBox5);
-            this.guna2Panel5.Location = new System.Drawing.Point(20, 458);
-            this.guna2Panel5.Margin = new System.Windows.Forms.Padding(4);
+            this.guna2Panel5.Location = new System.Drawing.Point(15, 372);
             this.guna2Panel5.Name = "guna2Panel5";
-            this.guna2Panel5.Size = new System.Drawing.Size(774, 91);
+            this.guna2Panel5.Size = new System.Drawing.Size(580, 74);
             this.guna2Panel5.TabIndex = 21;
             // 
             // guna2Panel6
@@ -437,10 +427,9 @@
             this.guna2Panel6.Controls.Add(this.PlayerPicture4);
             this.guna2Panel6.Controls.Add(this.PlayerBox4);
             this.guna2Panel6.Controls.Add(this.guna2HtmlLabel4);
-            this.guna2Panel6.Location = new System.Drawing.Point(20, 347);
-            this.guna2Panel6.Margin = new System.Windows.Forms.Padding(4);
+            this.guna2Panel6.Location = new System.Drawing.Point(15, 282);
             this.guna2Panel6.Name = "guna2Panel6";
-            this.guna2Panel6.Size = new System.Drawing.Size(774, 91);
+            this.guna2Panel6.Size = new System.Drawing.Size(580, 74);
             this.guna2Panel6.TabIndex = 22;
             // 
             // guna2Panel4
@@ -449,10 +438,9 @@
             this.guna2Panel4.Controls.Add(this.PlayerPicture3);
             this.guna2Panel4.Controls.Add(this.guna2HtmlLabel3);
             this.guna2Panel4.Controls.Add(this.PlayerBox3);
-            this.guna2Panel4.Location = new System.Drawing.Point(20, 236);
-            this.guna2Panel4.Margin = new System.Windows.Forms.Padding(4);
+            this.guna2Panel4.Location = new System.Drawing.Point(15, 192);
             this.guna2Panel4.Name = "guna2Panel4";
-            this.guna2Panel4.Size = new System.Drawing.Size(774, 91);
+            this.guna2Panel4.Size = new System.Drawing.Size(580, 74);
             this.guna2Panel4.TabIndex = 20;
             // 
             // guna2Panel3
@@ -461,10 +449,9 @@
             this.guna2Panel3.Controls.Add(this.PlayerPicture2);
             this.guna2Panel3.Controls.Add(this.guna2HtmlLabel2);
             this.guna2Panel3.Controls.Add(this.PlayerBox2);
-            this.guna2Panel3.Location = new System.Drawing.Point(20, 126);
-            this.guna2Panel3.Margin = new System.Windows.Forms.Padding(4);
+            this.guna2Panel3.Location = new System.Drawing.Point(15, 102);
             this.guna2Panel3.Name = "guna2Panel3";
-            this.guna2Panel3.Size = new System.Drawing.Size(774, 91);
+            this.guna2Panel3.Size = new System.Drawing.Size(580, 74);
             this.guna2Panel3.TabIndex = 20;
             // 
             // TeamInfoPanel
@@ -478,10 +465,9 @@
             this.TeamInfoPanel.Controls.Add(this.guna2Panel4);
             this.TeamInfoPanel.Controls.Add(this.guna2Panel5);
             this.TeamInfoPanel.FillColor = System.Drawing.SystemColors.AppWorkspace;
-            this.TeamInfoPanel.Location = new System.Drawing.Point(385, 82);
-            this.TeamInfoPanel.Margin = new System.Windows.Forms.Padding(4);
+            this.TeamInfoPanel.Location = new System.Drawing.Point(289, 67);
             this.TeamInfoPanel.Name = "TeamInfoPanel";
-            this.TeamInfoPanel.Size = new System.Drawing.Size(811, 569);
+            this.TeamInfoPanel.Size = new System.Drawing.Size(608, 462);
             this.TeamInfoPanel.TabIndex = 24;
             this.TeamInfoPanel.Visible = false;
             // 
@@ -495,13 +481,14 @@
             this.ContinueButton.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
             this.ContinueButton.DisabledState.FillColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
             this.ContinueButton.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.ContinueButton.FillColor = System.Drawing.SystemColors.ActiveBorder;
+            this.ContinueButton.FillColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.ContinueButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.ContinueButton.ForeColor = System.Drawing.Color.White;
             this.ContinueButton.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.ForwardDiagonal;
-            this.ContinueButton.Location = new System.Drawing.Point(953, 659);
-            this.ContinueButton.Margin = new System.Windows.Forms.Padding(4);
+            this.ContinueButton.Location = new System.Drawing.Point(715, 535);
             this.ContinueButton.Name = "ContinueButton";
-            this.ContinueButton.Size = new System.Drawing.Size(243, 36);
+            this.ContinueButton.Size = new System.Drawing.Size(182, 29);
             this.ContinueButton.TabIndex = 25;
             this.ContinueButton.Text = "Продолжить";
             this.ContinueButton.UseTransparentBackground = true;
@@ -510,9 +497,9 @@
             // 
             // TrainerTeamsForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1249, 731);
+            this.ClientSize = new System.Drawing.Size(937, 594);
             this.Controls.Add(this.ContinueButton);
             this.Controls.Add(this.TeamInfoPanel);
             this.Controls.Add(this.TeamConfirm);
@@ -521,7 +508,6 @@
             this.Controls.Add(this.guna2Panel1);
             this.Controls.Add(this.guna2GradientButton3);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.Margin = new System.Windows.Forms.Padding(4);
             this.MaximizeBox = false;
             this.Name = "TrainerTeamsForm";
             this.Text = "Dota 2 Training Polygon";

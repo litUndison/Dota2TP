@@ -1,4 +1,5 @@
 ﻿using Dota_2_Training_Platform.Models;
+using Guna.UI2.WinForms;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -12,14 +13,48 @@ using System.Windows.Forms;
 
 namespace Dota_2_Training_Platform
 {
+
+
+
     public partial class MatchDetailsForm : Form
     {
+        #region enums
+        public static Dictionary<int, string> GameModes = new Dictionary<int, string>()
+        {
+            { 1, "All Pick" },
+            { 2, "Captain’s Mode" },
+            { 22, "Ranked All Pick" },
+            { 23, "Turbo" },
+            { 18, "Ability Draft" }
+        };
+
+        public static Dictionary<int, string> LobbyTypes = new Dictionary<int, string>()
+        {
+            { 0, "Обычный" },
+            { 7, "Рейтинговый" },
+            { 9, "Battle Cup" }
+        };
+        #endregion
         private DotaMatchDetailsModel _match;
+        private Panel tooltipPanel;
+        private bool isMouseOverTooltip = false;
+        private Timer tooltipTimer = new Timer { Interval = 150 };
+        private Control tooltipOwner = null;
 
         public MatchDetailsForm(DotaMatchDetailsModel match)
         {
             InitializeComponent();
+            InitCustomTooltip();
             LoadMatch(match);
+
+            tooltipTimer.Tick += (s, e) =>
+            {
+                if (tooltipOwner == null)
+                {
+                    tooltipPanel.Visible = false;
+                    tooltipTimer.Stop();
+                }
+            };
         }
 
         private async void MatchDetailsForm_Load(object sender, EventArgs e)
@@ -29,17 +64,21 @@ namespace Dota_2_Training_Platform
 
         private void LoadMatch(DotaMatchDetailsModel match)
         {
-            MatchID.Text = "ID: " + match.match_id.ToString();
+            MatchID.Text = $"Матч: {match.match_id}";
             RadiantScore.Text = match.radiant_score.ToString();
             DireScore.Text = match.dire_score.ToString();
             WinnerLabel.Text = match.radiant_win ? "Победа сил Света" : "Победа сил Тьмы"; //Radiant / dire
-            WinnerLabel.ForeColor = match.radiant_win ? Color.FromArgb(255, 105, 136, 34) : Color.FromArgb(255, 172, 60, 42); //Radiant / dire
+            WinnerLabel.ForeColor = match.radiant_win ? Color.FromArgb(255, 105, 136, 34) : Color.FromArgb(255, 172, 60, 42); //Radiant / dire\
+
+            GameMode.Text = GameModes.ContainsKey(match.game_mode) ? GameModes[match.game_mode] : "Неизвестно";
+
+            LobbyType.Text = LobbyTypes.ContainsKey(match.lobby_type) ? LobbyTypes[match.lobby_type] : "Неизвестно";
 
             TimeSpan duration = TimeSpan.FromSeconds(match.duration);
             DurationLabel.Text = duration.ToString(@"mm\:ss");
 
             DateTime matchDate = DateTimeOffset.FromUnixTimeSeconds(match.start_time).LocalDateTime;
-            StartTime.Text = $"Матч проведён {matchDate:dd.MM.yyyy HH:mm}";
+            StartTime.Text = $"{matchDate:dd.MM.yyyy HH:mm}";
 
 
             PopulateMatchPanels(match);
@@ -83,23 +122,29 @@ namespace Dota_2_Training_Platform
                 int x = 0;
 
                 // 1 Иконка героя
-                PictureBox heroPic = new PictureBox
+                Guna2PictureBox heroPic = new Guna2PictureBox
                 {
                     BackColor = Color.FromArgb(255, 120, 120, 120),
                     Width = 128,
                     Height = 60,
                     SizeMode = PictureBoxSizeMode.StretchImage,
-                    Image = Properties.Resources.Loading // метод получения картинки героя
+                    Image = Properties.Resources.Loading
                 };
                 LoadHeroImage(heroPic, player.hero_id);
-                //heroPic.LoadAsync(ApiCourier.GetHeroImage(player.hero_id));
                 heroPic.Location = new Point(x, 0);
                 x += heroPic.Width;
 
-                // Tooltip для предметов
-                //ToolTip tooltip = new ToolTip();
-                //string itemsText = GetItemsText(player); // метод возвращает строку с предметами
-                //tooltip.SetToolTip(heroPic, itemsText);
+                heroPic.MouseEnter += (s, e) =>
+                {
+                    tooltipOwner = heroPic;
+                    ShowItemsTooltip(player, heroPic);
+                };
+
+                heroPic.MouseLeave += (s, e) =>
+                {
+                    tooltipOwner = null;
+                    tooltipTimer.Start();
+                };
 
                 playerBlock.Controls.Add(heroPic);
 
@@ -107,7 +152,7 @@ namespace Dota_2_Training_Platform
                 Label nameLabel = new Label
                 {
                     BackColor = Color.FromArgb(255, 130, 130, 130),
-                    Text = player.personaname,
+                    Text = string.IsNullOrEmpty(player.personaname) ? "Аноним" : player.personaname,
                     Width = 135,
                     Height = 60,
                     Location = new Point(x, 0),
@@ -214,25 +259,6 @@ namespace Dota_2_Training_Platform
             }
         }
 
-        // Метод для получения текста предметов игрока
-        private string GetItemsText(MatchPlayerModel player)
-        {
-            List<int> items = new List<int>
-        {
-            player.item_0, player.item_1, player.item_2,
-            player.item_3, player.item_4, player.item_5,
-            player.backpack_0, player.backpack_1, player.backpack_2,
-            player.item_neutral, player.item_neutral2
-        };
-
-                StringBuilder sb = new StringBuilder();
-                foreach (var itemId in items)
-                {
-                    if (itemId != 0)
-                        sb.AppendLine(ApiCourier.ItemsById[itemId].id.ToString()); // возвращает название предмета по ID
-                }
-                return sb.ToString();
-        }
         private async void LoadHeroImage(PictureBox pic, int heroId)
         {
             try
@@ -256,6 +282,176 @@ namespace Dota_2_Training_Platform
                 // если ошибка — можно оставить gif или поставить fallback
             }
         }
+        private void InitCustomTooltip()
+        {
+            tooltipPanel = new Guna2Panel
+            {
+                Size = new Size(289, 164),
+                BorderRadius = 5,
+                BackColor = Color.FromArgb(40, 40, 40),
+                Visible = false
+            };
+            tooltipPanel.MouseEnter += (s, e) =>
+            {
+                tooltipTimer.Stop();
+            };
 
+            tooltipPanel.MouseLeave += (s, e) =>
+            {
+                tooltipOwner = null;
+                tooltipTimer.Start();
+            };
+
+            this.Controls.Add(tooltipPanel);
+            tooltipPanel.BringToFront();
+        }
+        private void ShowItemsTooltip(MatchPlayerModel player, Control heroControl)
+        {
+            tooltipPanel.Controls.Clear();
+
+            int spacing = 5;
+            Size itemSize = new Size(66, 48);
+
+            // --- первый ряд ---
+            int x = 5, y = 5;
+            int[] firstRow = { player.item_0, player.item_1, player.item_2 };
+            foreach (var itemId in firstRow)
+            {
+                AddItemSlot(itemId, new Point(x, y));
+                x += itemSize.Width + spacing;
+            }
+
+            // Нейтральный справа от первого ряда
+            AddNeutralItemSlot(player.item_neutral, new Point(x, y));
+
+            // --- второй ряд  ---
+            x = 5;
+            y += itemSize.Height + spacing;
+            int[] secondRow = { player.item_3, player.item_4, player.item_5 };
+            foreach (var itemId in secondRow)
+            {
+                AddItemSlot(itemId, new Point(x, y));
+                x += itemSize.Width + spacing;
+            }
+
+            // --- третий ряд ---
+            x = 5;
+            y += itemSize.Height + spacing;
+            int[] backpack = { player.backpack_0, player.backpack_1, player.backpack_2 };
+            foreach (var itemId in backpack)
+            {
+                AddItemSlot(itemId, new Point(x, y), true);
+                x += itemSize.Width + spacing;
+            }
+
+            Point pos = heroControl.PointToScreen(Point.Empty);
+            pos = this.PointToClient(pos);
+            tooltipPanel.Location = new Point(pos.X + heroControl.Width, pos.Y-tooltipPanel.Height/2 + itemSize.Height/2);
+            tooltipPanel.Visible = true;
+
+            async Task AddItemSlot(int itemId, Point location, bool isBackpack = false)
+            {
+                Guna2PictureBox slot = new Guna2PictureBox
+                {
+                    Size = itemSize,
+                    Location = location,
+                    SizeMode = PictureBoxSizeMode.StretchImage,
+                    FillColor = Color.FromArgb(100, 80, 80, 80),         
+                    ErrorImage = Properties.Resources.Loading
+                };
+                
+
+                if (itemId != 0)
+                {
+                    slot.LoadAsync(ApiCourier.GetItemImage(itemId));
+                    slot.LoadCompleted += (s, e) =>
+                    {
+                        if (slot.Image != null && isBackpack)
+                        {
+                            slot.Image = MakeItemGray(slot.Image);
+                        }
+                    };
+
+                    ToolTip tip = new ToolTip();
+                    tip.SetToolTip(slot, ApiCourier.ItemsById[itemId].dname);
+
+                    slot.MouseEnter += (s, e) => isMouseOverTooltip = true;
+                    slot.MouseLeave += (s, e) =>
+                    {
+                        isMouseOverTooltip = false;
+                        tip.Hide(slot);
+                    };
+                    //if (isBackpack)
+                    //{
+                    //    slot.Image = MakeItemGray(slot.Image);
+                    //}
+                }
+
+                tooltipPanel.Controls.Add(slot);
+            }
+
+            async Task AddNeutralItemSlot(int itemId, Point location)
+            {
+                Guna2CirclePictureBox slot = new Guna2CirclePictureBox
+                {
+                    Size = itemSize,
+                    Location = location,
+                    SizeMode = PictureBoxSizeMode.StretchImage,
+                    FillColor = Color.FromArgb(100, 80, 80, 80),
+                    ErrorImage = Properties.Resources.Loading
+                };
+
+
+                if (itemId != 0)
+                {
+                    slot.LoadAsync(ApiCourier.GetItemImage(itemId));
+
+                    ToolTip tip = new ToolTip();
+                    tip.SetToolTip(slot, ApiCourier.ItemsById[itemId].dname);
+
+                    slot.MouseEnter += (s, e) => isMouseOverTooltip = true;
+                    slot.MouseLeave += (s, e) =>
+                    {
+                        isMouseOverTooltip = false;
+                        tip.Hide(slot);
+                    };
+                    //if (isBackpack)
+                    //{
+                    //    slot.Image = MakeItemGray(slot.Image);
+                    //}
+                }
+
+                tooltipPanel.Controls.Add(slot);
+            }
+
+        }
+        private Image MakeItemGray(Image original)
+        {
+            Bitmap grayBitmap = new Bitmap(original.Width, original.Height);
+
+            using (Graphics g = Graphics.FromImage(grayBitmap))
+            {
+                // создаём серый цветовой матрикс
+                var colorMatrix = new System.Drawing.Imaging.ColorMatrix(
+                    new float[][]
+                    {
+                    new float[]{0.3f,0.3f,0.3f,0,0},
+                    new float[]{0.3f,0.3f,0.3f,0,0},
+                    new float[]{0.3f,0.3f,0.3f,0,0},
+                    new float[]{0,0,0,1,0},
+                    new float[]{0,0,0,0,1}
+                    });
+
+                var attributes = new System.Drawing.Imaging.ImageAttributes();
+                attributes.SetColorMatrix(colorMatrix);
+
+                g.DrawImage(original,
+                    new Rectangle(0, 0, original.Width, original.Height),
+                    0, 0, original.Width, original.Height,
+                    GraphicsUnit.Pixel, attributes);
+            }
+
+            return grayBitmap;
+        }
     }
 }

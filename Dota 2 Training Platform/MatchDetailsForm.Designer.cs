@@ -58,18 +58,25 @@
             this.guna2HtmlLabel7 = new Guna.UI2.WinForms.Guna2HtmlLabel();
             this.guna2HtmlLabel8 = new Guna.UI2.WinForms.Guna2HtmlLabel();
             this.guna2HtmlLabel9 = new Guna.UI2.WinForms.Guna2HtmlLabel();
+            this.PanelWithTeams = new Guna.UI2.WinForms.Guna2Panel();
+            this.guna2HtmlLabel10 = new Guna.UI2.WinForms.Guna2HtmlLabel();
+            this.guna2HtmlLabel11 = new Guna.UI2.WinForms.Guna2HtmlLabel();
+            this.guna2HtmlLabel12 = new Guna.UI2.WinForms.Guna2HtmlLabel();
+            this.LobbyType = new Guna.UI2.WinForms.Guna2HtmlLabel();
+            this.GameMode = new Guna.UI2.WinForms.Guna2HtmlLabel();
             this.guna2Panel1.SuspendLayout();
             this.guna2Panel2.SuspendLayout();
+            this.PanelWithTeams.SuspendLayout();
             this.SuspendLayout();
             // 
             // WinnerLabel
             // 
             this.WinnerLabel.AutoSize = false;
             this.WinnerLabel.BackColor = System.Drawing.Color.Transparent;
-            this.WinnerLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.WinnerLabel.Location = new System.Drawing.Point(593, 12);
+            this.WinnerLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.WinnerLabel.Location = new System.Drawing.Point(248, 74);
             this.WinnerLabel.Name = "WinnerLabel";
-            this.WinnerLabel.Size = new System.Drawing.Size(200, 32);
+            this.WinnerLabel.Size = new System.Drawing.Size(200, 26);
             this.WinnerLabel.TabIndex = 0;
             this.WinnerLabel.Text = "Winner";
             this.WinnerLabel.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
@@ -78,50 +85,50 @@
             // 
             this.DurationLabel.AutoSize = false;
             this.DurationLabel.BackColor = System.Drawing.Color.Transparent;
-            this.DurationLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DurationLabel.Location = new System.Drawing.Point(593, 50);
+            this.DurationLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DurationLabel.Location = new System.Drawing.Point(245, 106);
             this.DurationLabel.Name = "DurationLabel";
-            this.DurationLabel.Size = new System.Drawing.Size(200, 23);
+            this.DurationLabel.Size = new System.Drawing.Size(214, 23);
             this.DurationLabel.TabIndex = 1;
             this.DurationLabel.Text = "Duration";
-            this.DurationLabel.TextAlignment = System.Drawing.ContentAlignment.TopCenter;
+            this.DurationLabel.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // MatchID
             // 
             this.MatchID.AutoSize = false;
             this.MatchID.BackColor = System.Drawing.Color.Transparent;
-            this.MatchID.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.MatchID.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.MatchID.Location = new System.Drawing.Point(12, 12);
             this.MatchID.Name = "MatchID";
-            this.MatchID.Size = new System.Drawing.Size(200, 15);
+            this.MatchID.Size = new System.Drawing.Size(242, 15);
             this.MatchID.TabIndex = 3;
             this.MatchID.Text = "MatchID";
-            this.MatchID.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
+            this.MatchID.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // RadiantTeam
             // 
             this.RadiantTeam.AutoSize = false;
             this.RadiantTeam.BackColor = System.Drawing.Color.Transparent;
-            this.RadiantTeam.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.RadiantTeam.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.RadiantTeam.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(105)))), ((int)(((byte)(136)))), ((int)(((byte)(36)))));
-            this.RadiantTeam.Location = new System.Drawing.Point(420, 80);
+            this.RadiantTeam.Location = new System.Drawing.Point(3, 3);
             this.RadiantTeam.Name = "RadiantTeam";
-            this.RadiantTeam.Size = new System.Drawing.Size(167, 15);
+            this.RadiantTeam.Size = new System.Drawing.Size(179, 26);
             this.RadiantTeam.TabIndex = 5;
-            this.RadiantTeam.Text = "Силы Света";
-            this.RadiantTeam.TextAlignment = System.Drawing.ContentAlignment.MiddleRight;
+            this.RadiantTeam.Text = "СИЛЫ СВЕТА";
+            this.RadiantTeam.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // DireTeam
             // 
             this.DireTeam.AutoSize = false;
             this.DireTeam.BackColor = System.Drawing.Color.Transparent;
-            this.DireTeam.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DireTeam.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.DireTeam.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(172)))), ((int)(((byte)(60)))), ((int)(((byte)(42)))));
-            this.DireTeam.Location = new System.Drawing.Point(799, 80);
+            this.DireTeam.Location = new System.Drawing.Point(3, 423);
             this.DireTeam.Name = "DireTeam";
-            this.DireTeam.Size = new System.Drawing.Size(200, 15);
+            this.DireTeam.Size = new System.Drawing.Size(200, 28);
             this.DireTeam.TabIndex = 6;
-            this.DireTeam.Text = "Силы Тьмы";
+            this.DireTeam.Text = "СИЛЫ ТЬМЫ";
             this.DireTeam.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // RadiantScore
@@ -130,9 +137,9 @@
             this.RadiantScore.BackColor = System.Drawing.Color.Transparent;
             this.RadiantScore.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.RadiantScore.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(105)))), ((int)(((byte)(136)))), ((int)(((byte)(36)))));
-            this.RadiantScore.Location = new System.Drawing.Point(387, 50);
+            this.RadiantScore.Location = new System.Drawing.Point(8, 106);
             this.RadiantScore.Name = "RadiantScore";
-            this.RadiantScore.Size = new System.Drawing.Size(200, 15);
+            this.RadiantScore.Size = new System.Drawing.Size(231, 23);
             this.RadiantScore.TabIndex = 7;
             this.RadiantScore.Text = "10";
             this.RadiantScore.TextAlignment = System.Drawing.ContentAlignment.MiddleRight;
@@ -143,9 +150,9 @@
             this.DireScore.BackColor = System.Drawing.Color.Transparent;
             this.DireScore.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.DireScore.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(172)))), ((int)(((byte)(60)))), ((int)(((byte)(42)))));
-            this.DireScore.Location = new System.Drawing.Point(799, 50);
+            this.DireScore.Location = new System.Drawing.Point(465, 106);
             this.DireScore.Name = "DireScore";
-            this.DireScore.Size = new System.Drawing.Size(200, 15);
+            this.DireScore.Size = new System.Drawing.Size(231, 23);
             this.DireScore.TabIndex = 8;
             this.DireScore.Text = "10";
             this.DireScore.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
@@ -167,9 +174,9 @@
             this.StartTime.AutoSize = false;
             this.StartTime.BackColor = System.Drawing.Color.Transparent;
             this.StartTime.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.StartTime.Location = new System.Drawing.Point(1119, 12);
+            this.StartTime.Location = new System.Drawing.Point(538, 12);
             this.StartTime.Name = "StartTime";
-            this.StartTime.Size = new System.Drawing.Size(253, 15);
+            this.StartTime.Size = new System.Drawing.Size(158, 15);
             this.StartTime.TabIndex = 12;
             this.StartTime.Text = "Время проведения";
             this.StartTime.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
@@ -298,7 +305,7 @@
             this.guna2Panel1.Controls.Add(this.PlayerTip);
             this.guna2Panel1.Controls.Add(this.DamageTip);
             this.guna2Panel1.Controls.Add(this.radiantPanel);
-            this.guna2Panel1.Location = new System.Drawing.Point(6, 107);
+            this.guna2Panel1.Location = new System.Drawing.Point(3, 35);
             this.guna2Panel1.Name = "guna2Panel1";
             this.guna2Panel1.Size = new System.Drawing.Size(685, 340);
             this.guna2Panel1.TabIndex = 32;
@@ -315,7 +322,7 @@
             this.guna2Panel2.Controls.Add(this.guna2HtmlLabel8);
             this.guna2Panel2.Controls.Add(this.guna2HtmlLabel9);
             this.guna2Panel2.Controls.Add(this.direPanel);
-            this.guna2Panel2.Location = new System.Drawing.Point(697, 107);
+            this.guna2Panel2.Location = new System.Drawing.Point(3, 457);
             this.guna2Panel2.Name = "guna2Panel2";
             this.guna2Panel2.Size = new System.Drawing.Size(685, 340);
             this.guna2Panel2.TabIndex = 33;
@@ -428,19 +435,97 @@
             this.guna2HtmlLabel9.Text = "Урон";
             this.guna2HtmlLabel9.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // PanelWithTeams
+            // 
+            this.PanelWithTeams.AutoScroll = true;
+            this.PanelWithTeams.BackColor = System.Drawing.SystemColors.ActiveBorder;
+            this.PanelWithTeams.Controls.Add(this.guna2Panel1);
+            this.PanelWithTeams.Controls.Add(this.guna2Panel2);
+            this.PanelWithTeams.Controls.Add(this.RadiantTeam);
+            this.PanelWithTeams.Controls.Add(this.DireTeam);
+            this.PanelWithTeams.Location = new System.Drawing.Point(8, 135);
+            this.PanelWithTeams.Name = "PanelWithTeams";
+            this.PanelWithTeams.Size = new System.Drawing.Size(705, 512);
+            this.PanelWithTeams.TabIndex = 34;
+            // 
+            // guna2HtmlLabel10
+            // 
+            this.guna2HtmlLabel10.AutoSize = false;
+            this.guna2HtmlLabel10.BackColor = System.Drawing.Color.Transparent;
+            this.guna2HtmlLabel10.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.guna2HtmlLabel10.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
+            this.guna2HtmlLabel10.Location = new System.Drawing.Point(248, 36);
+            this.guna2HtmlLabel10.Name = "guna2HtmlLabel10";
+            this.guna2HtmlLabel10.Size = new System.Drawing.Size(139, 20);
+            this.guna2HtmlLabel10.TabIndex = 35;
+            this.guna2HtmlLabel10.Text = "Тип лобби";
+            this.guna2HtmlLabel10.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // guna2HtmlLabel11
+            // 
+            this.guna2HtmlLabel11.AutoSize = false;
+            this.guna2HtmlLabel11.BackColor = System.Drawing.Color.Transparent;
+            this.guna2HtmlLabel11.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.guna2HtmlLabel11.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
+            this.guna2HtmlLabel11.Location = new System.Drawing.Point(393, 36);
+            this.guna2HtmlLabel11.Name = "guna2HtmlLabel11";
+            this.guna2HtmlLabel11.Size = new System.Drawing.Size(139, 20);
+            this.guna2HtmlLabel11.TabIndex = 36;
+            this.guna2HtmlLabel11.Text = "Режим игры";
+            this.guna2HtmlLabel11.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // guna2HtmlLabel12
+            // 
+            this.guna2HtmlLabel12.AutoSize = false;
+            this.guna2HtmlLabel12.BackColor = System.Drawing.Color.Transparent;
+            this.guna2HtmlLabel12.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.guna2HtmlLabel12.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
+            this.guna2HtmlLabel12.Location = new System.Drawing.Point(538, 36);
+            this.guna2HtmlLabel12.Name = "guna2HtmlLabel12";
+            this.guna2HtmlLabel12.Size = new System.Drawing.Size(158, 20);
+            this.guna2HtmlLabel12.TabIndex = 37;
+            this.guna2HtmlLabel12.Text = "Матч проведён";
+            this.guna2HtmlLabel12.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // LobbyType
+            // 
+            this.LobbyType.AutoSize = false;
+            this.LobbyType.BackColor = System.Drawing.Color.Transparent;
+            this.LobbyType.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LobbyType.Location = new System.Drawing.Point(248, 12);
+            this.LobbyType.Name = "LobbyType";
+            this.LobbyType.Size = new System.Drawing.Size(139, 18);
+            this.LobbyType.TabIndex = 38;
+            this.LobbyType.Text = "Рейтинговый";
+            this.LobbyType.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // GameMode
+            // 
+            this.GameMode.AutoSize = false;
+            this.GameMode.BackColor = System.Drawing.Color.Transparent;
+            this.GameMode.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.GameMode.Location = new System.Drawing.Point(393, 12);
+            this.GameMode.Name = "GameMode";
+            this.GameMode.Size = new System.Drawing.Size(139, 18);
+            this.GameMode.TabIndex = 39;
+            this.GameMode.Text = "All pick";
+            this.GameMode.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // MatchDetailsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ButtonShadow;
-            this.ClientSize = new System.Drawing.Size(1384, 661);
-            this.Controls.Add(this.guna2Panel2);
-            this.Controls.Add(this.guna2Panel1);
+            this.ClientSize = new System.Drawing.Size(721, 685);
+            this.Controls.Add(this.GameMode);
+            this.Controls.Add(this.LobbyType);
+            this.Controls.Add(this.guna2HtmlLabel12);
+            this.Controls.Add(this.guna2HtmlLabel11);
+            this.Controls.Add(this.guna2HtmlLabel10);
+            this.Controls.Add(this.PanelWithTeams);
             this.Controls.Add(this.StartTime);
             this.Controls.Add(this.DireScore);
             this.Controls.Add(this.RadiantScore);
-            this.Controls.Add(this.DireTeam);
-            this.Controls.Add(this.RadiantTeam);
             this.Controls.Add(this.MatchID);
             this.Controls.Add(this.DurationLabel);
             this.Controls.Add(this.WinnerLabel);
@@ -448,6 +533,7 @@
             this.Text = "MatchDetailsForm";
             this.guna2Panel1.ResumeLayout(false);
             this.guna2Panel2.ResumeLayout(false);
+            this.PanelWithTeams.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -484,5 +570,11 @@
         private Guna.UI2.WinForms.Guna2HtmlLabel guna2HtmlLabel7;
         private Guna.UI2.WinForms.Guna2HtmlLabel guna2HtmlLabel8;
         private Guna.UI2.WinForms.Guna2HtmlLabel guna2HtmlLabel9;
+        private Guna.UI2.WinForms.Guna2Panel PanelWithTeams;
+        private Guna.UI2.WinForms.Guna2HtmlLabel guna2HtmlLabel10;
+        private Guna.UI2.WinForms.Guna2HtmlLabel guna2HtmlLabel11;
+        private Guna.UI2.WinForms.Guna2HtmlLabel guna2HtmlLabel12;
+        private Guna.UI2.WinForms.Guna2HtmlLabel LobbyType;
+        private Guna.UI2.WinForms.Guna2HtmlLabel GameMode;
     }
 }

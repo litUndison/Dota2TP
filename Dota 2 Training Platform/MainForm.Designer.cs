@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.guna2TabControl1 = new Guna.UI2.WinForms.Guna2TabControl();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.PanelWithButtons = new Guna.UI2.WinForms.Guna2Panel();
@@ -242,6 +243,7 @@
             // TrainerPicture
             // 
             this.TrainerPicture.BorderRadius = 2;
+            this.TrainerPicture.ErrorImage = ((System.Drawing.Image)(resources.GetObject("TrainerPicture.ErrorImage")));
             this.TrainerPicture.FillColor = System.Drawing.Color.Gray;
             this.TrainerPicture.ImageRotate = 0F;
             this.TrainerPicture.InitialImage = null;
@@ -356,6 +358,7 @@
             // PlayerPicture5
             // 
             this.PlayerPicture5.BorderRadius = 2;
+            this.PlayerPicture5.ErrorImage = ((System.Drawing.Image)(resources.GetObject("PlayerPicture5.ErrorImage")));
             this.PlayerPicture5.FillColor = System.Drawing.Color.Gray;
             this.PlayerPicture5.ImageRotate = 0F;
             this.PlayerPicture5.InitialImage = null;
@@ -413,6 +416,7 @@
             // PlayerPicture4
             // 
             this.PlayerPicture4.BorderRadius = 2;
+            this.PlayerPicture4.ErrorImage = ((System.Drawing.Image)(resources.GetObject("PlayerPicture4.ErrorImage")));
             this.PlayerPicture4.FillColor = System.Drawing.Color.Gray;
             this.PlayerPicture4.ImageRotate = 0F;
             this.PlayerPicture4.InitialImage = null;
@@ -470,6 +474,7 @@
             // PlayerPicture3
             // 
             this.PlayerPicture3.BorderRadius = 2;
+            this.PlayerPicture3.ErrorImage = ((System.Drawing.Image)(resources.GetObject("PlayerPicture3.ErrorImage")));
             this.PlayerPicture3.FillColor = System.Drawing.Color.Gray;
             this.PlayerPicture3.ImageRotate = 0F;
             this.PlayerPicture3.InitialImage = null;
@@ -527,6 +532,7 @@
             // PlayerPicture2
             // 
             this.PlayerPicture2.BorderRadius = 2;
+            this.PlayerPicture2.ErrorImage = ((System.Drawing.Image)(resources.GetObject("PlayerPicture2.ErrorImage")));
             this.PlayerPicture2.FillColor = System.Drawing.Color.Gray;
             this.PlayerPicture2.ImageRotate = 0F;
             this.PlayerPicture2.InitialImage = null;
@@ -584,6 +590,7 @@
             // PlayerPicture1
             // 
             this.PlayerPicture1.BorderRadius = 2;
+            this.PlayerPicture1.ErrorImage = ((System.Drawing.Image)(resources.GetObject("PlayerPicture1.ErrorImage")));
             this.PlayerPicture1.FillColor = System.Drawing.Color.Gray;
             this.PlayerPicture1.ImageRotate = 0F;
             this.PlayerPicture1.InitialImage = null;

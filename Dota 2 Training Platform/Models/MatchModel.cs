@@ -49,12 +49,10 @@ namespace Dota_2_Training_Platform.Models
         public int? AverageRank { get; set; }
 
         [JsonPropertyName("leaver_status")]
-        public int LeaverStatus { get; set; }
+        public int? LeaverStatus { get; set; }
 
         [JsonPropertyName("party_size")]
         public int? PartySize { get; set; }
 
-        [JsonPropertyName("hero_variant")]
-        public int HeroVariant { get; set; }
     }
 }
