@@ -34,6 +34,7 @@
             this.PasswordTextBox = new Guna.UI2.WinForms.Guna2TextBox();
             this.TrainerButton = new Guna.UI2.WinForms.Guna2GradientButton();
             this.PlayerButton = new Guna.UI2.WinForms.Guna2GradientButton();
+            this.guna2CheckBox1 = new Guna.UI2.WinForms.Guna2CheckBox();
             this.SuspendLayout();
             // 
             // RegistrationButton
@@ -77,7 +78,7 @@
             this.SteamIDTextBox.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
             this.SteamIDTextBox.Location = new System.Drawing.Point(69, 76);
             this.SteamIDTextBox.Name = "SteamIDTextBox";
-            this.SteamIDTextBox.PlaceholderText = "SteamID";
+            this.SteamIDTextBox.PlaceholderText = "AccountID";
             this.SteamIDTextBox.SelectedText = "";
             this.SteamIDTextBox.Size = new System.Drawing.Size(200, 38);
             this.SteamIDTextBox.TabIndex = 1;
@@ -124,6 +125,7 @@
             this.PasswordTextBox.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
             this.PasswordTextBox.Location = new System.Drawing.Point(69, 120);
             this.PasswordTextBox.Name = "PasswordTextBox";
+            this.PasswordTextBox.PasswordChar = '*';
             this.PasswordTextBox.PlaceholderText = "Пароль";
             this.PasswordTextBox.SelectedText = "";
             this.PasswordTextBox.Size = new System.Drawing.Size(200, 38);
@@ -147,7 +149,7 @@
             this.TrainerButton.ForeColor = System.Drawing.Color.White;
             this.TrainerButton.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.ForwardDiagonal;
             this.TrainerButton.IndicateFocus = true;
-            this.TrainerButton.Location = new System.Drawing.Point(69, 164);
+            this.TrainerButton.Location = new System.Drawing.Point(69, 183);
             this.TrainerButton.Name = "TrainerButton";
             this.TrainerButton.Size = new System.Drawing.Size(101, 24);
             this.TrainerButton.TabIndex = 3;
@@ -172,13 +174,31 @@
             this.PlayerButton.ForeColor = System.Drawing.Color.White;
             this.PlayerButton.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.ForwardDiagonal;
             this.PlayerButton.IndicateFocus = true;
-            this.PlayerButton.Location = new System.Drawing.Point(168, 164);
+            this.PlayerButton.Location = new System.Drawing.Point(168, 183);
             this.PlayerButton.Name = "PlayerButton";
             this.PlayerButton.Size = new System.Drawing.Size(101, 24);
             this.PlayerButton.TabIndex = 4;
             this.PlayerButton.Text = "Игрок";
             this.PlayerButton.UseTransparentBackground = true;
             this.PlayerButton.Click += new System.EventHandler(this.PlayerButton_Click);
+            // 
+            // guna2CheckBox1
+            // 
+            this.guna2CheckBox1.AutoSize = true;
+            this.guna2CheckBox1.CheckedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
+            this.guna2CheckBox1.CheckedState.BorderRadius = 0;
+            this.guna2CheckBox1.CheckedState.BorderThickness = 0;
+            this.guna2CheckBox1.CheckedState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
+            this.guna2CheckBox1.Location = new System.Drawing.Point(69, 162);
+            this.guna2CheckBox1.Name = "guna2CheckBox1";
+            this.guna2CheckBox1.Size = new System.Drawing.Size(127, 17);
+            this.guna2CheckBox1.TabIndex = 7;
+            this.guna2CheckBox1.Text = "Отображать пароль";
+            this.guna2CheckBox1.UncheckedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(125)))), ((int)(((byte)(137)))), ((int)(((byte)(149)))));
+            this.guna2CheckBox1.UncheckedState.BorderRadius = 0;
+            this.guna2CheckBox1.UncheckedState.BorderThickness = 0;
+            this.guna2CheckBox1.UncheckedState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(125)))), ((int)(((byte)(137)))), ((int)(((byte)(149)))));
+            this.guna2CheckBox1.CheckedChanged += new System.EventHandler(this.guna2CheckBox1_CheckedChanged);
             // 
             // EnterForm
             // 
@@ -187,6 +207,7 @@
             this.BackColor = System.Drawing.Color.Silver;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(334, 361);
+            this.Controls.Add(this.guna2CheckBox1);
             this.Controls.Add(this.PlayerButton);
             this.Controls.Add(this.TrainerButton);
             this.Controls.Add(this.RegistrationButton);
@@ -199,6 +220,7 @@
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -209,6 +231,7 @@
         private Guna.UI2.WinForms.Guna2TextBox PasswordTextBox;
         private Guna.UI2.WinForms.Guna2GradientButton TrainerButton;
         private Guna.UI2.WinForms.Guna2GradientButton PlayerButton;
+        private Guna.UI2.WinForms.Guna2CheckBox guna2CheckBox1;
     }
 }
 

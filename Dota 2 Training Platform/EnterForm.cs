@@ -262,5 +262,17 @@ namespace Dota_2_Training_Platform
         {
             Application.Exit();
         }
+
+        private void guna2CheckBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            if(guna2CheckBox1.Checked)
+            {
+                PasswordTextBox.PasswordChar = '\0';
+            }
+            else
+            {
+                PasswordTextBox.PasswordChar = '*';
+            }
+        }
     }
 }
