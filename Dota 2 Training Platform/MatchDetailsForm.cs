@@ -18,28 +18,11 @@ namespace Dota_2_Training_Platform
 
     public partial class MatchDetailsForm : Form
     {
-        #region enums
-        public static Dictionary<int, string> GameModes = new Dictionary<int, string>()
-        {
-            { 1, "All Pick" },
-            { 2, "Captain’s Mode" },
-            { 22, "Ranked All Pick" },
-            { 23, "Turbo" },
-            { 18, "Ability Draft" }
-        };
-
-        public static Dictionary<int, string> LobbyTypes = new Dictionary<int, string>()
-        {
-            { 0, "Обычный" },
-            { 7, "Рейтинговый" },
-            { 9, "Battle Cup" }
-        };
-        #endregion
-        private DotaMatchDetailsModel _match;
         private Panel tooltipPanel;
         private bool isMouseOverTooltip = false;
         private Timer tooltipTimer = new Timer { Interval = 150 };
         private Control tooltipOwner = null;
+        private int tooltipRequestId = 0;
 
         public MatchDetailsForm(DotaMatchDetailsModel match)
         {
@@ -70,9 +53,9 @@ namespace Dota_2_Training_Platform
             WinnerLabel.Text = match.radiant_win ? "Победа сил Света" : "Победа сил Тьмы"; //Radiant / dire
             WinnerLabel.ForeColor = match.radiant_win ? Color.FromArgb(255, 105, 136, 34) : Color.FromArgb(255, 172, 60, 42); //Radiant / dire\
 
-            GameMode.Text = GameModes.ContainsKey(match.game_mode) ? GameModes[match.game_mode] : "Неизвестно";
+            GameMode.Text = LobbyAndGameModes.GameModes.ContainsKey(match.game_mode) ? LobbyAndGameModes.GameModes[match.game_mode] : "Неизвестно";
 
-            LobbyType.Text = LobbyTypes.ContainsKey(match.lobby_type) ? LobbyTypes[match.lobby_type] : "Неизвестно";
+            LobbyType.Text = LobbyAndGameModes.LobbyTypes.ContainsKey(match.lobby_type) ? LobbyAndGameModes.LobbyTypes[match.lobby_type] : "Неизвестно";
 
             TimeSpan duration = TimeSpan.FromSeconds(match.duration);
             DurationLabel.Text = duration.ToString(@"mm\:ss");
@@ -99,6 +82,31 @@ namespace Dota_2_Training_Platform
         }
         private void PopulateMatchPanels(DotaMatchDetailsModel match)
         {
+            ToolTip toolTip1 = new ToolTip();
+            toolTip1.AutoPopDelay = 2000;
+            toolTip1.InitialDelay = 1000;
+            toolTip1.ReshowDelay = 500;
+            toolTip1.SetToolTip(KillsTip, "Убийств");
+            toolTip1.SetToolTip(KillsTip2, "Убийств");
+            toolTip1.SetToolTip(DeathsTip, "Смертей");
+            toolTip1.SetToolTip(DeathsTip2, "Смертей");
+            toolTip1.SetToolTip(AssistsTip, "Помощи");
+            toolTip1.SetToolTip(AssistsTip2, "Помощи");
+            toolTip1.SetToolTip(NetworthTip, "Общая ценность");
+            toolTip1.SetToolTip(NetworthTip2, "Общая ценность");
+            toolTip1.SetToolTip(LastHit_deniesTip, "Добитых крипов/Не отданных");
+            toolTip1.SetToolTip(LastHit_deniesTip2, "Добитых крипов/Не отданных");
+            toolTip1.SetToolTip(gpmTip, "Золото в минуту");
+            toolTip1.SetToolTip(gpmTip2, "Золото в минуту");
+            toolTip1.SetToolTip(DamageTip, "Урон по героям/Урон по постройкам");
+            toolTip1.SetToolTip(DamageTip2, "Урон по героям/Урон по постройкам");
+
+
+            //Label damageTip = new Label();
+            //ToolTip toolTip = new ToolTip();
+            //toolTip.
+            //DamageTip.Text = "Урон по героям/Урон по постройкам";
+            //hdLabel.
             radiantPanel.Controls.Clear();
             direPanel.Controls.Clear();
 
@@ -136,6 +144,7 @@ namespace Dota_2_Training_Platform
 
                 heroPic.MouseEnter += (s, e) =>
                 {
+                    tooltipPanel.Visible = false;
                     tooltipOwner = heroPic;
                     ShowItemsTooltip(player, heroPic);
                 };
@@ -239,11 +248,11 @@ namespace Dota_2_Training_Platform
                 x += gpmLabel.Width;
                 playerBlock.Controls.Add(gpmLabel);
 
-                // 9 Hero Damage
+                // 9 Damage
                 Label hdLabel = new Label
                 {
                     BackColor = Color.FromArgb(255, 120, 120, 120),
-                    Text = player.hero_damage.ToString(),
+                    Text = $"{player.hero_damage}/{player.tower_damage}",
                     Width = 80,
                     Height = 60,
                     Location = new Point(x, 0),
@@ -307,6 +316,8 @@ namespace Dota_2_Training_Platform
         }
         private void ShowItemsTooltip(MatchPlayerModel player, Control heroControl)
         {
+            int currentId = ++tooltipRequestId;
+
             tooltipPanel.Controls.Clear();
 
             int spacing = 5;
@@ -346,7 +357,9 @@ namespace Dota_2_Training_Platform
 
             Point pos = heroControl.PointToScreen(Point.Empty);
             pos = this.PointToClient(pos);
-            tooltipPanel.Location = new Point(pos.X + heroControl.Width, pos.Y-tooltipPanel.Height/2 + itemSize.Height/2);
+            if (currentId != tooltipRequestId) return;
+
+            tooltipPanel.Location = new Point(pos.X + heroControl.Width, pos.Y - tooltipPanel.Height / 2 + itemSize.Height / 2);
             tooltipPanel.Visible = true;
 
             async Task AddItemSlot(int itemId, Point location, bool isBackpack = false)
@@ -356,21 +369,14 @@ namespace Dota_2_Training_Platform
                     Size = itemSize,
                     Location = location,
                     SizeMode = PictureBoxSizeMode.StretchImage,
-                    FillColor = Color.FromArgb(100, 80, 80, 80),         
+                    FillColor = Color.FromArgb(100, 80, 80, 80),
                     ErrorImage = Properties.Resources.Loading
                 };
-                
+
 
                 if (itemId != 0)
                 {
-                    slot.LoadAsync(ApiCourier.GetItemImage(itemId));
-                    slot.LoadCompleted += (s, e) =>
-                    {
-                        if (slot.Image != null && isBackpack)
-                        {
-                            slot.Image = MakeItemGray(slot.Image);
-                        }
-                    };
+                    LoadItemIntoSlot(slot, itemId, isBackpack);
 
                     ToolTip tip = new ToolTip();
                     tip.SetToolTip(slot, ApiCourier.ItemsById[itemId].dname);
@@ -390,7 +396,7 @@ namespace Dota_2_Training_Platform
                 tooltipPanel.Controls.Add(slot);
             }
 
-            async Task AddNeutralItemSlot(int itemId, Point location)
+            async Task AddNeutralItemSlot(int itemId, Point location, bool isBackpack = false)
             {
                 Guna2CirclePictureBox slot = new Guna2CirclePictureBox
                 {
@@ -404,7 +410,7 @@ namespace Dota_2_Training_Platform
 
                 if (itemId != 0)
                 {
-                    slot.LoadAsync(ApiCourier.GetItemImage(itemId));
+                    LoadItemIntoSlot(slot, itemId, isBackpack);
 
                     ToolTip tip = new ToolTip();
                     tip.SetToolTip(slot, ApiCourier.ItemsById[itemId].dname);
@@ -424,6 +430,23 @@ namespace Dota_2_Training_Platform
                 tooltipPanel.Controls.Add(slot);
             }
 
+        }
+        private async Task LoadItemIntoSlot(PictureBox slot, int itemId, bool isBackpack)
+        {
+            slot.Image = Properties.Resources.Loading;
+
+            var img = await ApiCourier.GetItemImageAsync(itemId);
+
+            if (img == null) return;
+
+            if (isBackpack)
+                img = MakeItemGray(img);
+
+            //slot.Invoke(new Action(() =>
+            //{
+            //    slot.Image = img;
+            //}));
+            slot.Image = img;
         }
         private Image MakeItemGray(Image original)
         {

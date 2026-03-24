@@ -8,6 +8,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml.Linq;
+using System.Drawing;
 
 namespace Dota_2_Training_Platform
 {
@@ -18,6 +19,8 @@ namespace Dota_2_Training_Platform
         private static readonly HttpClient _apiHttpClient = new HttpClient();
         public static Dictionary<int, DotaHeroModel> Heroes = new Dictionary<int, DotaHeroModel>();
         public static Dictionary<int, DotaItemModel> ItemsById = new Dictionary<int, DotaItemModel>();
+        private static Dictionary<int, Image> itemImageCache = new Dictionary<int, Image>();
+        private static HttpClient client = new HttpClient();
 
         public enum ApiResultStatus
         {
@@ -290,6 +293,30 @@ namespace Dota_2_Training_Platform
 
             string imgPath = ItemsById[itemId].img;
             return $"https://cdn.steamstatic.com{imgPath}";
+        }
+        public static async Task<Image> GetItemImageAsync(int itemId)
+        {
+            if (itemId == 0) return null;
+
+            if (itemImageCache.ContainsKey(itemId))
+                return itemImageCache[itemId];
+
+            try
+            {
+
+                    string url = GetItemImage(itemId);
+                    var stream = await client.GetStreamAsync(url);
+                    Image img = Image.FromStream(stream);
+
+                    itemImageCache[itemId] = img;
+
+                    return img;
+
+            }
+            catch
+            {
+                return null;
+            }
         }
     }
 

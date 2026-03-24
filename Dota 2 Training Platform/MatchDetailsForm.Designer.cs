@@ -50,14 +50,14 @@
             this.guna2Panel1 = new Guna.UI2.WinForms.Guna2Panel();
             this.guna2Panel2 = new Guna.UI2.WinForms.Guna2Panel();
             this.guna2HtmlLabel1 = new Guna.UI2.WinForms.Guna2HtmlLabel();
-            this.guna2HtmlLabel2 = new Guna.UI2.WinForms.Guna2HtmlLabel();
-            this.guna2HtmlLabel3 = new Guna.UI2.WinForms.Guna2HtmlLabel();
-            this.guna2HtmlLabel4 = new Guna.UI2.WinForms.Guna2HtmlLabel();
-            this.guna2HtmlLabel5 = new Guna.UI2.WinForms.Guna2HtmlLabel();
-            this.guna2HtmlLabel6 = new Guna.UI2.WinForms.Guna2HtmlLabel();
-            this.guna2HtmlLabel7 = new Guna.UI2.WinForms.Guna2HtmlLabel();
+            this.AssistsTip2 = new Guna.UI2.WinForms.Guna2HtmlLabel();
+            this.NetworthTip2 = new Guna.UI2.WinForms.Guna2HtmlLabel();
+            this.DeathsTip2 = new Guna.UI2.WinForms.Guna2HtmlLabel();
+            this.LastHit_deniesTip2 = new Guna.UI2.WinForms.Guna2HtmlLabel();
+            this.KillsTip2 = new Guna.UI2.WinForms.Guna2HtmlLabel();
+            this.gpmTip2 = new Guna.UI2.WinForms.Guna2HtmlLabel();
             this.guna2HtmlLabel8 = new Guna.UI2.WinForms.Guna2HtmlLabel();
-            this.guna2HtmlLabel9 = new Guna.UI2.WinForms.Guna2HtmlLabel();
+            this.DamageTip2 = new Guna.UI2.WinForms.Guna2HtmlLabel();
             this.PanelWithTeams = new Guna.UI2.WinForms.Guna2Panel();
             this.guna2HtmlLabel10 = new Guna.UI2.WinForms.Guna2HtmlLabel();
             this.guna2HtmlLabel11 = new Guna.UI2.WinForms.Guna2HtmlLabel();
@@ -74,9 +74,9 @@
             this.WinnerLabel.AutoSize = false;
             this.WinnerLabel.BackColor = System.Drawing.Color.Transparent;
             this.WinnerLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.WinnerLabel.Location = new System.Drawing.Point(248, 74);
+            this.WinnerLabel.Location = new System.Drawing.Point(245, 74);
             this.WinnerLabel.Name = "WinnerLabel";
-            this.WinnerLabel.Size = new System.Drawing.Size(200, 26);
+            this.WinnerLabel.Size = new System.Drawing.Size(214, 26);
             this.WinnerLabel.TabIndex = 0;
             this.WinnerLabel.Text = "Winner";
             this.WinnerLabel.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
@@ -313,14 +313,14 @@
             // guna2Panel2
             // 
             this.guna2Panel2.Controls.Add(this.guna2HtmlLabel1);
-            this.guna2Panel2.Controls.Add(this.guna2HtmlLabel2);
-            this.guna2Panel2.Controls.Add(this.guna2HtmlLabel3);
-            this.guna2Panel2.Controls.Add(this.guna2HtmlLabel4);
-            this.guna2Panel2.Controls.Add(this.guna2HtmlLabel5);
-            this.guna2Panel2.Controls.Add(this.guna2HtmlLabel6);
-            this.guna2Panel2.Controls.Add(this.guna2HtmlLabel7);
+            this.guna2Panel2.Controls.Add(this.AssistsTip2);
+            this.guna2Panel2.Controls.Add(this.NetworthTip2);
+            this.guna2Panel2.Controls.Add(this.DeathsTip2);
+            this.guna2Panel2.Controls.Add(this.LastHit_deniesTip2);
+            this.guna2Panel2.Controls.Add(this.KillsTip2);
+            this.guna2Panel2.Controls.Add(this.gpmTip2);
             this.guna2Panel2.Controls.Add(this.guna2HtmlLabel8);
-            this.guna2Panel2.Controls.Add(this.guna2HtmlLabel9);
+            this.guna2Panel2.Controls.Add(this.DamageTip2);
             this.guna2Panel2.Controls.Add(this.direPanel);
             this.guna2Panel2.Location = new System.Drawing.Point(3, 457);
             this.guna2Panel2.Name = "guna2Panel2";
@@ -339,77 +339,77 @@
             this.guna2HtmlLabel1.Text = "Герой";
             this.guna2HtmlLabel1.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // guna2HtmlLabel2
+            // AssistsTip2
             // 
-            this.guna2HtmlLabel2.AutoSize = false;
-            this.guna2HtmlLabel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(120)))), ((int)(((byte)(120)))));
-            this.guna2HtmlLabel2.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.guna2HtmlLabel2.Location = new System.Drawing.Point(345, 0);
-            this.guna2HtmlLabel2.Name = "guna2HtmlLabel2";
-            this.guna2HtmlLabel2.Size = new System.Drawing.Size(41, 15);
-            this.guna2HtmlLabel2.TabIndex = 16;
-            this.guna2HtmlLabel2.Text = "П";
-            this.guna2HtmlLabel2.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
+            this.AssistsTip2.AutoSize = false;
+            this.AssistsTip2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(120)))), ((int)(((byte)(120)))));
+            this.AssistsTip2.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.AssistsTip2.Location = new System.Drawing.Point(345, 0);
+            this.AssistsTip2.Name = "AssistsTip2";
+            this.AssistsTip2.Size = new System.Drawing.Size(41, 15);
+            this.AssistsTip2.TabIndex = 16;
+            this.AssistsTip2.Text = "П";
+            this.AssistsTip2.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // guna2HtmlLabel3
+            // NetworthTip2
             // 
-            this.guna2HtmlLabel3.AutoSize = false;
-            this.guna2HtmlLabel3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(130)))), ((int)(((byte)(130)))), ((int)(((byte)(130)))));
-            this.guna2HtmlLabel3.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.guna2HtmlLabel3.Location = new System.Drawing.Point(386, 0);
-            this.guna2HtmlLabel3.Name = "guna2HtmlLabel3";
-            this.guna2HtmlLabel3.Size = new System.Drawing.Size(71, 15);
-            this.guna2HtmlLabel3.TabIndex = 17;
-            this.guna2HtmlLabel3.Text = "ОЦ";
-            this.guna2HtmlLabel3.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
+            this.NetworthTip2.AutoSize = false;
+            this.NetworthTip2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(130)))), ((int)(((byte)(130)))), ((int)(((byte)(130)))));
+            this.NetworthTip2.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.NetworthTip2.Location = new System.Drawing.Point(386, 0);
+            this.NetworthTip2.Name = "NetworthTip2";
+            this.NetworthTip2.Size = new System.Drawing.Size(71, 15);
+            this.NetworthTip2.TabIndex = 17;
+            this.NetworthTip2.Text = "ОЦ";
+            this.NetworthTip2.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // guna2HtmlLabel4
+            // DeathsTip2
             // 
-            this.guna2HtmlLabel4.AutoSize = false;
-            this.guna2HtmlLabel4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(130)))), ((int)(((byte)(130)))), ((int)(((byte)(130)))));
-            this.guna2HtmlLabel4.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.guna2HtmlLabel4.Location = new System.Drawing.Point(304, 0);
-            this.guna2HtmlLabel4.Name = "guna2HtmlLabel4";
-            this.guna2HtmlLabel4.Size = new System.Drawing.Size(41, 15);
-            this.guna2HtmlLabel4.TabIndex = 15;
-            this.guna2HtmlLabel4.Text = "С";
-            this.guna2HtmlLabel4.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
+            this.DeathsTip2.AutoSize = false;
+            this.DeathsTip2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(130)))), ((int)(((byte)(130)))), ((int)(((byte)(130)))));
+            this.DeathsTip2.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DeathsTip2.Location = new System.Drawing.Point(304, 0);
+            this.DeathsTip2.Name = "DeathsTip2";
+            this.DeathsTip2.Size = new System.Drawing.Size(41, 15);
+            this.DeathsTip2.TabIndex = 15;
+            this.DeathsTip2.Text = "С";
+            this.DeathsTip2.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // guna2HtmlLabel5
+            // LastHit_deniesTip2
             // 
-            this.guna2HtmlLabel5.AutoSize = false;
-            this.guna2HtmlLabel5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(120)))), ((int)(((byte)(120)))));
-            this.guna2HtmlLabel5.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.guna2HtmlLabel5.Location = new System.Drawing.Point(457, 0);
-            this.guna2HtmlLabel5.Name = "guna2HtmlLabel5";
-            this.guna2HtmlLabel5.Size = new System.Drawing.Size(76, 15);
-            this.guna2HtmlLabel5.TabIndex = 18;
-            this.guna2HtmlLabel5.Text = "ДК/НО";
-            this.guna2HtmlLabel5.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
+            this.LastHit_deniesTip2.AutoSize = false;
+            this.LastHit_deniesTip2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(120)))), ((int)(((byte)(120)))));
+            this.LastHit_deniesTip2.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LastHit_deniesTip2.Location = new System.Drawing.Point(457, 0);
+            this.LastHit_deniesTip2.Name = "LastHit_deniesTip2";
+            this.LastHit_deniesTip2.Size = new System.Drawing.Size(76, 15);
+            this.LastHit_deniesTip2.TabIndex = 18;
+            this.LastHit_deniesTip2.Text = "ДК/НО";
+            this.LastHit_deniesTip2.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // guna2HtmlLabel6
+            // KillsTip2
             // 
-            this.guna2HtmlLabel6.AutoSize = false;
-            this.guna2HtmlLabel6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(120)))), ((int)(((byte)(120)))));
-            this.guna2HtmlLabel6.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.guna2HtmlLabel6.Location = new System.Drawing.Point(263, 0);
-            this.guna2HtmlLabel6.Name = "guna2HtmlLabel6";
-            this.guna2HtmlLabel6.Size = new System.Drawing.Size(41, 15);
-            this.guna2HtmlLabel6.TabIndex = 14;
-            this.guna2HtmlLabel6.Text = "У";
-            this.guna2HtmlLabel6.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
+            this.KillsTip2.AutoSize = false;
+            this.KillsTip2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(120)))), ((int)(((byte)(120)))));
+            this.KillsTip2.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.KillsTip2.Location = new System.Drawing.Point(263, 0);
+            this.KillsTip2.Name = "KillsTip2";
+            this.KillsTip2.Size = new System.Drawing.Size(41, 15);
+            this.KillsTip2.TabIndex = 14;
+            this.KillsTip2.Text = "У";
+            this.KillsTip2.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // guna2HtmlLabel7
+            // gpmTip2
             // 
-            this.guna2HtmlLabel7.AutoSize = false;
-            this.guna2HtmlLabel7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(130)))), ((int)(((byte)(130)))), ((int)(((byte)(130)))));
-            this.guna2HtmlLabel7.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.guna2HtmlLabel7.Location = new System.Drawing.Point(533, 0);
-            this.guna2HtmlLabel7.Name = "guna2HtmlLabel7";
-            this.guna2HtmlLabel7.Size = new System.Drawing.Size(72, 15);
-            this.guna2HtmlLabel7.TabIndex = 19;
-            this.guna2HtmlLabel7.Text = "З / М";
-            this.guna2HtmlLabel7.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
+            this.gpmTip2.AutoSize = false;
+            this.gpmTip2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(130)))), ((int)(((byte)(130)))), ((int)(((byte)(130)))));
+            this.gpmTip2.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.gpmTip2.Location = new System.Drawing.Point(533, 0);
+            this.gpmTip2.Name = "gpmTip2";
+            this.gpmTip2.Size = new System.Drawing.Size(72, 15);
+            this.gpmTip2.TabIndex = 19;
+            this.gpmTip2.Text = "З / М";
+            this.gpmTip2.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // guna2HtmlLabel8
             // 
@@ -423,17 +423,17 @@
             this.guna2HtmlLabel8.Text = "Игрок";
             this.guna2HtmlLabel8.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // guna2HtmlLabel9
+            // DamageTip2
             // 
-            this.guna2HtmlLabel9.AutoSize = false;
-            this.guna2HtmlLabel9.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(120)))), ((int)(((byte)(120)))));
-            this.guna2HtmlLabel9.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.guna2HtmlLabel9.Location = new System.Drawing.Point(605, 0);
-            this.guna2HtmlLabel9.Name = "guna2HtmlLabel9";
-            this.guna2HtmlLabel9.Size = new System.Drawing.Size(80, 15);
-            this.guna2HtmlLabel9.TabIndex = 20;
-            this.guna2HtmlLabel9.Text = "Урон";
-            this.guna2HtmlLabel9.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
+            this.DamageTip2.AutoSize = false;
+            this.DamageTip2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(120)))), ((int)(((byte)(120)))));
+            this.DamageTip2.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DamageTip2.Location = new System.Drawing.Point(605, 0);
+            this.DamageTip2.Name = "DamageTip2";
+            this.DamageTip2.Size = new System.Drawing.Size(80, 15);
+            this.DamageTip2.TabIndex = 20;
+            this.DamageTip2.Text = "Урон";
+            this.DamageTip2.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // PanelWithTeams
             // 
@@ -562,14 +562,14 @@
         private Guna.UI2.WinForms.Guna2Panel guna2Panel1;
         private Guna.UI2.WinForms.Guna2Panel guna2Panel2;
         private Guna.UI2.WinForms.Guna2HtmlLabel guna2HtmlLabel1;
-        private Guna.UI2.WinForms.Guna2HtmlLabel guna2HtmlLabel2;
-        private Guna.UI2.WinForms.Guna2HtmlLabel guna2HtmlLabel3;
-        private Guna.UI2.WinForms.Guna2HtmlLabel guna2HtmlLabel4;
-        private Guna.UI2.WinForms.Guna2HtmlLabel guna2HtmlLabel5;
-        private Guna.UI2.WinForms.Guna2HtmlLabel guna2HtmlLabel6;
-        private Guna.UI2.WinForms.Guna2HtmlLabel guna2HtmlLabel7;
+        private Guna.UI2.WinForms.Guna2HtmlLabel AssistsTip2;
+        private Guna.UI2.WinForms.Guna2HtmlLabel NetworthTip2;
+        private Guna.UI2.WinForms.Guna2HtmlLabel DeathsTip2;
+        private Guna.UI2.WinForms.Guna2HtmlLabel LastHit_deniesTip2;
+        private Guna.UI2.WinForms.Guna2HtmlLabel KillsTip2;
+        private Guna.UI2.WinForms.Guna2HtmlLabel gpmTip2;
         private Guna.UI2.WinForms.Guna2HtmlLabel guna2HtmlLabel8;
-        private Guna.UI2.WinForms.Guna2HtmlLabel guna2HtmlLabel9;
+        private Guna.UI2.WinForms.Guna2HtmlLabel DamageTip2;
         private Guna.UI2.WinForms.Guna2Panel PanelWithTeams;
         private Guna.UI2.WinForms.Guna2HtmlLabel guna2HtmlLabel10;
         private Guna.UI2.WinForms.Guna2HtmlLabel guna2HtmlLabel11;

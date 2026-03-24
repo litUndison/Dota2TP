@@ -6,6 +6,24 @@ using System.Text;
 using System.Threading.Tasks;
 namespace Dota_2_Training_Platform.Models
 {
+    public class LobbyAndGameModes
+    {
+        public static Dictionary<int, string> GameModes = new Dictionary<int, string>()
+        {
+            { 1, "All Pick" },
+            { 2, "Captain’s Mode" },
+            { 22, "Ranked All Pick" },
+            { 23, "Turbo" },
+            { 18, "Ability Draft" }
+        };
+
+        public static Dictionary<int, string> LobbyTypes = new Dictionary<int, string>()
+        {
+            { 0, "Обычный" },
+            { 7, "Рейтинговый" },
+            { 9, "Battle Cup" }
+        };
+    }
     public class DotaMatchDetailsModel
     {
         public long match_id { get; set; }
