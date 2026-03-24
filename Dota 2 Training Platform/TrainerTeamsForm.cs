@@ -150,7 +150,7 @@ namespace Dota_2_Training_Platform
             {
                 Guna2Button button = new Guna2Button();
                 button.Animated = true;
-                button.BorderRadius = 10;
+                button.BorderRadius = 0;
                 Font font = new Font(guna2HtmlLabel1.Font, FontStyle.Regular);
                 button.Font = font;
                 button.Text = team.Name;

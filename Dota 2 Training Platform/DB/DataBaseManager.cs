@@ -1,12 +1,13 @@
 ﻿using Dota_2_Training_Platform;
+using Dota_2_Training_Platform.Models;
+using Dota_2_Training_Platform.Models.Trainings;
 using System;
 using System.Collections.Generic;
+using System.Data.SQLite;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Dota_2_Training_Platform.Models;
-using System.Data.SQLite;
-using System.Linq;
 
 namespace DataBaseManager
 {
@@ -14,7 +15,7 @@ namespace DataBaseManager
     {
         static public List<UserModel> Players { get; private set; } = new List<UserModel>();
         static public List<UserModel> Trainers { get; private set; } = new List<UserModel>();
-        private static readonly string dbPath = "users.db";
+        private static readonly string dbPath = "users.db"; //TrainingPolygon.db
         private static string connectionString;
         static dbManager()
         {
@@ -38,6 +39,9 @@ namespace DataBaseManager
 
                 using (var command = connection.CreateCommand())
                 {
+                    command.CommandText = "PRAGMA foreign_keys = ON;";
+                    command.ExecuteNonQuery();
+
                     command.CommandText =
                     @"
             CREATE TABLE IF NOT EXISTS Players (
@@ -74,15 +78,44 @@ namespace DataBaseManager
                     command.CommandText =
                     @"
             CREATE TABLE IF NOT EXISTS TeamPlayers (
-            Id INTEGER PRIMARY KEY AUTOINCREMENT,
-            TeamId INTEGER NOT NULL,
-            Name TEXT,
-            AccountId TEXT,
-            PlayerSteamId TEXT NOT NULL,
-            Avatar TEXT,
-            UNIQUE(TeamId, PlayerSteamId)
+                Id INTEGER PRIMARY KEY AUTOINCREMENT,
+                TeamId INTEGER NOT NULL,
+                Name TEXT,
+                AccountId TEXT,
+                PlayerSteamId TEXT NOT NULL,
+                Avatar TEXT,
+                UNIQUE(TeamId, PlayerSteamId)
             );";
                     command.ExecuteNonQuery();
+
+                    command.CommandText =
+                    @"
+            CREATE TABLE IF NOT EXISTS TrainingTasks (
+                Id INTEGER PRIMARY KEY AUTOINCREMENT,
+                Title TEXT,
+                Type INTEGER,
+                Metric INTEGER,
+                TargetValue INTEGER,
+                Period INTEGER,
+                PeriodValue INTEGER,
+                Deadline TEXT,
+                IsCompleted INTEGER
+            );";
+                    command.ExecuteNonQuery();
+
+                    command.CommandText =
+                    @"
+            CREATE TABLE IF NOT EXISTS TrainingTaskPlayers (
+                Id INTEGER PRIMARY KEY AUTOINCREMENT,
+                TaskId INTEGER,
+                PlayerId TEXT,
+
+                FOREIGN KEY (TaskId) REFERENCES TrainingTasks(Id) ON DELETE CASCADE,
+                FOREIGN KEY (PlayerId) REFERENCES TeamPlayers(AccountId) ON DELETE CASCADE
+            );";
+                    command.ExecuteNonQuery();
+
+
                 }
             }
         }
@@ -1071,6 +1104,134 @@ namespace DataBaseManager
         #endregion
 
 
+        #region TrainingTasks
 
+        public static async Task AddTrainingTaskAsync(TrainingTask task)
+        {
+            using (var connection = new SQLiteConnection(connectionString))
+            {
+                await connection.OpenAsync();
+
+                using (var transaction = connection.BeginTransaction())
+                {
+                    try
+                    {
+                        // 1. Добавляем тренировку
+                        string insertTask = @"
+                        INSERT INTO TrainingTasks 
+                        (Title, Type, Metric, TargetValue, Period, PeriodValue, Deadline, IsCompleted)
+                        VALUES
+                        (@Title, @Type, @Metric, @TargetValue, @Period, @PeriodValue, @Deadline, @IsCompleted);
+                
+                        SELECT last_insert_rowid();";
+
+                        long taskId;
+
+                        using (var cmd = new SQLiteCommand(insertTask, connection))
+                        {
+                            cmd.Parameters.AddWithValue("@Title", task.Title);
+                            cmd.Parameters.AddWithValue("@Type", (int)task.Type);
+                            cmd.Parameters.AddWithValue("@Metric", (int)task.Metric);
+                            cmd.Parameters.AddWithValue("@TargetValue", task.TargetValue);
+                            cmd.Parameters.AddWithValue("@Period", (int)task.Period);
+                            cmd.Parameters.AddWithValue("@PeriodValue", task.PeriodValue);
+                            cmd.Parameters.AddWithValue("@Deadline", task.Deadline.ToString("o"));
+                            cmd.Parameters.AddWithValue("@IsCompleted", task.IsCompleted ? 1 : 0);
+
+                            taskId = (long)await cmd.ExecuteScalarAsync();
+                        }
+
+                        // 2. Добавляем игроков
+                        foreach (var playerId in task.PlayerIds)
+                        {
+                            string insertPlayer = @"
+                    INSERT INTO TrainingTaskPlayers (TaskId, PlayerId)
+                    VALUES (@TaskId, @PlayerId)";
+
+                            using (var cmd = new SQLiteCommand(insertPlayer, connection))
+                            {
+                                cmd.Parameters.AddWithValue("@TaskId", taskId);
+                                cmd.Parameters.AddWithValue("@PlayerId", playerId);
+
+                                await cmd.ExecuteNonQueryAsync();
+                            }
+                        }
+
+                        transaction.Commit();
+                    }
+                    catch
+                    {
+                        transaction.Rollback();
+                        throw;
+                    }
+                }
+            }
+        }
+
+        public static async Task<List<TrainingTask>> GetTrainingTasksAsync()
+        {
+            var dict = new Dictionary<int, TrainingTask>();
+
+            using (var connection = new SQLiteConnection(connectionString))
+            {
+                await connection.OpenAsync();
+
+                string query = @"
+                SELECT t.*, p.PlayerId
+                FROM TrainingTasks t
+                LEFT JOIN TrainingTaskPlayers p ON t.Id = p.TaskId";
+
+                using (var cmd = new SQLiteCommand(query, connection))
+                using (var reader = await cmd.ExecuteReaderAsync())
+                {
+                    while (await reader.ReadAsync())
+                    {
+                        int taskId = Convert.ToInt32(reader["Id"]);
+
+                        if (!dict.ContainsKey(taskId))
+                        {
+                            dict[taskId] = new TrainingTask
+                            {
+                                Id = taskId,
+                                Title = reader["Title"].ToString(),
+                                Type = (TrainingType)Convert.ToInt32(reader["Type"]),
+                                Metric = (TrainingMetric)Convert.ToInt32(reader["Metric"]),
+                                TargetValue = Convert.ToInt32(reader["TargetValue"]),
+                                Period = (TrainingPeriod)Convert.ToInt32(reader["Period"]),
+                                PeriodValue = Convert.ToInt32(reader["PeriodValue"]),
+                                Deadline = DateTime.Parse(reader["Deadline"].ToString()),
+                                IsCompleted = Convert.ToInt32(reader["IsCompleted"]) == 1,
+                                PlayerIds = new List<string>()
+                            };
+                        }
+
+                        if (reader["PlayerId"] != DBNull.Value)
+                        {
+                            dict[taskId].PlayerIds.Add(reader["PlayerId"].ToString());
+                        }
+                    }
+                }
+            }
+
+            return dict.Values.ToList();
+        }
+
+        public static async Task RemovePlayerFromTrainings(string playerId)
+        {
+            using (var connection = new SQLiteConnection(connectionString))
+            {
+                await connection.OpenAsync();
+
+                string query = "DELETE FROM TrainingTaskPlayers WHERE PlayerId = @PlayerId";
+
+                using (var cmd = new SQLiteCommand(query, connection))
+                {
+                    cmd.Parameters.AddWithValue("@PlayerId", playerId);
+                    await cmd.ExecuteNonQueryAsync();
+                }
+            }
+        }
+
+        #endregion
     }
 }

@@ -12,6 +12,5 @@ namespace Dota_2_Training_Platform.Models
         public int id { get; set; }
         public string dname { get; set; }
         public string img { get; set; }
-        public Image Image { get; set; } = null;
     }
 }

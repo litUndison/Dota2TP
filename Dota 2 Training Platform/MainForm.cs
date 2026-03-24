@@ -44,6 +44,9 @@ namespace Dota_2_Training_Platform
         private int tooltipRequestId = 0;
 
         private DotaMatchDetailsModel match;
+
+        Color EditSwitchButtonColor;
+
         #endregion
 
         public MainForm(TeamModel currentTeam, UserModel currentUser, Form StartForm, Form TeamsForm)
@@ -102,6 +105,8 @@ namespace Dota_2_Training_Platform
             TrainerID.Text = currentUser.AccountID;
 
 
+            EditSwitchButtonColor = EditSwitcher.FillColor;
+
 
             //размещение кнопок меню над gunaPage
 
@@ -137,7 +142,7 @@ namespace Dota_2_Training_Platform
 
         }
 
-
+        
         private void LoadTeam()
         {
             //очистка полей
@@ -164,6 +169,7 @@ namespace Dota_2_Training_Platform
 
         private void guna2Button2_Click(object sender, EventArgs e) // переключатель редактирования
         {
+            
             SwitchTeamEdit(EditSwitcher);
         }
 
@@ -185,7 +191,7 @@ namespace Dota_2_Training_Platform
             {
                 EditConfirm.Visible = false;
                 button.Text = "Включить редактирование";
-                button.FillColor = Color.FromArgb(94, 148, 255);
+                button.FillColor = EditSwitchButtonColor;
                 TeamName.ReadOnly = true;
                 for (int i = 0; i < textBoxes.Length; i++)
                 {
@@ -888,6 +894,15 @@ namespace Dota_2_Training_Platform
         {
             MatchDetailsForm form = new MatchDetailsForm(match);
             form.Show();
+        }
+
+        #region Trainings
+        #endregion
+
+        private void guna2Button1_Click_1(object sender, EventArgs e)
+        {
+            CreateTrainingTask taskForm = new CreateTrainingTask();
+            taskForm.Show();
         }
     }
 }

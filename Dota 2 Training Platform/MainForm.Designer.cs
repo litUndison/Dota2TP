@@ -38,32 +38,25 @@
             this.guna2Panel7 = new Guna.UI2.WinForms.Guna2Panel();
             this.TrainerID = new Guna.UI2.WinForms.Guna2TextBox();
             this.TrainerName = new Guna.UI2.WinForms.Guna2HtmlLabel();
-            this.TrainerPicture = new Guna.UI2.WinForms.Guna2PictureBox();
             this.EditConfirm = new Guna.UI2.WinForms.Guna2Button();
             this.EditSwitcher = new Guna.UI2.WinForms.Guna2Button();
             this.TeamName = new Guna.UI2.WinForms.Guna2TextBox();
             this.guna2Panel5 = new Guna.UI2.WinForms.Guna2Panel();
             this.PlayerID5 = new Guna.UI2.WinForms.Guna2TextBox();
             this.PlayerName5 = new Guna.UI2.WinForms.Guna2HtmlLabel();
-            this.PlayerPicture5 = new Guna.UI2.WinForms.Guna2PictureBox();
             this.guna2Panel4 = new Guna.UI2.WinForms.Guna2Panel();
             this.PlayerID4 = new Guna.UI2.WinForms.Guna2TextBox();
             this.PlayerName4 = new Guna.UI2.WinForms.Guna2HtmlLabel();
-            this.PlayerPicture4 = new Guna.UI2.WinForms.Guna2PictureBox();
             this.guna2Panel3 = new Guna.UI2.WinForms.Guna2Panel();
             this.PlayerID3 = new Guna.UI2.WinForms.Guna2TextBox();
             this.PlayerName3 = new Guna.UI2.WinForms.Guna2HtmlLabel();
-            this.PlayerPicture3 = new Guna.UI2.WinForms.Guna2PictureBox();
             this.guna2Panel2 = new Guna.UI2.WinForms.Guna2Panel();
             this.PlayerID2 = new Guna.UI2.WinForms.Guna2TextBox();
             this.PlayerName2 = new Guna.UI2.WinForms.Guna2HtmlLabel();
-            this.PlayerPicture2 = new Guna.UI2.WinForms.Guna2PictureBox();
             this.guna2Panel1 = new Guna.UI2.WinForms.Guna2Panel();
             this.PlayerID1 = new Guna.UI2.WinForms.Guna2TextBox();
             this.PlayerName1 = new Guna.UI2.WinForms.Guna2HtmlLabel();
-            this.PlayerPicture1 = new Guna.UI2.WinForms.Guna2PictureBox();
             this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.SelectedPlayerPicture = new Guna.UI2.WinForms.Guna2PictureBox();
             this.SelectedPlayerMatches = new Guna.UI2.WinForms.Guna2Panel();
             this.SelectPlayerComboBox = new Guna.UI2.WinForms.Guna2ComboBox();
             this.tabPage4 = new System.Windows.Forms.TabPage();
@@ -106,27 +99,54 @@
             this.OpenInMatchDetailsForm = new Guna.UI2.WinForms.Guna2Button();
             this.MatchInfoPanel = new Guna.UI2.WinForms.Guna2Panel();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.webView21 = new Microsoft.Web.WebView2.WinForms.WebView2();
+            this.guna2Panel9 = new Guna.UI2.WinForms.Guna2Panel();
+            this.guna2HtmlLabel2 = new Guna.UI2.WinForms.Guna2HtmlLabel();
+            this.guna2Panel10 = new Guna.UI2.WinForms.Guna2Panel();
+            this.guna2HtmlLabel3 = new Guna.UI2.WinForms.Guna2HtmlLabel();
+            this.guna2Button1 = new Guna.UI2.WinForms.Guna2Button();
+            this.TrainerPicture = new Guna.UI2.WinForms.Guna2PictureBox();
+            this.PlayerPicture5 = new Guna.UI2.WinForms.Guna2PictureBox();
+            this.PlayerPicture4 = new Guna.UI2.WinForms.Guna2PictureBox();
+            this.PlayerPicture3 = new Guna.UI2.WinForms.Guna2PictureBox();
+            this.PlayerPicture2 = new Guna.UI2.WinForms.Guna2PictureBox();
+            this.PlayerPicture1 = new Guna.UI2.WinForms.Guna2PictureBox();
+            this.SelectedPlayerPicture = new Guna.UI2.WinForms.Guna2PictureBox();
+            this.guna2PictureBox5 = new Guna.UI2.WinForms.Guna2PictureBox();
+            this.guna2PictureBox4 = new Guna.UI2.WinForms.Guna2PictureBox();
+            this.guna2PictureBox3 = new Guna.UI2.WinForms.Guna2PictureBox();
+            this.guna2PictureBox2 = new Guna.UI2.WinForms.Guna2PictureBox();
+            this.guna2PictureBox1 = new Guna.UI2.WinForms.Guna2PictureBox();
             this.guna2TabControl1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.PanelWithButtons.SuspendLayout();
             this.guna2Panel7.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.TrainerPicture)).BeginInit();
             this.guna2Panel5.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.PlayerPicture5)).BeginInit();
             this.guna2Panel4.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.PlayerPicture4)).BeginInit();
             this.guna2Panel3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.PlayerPicture3)).BeginInit();
             this.guna2Panel2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.PlayerPicture2)).BeginInit();
             this.guna2Panel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.PlayerPicture1)).BeginInit();
             this.tabPage3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.SelectedPlayerPicture)).BeginInit();
+            this.tabPage4.SuspendLayout();
             this.PanelWithTeams.SuspendLayout();
             this.guna2Panel6.SuspendLayout();
             this.guna2Panel8.SuspendLayout();
             this.MatchInfoPanel.SuspendLayout();
+            this.tabPage1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.webView21)).BeginInit();
+            this.guna2Panel10.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.TrainerPicture)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.PlayerPicture5)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.PlayerPicture4)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.PlayerPicture3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.PlayerPicture2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.PlayerPicture1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.SelectedPlayerPicture)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.guna2PictureBox5)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.guna2PictureBox4)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.guna2PictureBox3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.guna2PictureBox2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.guna2PictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // guna2TabControl1
@@ -261,7 +281,7 @@
             this.TrainerID.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
             this.TrainerID.DisabledState.PlaceholderForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
             this.TrainerID.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
-            this.TrainerID.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.TrainerID.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.TrainerID.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
             this.TrainerID.Location = new System.Drawing.Point(4, 80);
             this.TrainerID.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
@@ -284,20 +304,6 @@
             this.TrainerName.Text = "Тренер";
             this.TrainerName.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // TrainerPicture
-            // 
-            this.TrainerPicture.BorderRadius = 2;
-            this.TrainerPicture.ErrorImage = ((System.Drawing.Image)(resources.GetObject("TrainerPicture.ErrorImage")));
-            this.TrainerPicture.FillColor = System.Drawing.Color.Gray;
-            this.TrainerPicture.ImageRotate = 0F;
-            this.TrainerPicture.InitialImage = null;
-            this.TrainerPicture.Location = new System.Drawing.Point(4, 7);
-            this.TrainerPicture.Name = "TrainerPicture";
-            this.TrainerPicture.Size = new System.Drawing.Size(70, 66);
-            this.TrainerPicture.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.TrainerPicture.TabIndex = 22;
-            this.TrainerPicture.TabStop = false;
-            // 
             // EditConfirm
             // 
             this.EditConfirm.Animated = true;
@@ -306,6 +312,7 @@
             this.EditConfirm.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
             this.EditConfirm.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
             this.EditConfirm.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.EditConfirm.FillColor = System.Drawing.Color.Gray;
             this.EditConfirm.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.EditConfirm.ForeColor = System.Drawing.Color.White;
             this.EditConfirm.Location = new System.Drawing.Point(504, 55);
@@ -324,6 +331,7 @@
             this.EditSwitcher.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
             this.EditSwitcher.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
             this.EditSwitcher.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.EditSwitcher.FillColor = System.Drawing.Color.Gray;
             this.EditSwitcher.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.EditSwitcher.ForeColor = System.Drawing.Color.White;
             this.EditSwitcher.Location = new System.Drawing.Point(308, 55);
@@ -335,7 +343,7 @@
             // 
             // TeamName
             // 
-            this.TeamName.BorderRadius = 5;
+            this.TeamName.BorderRadius = 2;
             this.TeamName.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.TeamName.DefaultText = "";
             this.TeamName.DisabledState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(208)))), ((int)(((byte)(208)))));
@@ -343,7 +351,7 @@
             this.TeamName.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
             this.TeamName.DisabledState.PlaceholderForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
             this.TeamName.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
-            this.TeamName.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.TeamName.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.TeamName.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
             this.TeamName.Location = new System.Drawing.Point(308, 6);
             this.TeamName.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
@@ -399,20 +407,6 @@
             this.PlayerName5.Text = "Игрок";
             this.PlayerName5.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // PlayerPicture5
-            // 
-            this.PlayerPicture5.BorderRadius = 2;
-            this.PlayerPicture5.ErrorImage = ((System.Drawing.Image)(resources.GetObject("PlayerPicture5.ErrorImage")));
-            this.PlayerPicture5.FillColor = System.Drawing.Color.Gray;
-            this.PlayerPicture5.ImageRotate = 0F;
-            this.PlayerPicture5.InitialImage = null;
-            this.PlayerPicture5.Location = new System.Drawing.Point(4, 7);
-            this.PlayerPicture5.Name = "PlayerPicture5";
-            this.PlayerPicture5.Size = new System.Drawing.Size(70, 66);
-            this.PlayerPicture5.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.PlayerPicture5.TabIndex = 22;
-            this.PlayerPicture5.TabStop = false;
-            // 
             // guna2Panel4
             // 
             this.guna2Panel4.Controls.Add(this.PlayerID4);
@@ -456,20 +450,6 @@
             this.PlayerName4.TabIndex = 23;
             this.PlayerName4.Text = "Игрок";
             this.PlayerName4.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // PlayerPicture4
-            // 
-            this.PlayerPicture4.BorderRadius = 2;
-            this.PlayerPicture4.ErrorImage = ((System.Drawing.Image)(resources.GetObject("PlayerPicture4.ErrorImage")));
-            this.PlayerPicture4.FillColor = System.Drawing.Color.Gray;
-            this.PlayerPicture4.ImageRotate = 0F;
-            this.PlayerPicture4.InitialImage = null;
-            this.PlayerPicture4.Location = new System.Drawing.Point(4, 7);
-            this.PlayerPicture4.Name = "PlayerPicture4";
-            this.PlayerPicture4.Size = new System.Drawing.Size(70, 66);
-            this.PlayerPicture4.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.PlayerPicture4.TabIndex = 22;
-            this.PlayerPicture4.TabStop = false;
             // 
             // guna2Panel3
             // 
@@ -515,20 +495,6 @@
             this.PlayerName3.Text = "Игрок";
             this.PlayerName3.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // PlayerPicture3
-            // 
-            this.PlayerPicture3.BorderRadius = 2;
-            this.PlayerPicture3.ErrorImage = ((System.Drawing.Image)(resources.GetObject("PlayerPicture3.ErrorImage")));
-            this.PlayerPicture3.FillColor = System.Drawing.Color.Gray;
-            this.PlayerPicture3.ImageRotate = 0F;
-            this.PlayerPicture3.InitialImage = null;
-            this.PlayerPicture3.Location = new System.Drawing.Point(4, 7);
-            this.PlayerPicture3.Name = "PlayerPicture3";
-            this.PlayerPicture3.Size = new System.Drawing.Size(70, 66);
-            this.PlayerPicture3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.PlayerPicture3.TabIndex = 22;
-            this.PlayerPicture3.TabStop = false;
-            // 
             // guna2Panel2
             // 
             this.guna2Panel2.Controls.Add(this.PlayerID2);
@@ -572,20 +538,6 @@
             this.PlayerName2.TabIndex = 23;
             this.PlayerName2.Text = "Игрок";
             this.PlayerName2.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // PlayerPicture2
-            // 
-            this.PlayerPicture2.BorderRadius = 2;
-            this.PlayerPicture2.ErrorImage = ((System.Drawing.Image)(resources.GetObject("PlayerPicture2.ErrorImage")));
-            this.PlayerPicture2.FillColor = System.Drawing.Color.Gray;
-            this.PlayerPicture2.ImageRotate = 0F;
-            this.PlayerPicture2.InitialImage = null;
-            this.PlayerPicture2.Location = new System.Drawing.Point(4, 7);
-            this.PlayerPicture2.Name = "PlayerPicture2";
-            this.PlayerPicture2.Size = new System.Drawing.Size(70, 66);
-            this.PlayerPicture2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.PlayerPicture2.TabIndex = 22;
-            this.PlayerPicture2.TabStop = false;
             // 
             // guna2Panel1
             // 
@@ -631,29 +583,14 @@
             this.PlayerName1.Text = "Игрок";
             this.PlayerName1.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // PlayerPicture1
-            // 
-            this.PlayerPicture1.BorderRadius = 2;
-            this.PlayerPicture1.ErrorImage = ((System.Drawing.Image)(resources.GetObject("PlayerPicture1.ErrorImage")));
-            this.PlayerPicture1.FillColor = System.Drawing.Color.Gray;
-            this.PlayerPicture1.ImageRotate = 0F;
-            this.PlayerPicture1.InitialImage = null;
-            this.PlayerPicture1.Location = new System.Drawing.Point(4, 7);
-            this.PlayerPicture1.Name = "PlayerPicture1";
-            this.PlayerPicture1.Size = new System.Drawing.Size(70, 66);
-            this.PlayerPicture1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.PlayerPicture1.TabIndex = 22;
-            this.PlayerPicture1.TabStop = false;
-            this.PlayerPicture1.Click += new System.EventHandler(this.PlayerPicture1_Click);
-            // 
             // tabPage3
             // 
             this.tabPage3.Controls.Add(this.MatchInfoPanel);
             this.tabPage3.Controls.Add(this.OpenInMatchDetailsForm);
             this.tabPage3.Controls.Add(this.PanelWithTeams);
-            this.tabPage3.Controls.Add(this.SelectedPlayerPicture);
             this.tabPage3.Controls.Add(this.SelectedPlayerMatches);
             this.tabPage3.Controls.Add(this.SelectPlayerComboBox);
+            this.tabPage3.Controls.Add(this.SelectedPlayerPicture);
             this.tabPage3.Location = new System.Drawing.Point(184, 4);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
@@ -661,19 +598,6 @@
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Анализ статистики";
             this.tabPage3.UseVisualStyleBackColor = true;
-            // 
-            // SelectedPlayerPicture
-            // 
-            this.SelectedPlayerPicture.BorderRadius = 2;
-            this.SelectedPlayerPicture.FillColor = System.Drawing.Color.Gray;
-            this.SelectedPlayerPicture.ImageRotate = 0F;
-            this.SelectedPlayerPicture.InitialImage = null;
-            this.SelectedPlayerPicture.Location = new System.Drawing.Point(6, 11);
-            this.SelectedPlayerPicture.Name = "SelectedPlayerPicture";
-            this.SelectedPlayerPicture.Size = new System.Drawing.Size(80, 80);
-            this.SelectedPlayerPicture.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.SelectedPlayerPicture.TabIndex = 23;
-            this.SelectedPlayerPicture.TabStop = false;
             // 
             // SelectedPlayerMatches
             // 
@@ -703,6 +627,10 @@
             // 
             // tabPage4
             // 
+            this.tabPage4.Controls.Add(this.guna2Button1);
+            this.tabPage4.Controls.Add(this.guna2Panel10);
+            this.tabPage4.Controls.Add(this.guna2HtmlLabel2);
+            this.tabPage4.Controls.Add(this.guna2Panel9);
             this.tabPage4.Location = new System.Drawing.Point(184, 4);
             this.tabPage4.Name = "tabPage4";
             this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
@@ -1189,6 +1117,7 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.webView21);
             this.tabPage1.Location = new System.Drawing.Point(184, 4);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
@@ -1196,6 +1125,228 @@
             this.tabPage1.TabIndex = 4;
             this.tabPage1.Text = "Twitch";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // webView21
+            // 
+            this.webView21.AllowExternalDrop = true;
+            this.webView21.CreationProperties = null;
+            this.webView21.DefaultBackgroundColor = System.Drawing.Color.White;
+            this.webView21.Location = new System.Drawing.Point(0, -4);
+            this.webView21.Name = "webView21";
+            this.webView21.Size = new System.Drawing.Size(997, 639);
+            this.webView21.Source = new System.Uri("https://www.twitch.tv/directory/category/dota-2", System.UriKind.Absolute);
+            this.webView21.TabIndex = 0;
+            this.webView21.ZoomFactor = 1D;
+            // 
+            // guna2Panel9
+            // 
+            this.guna2Panel9.Location = new System.Drawing.Point(3, 59);
+            this.guna2Panel9.Name = "guna2Panel9";
+            this.guna2Panel9.Size = new System.Drawing.Size(300, 692);
+            this.guna2Panel9.TabIndex = 0;
+            // 
+            // guna2HtmlLabel2
+            // 
+            this.guna2HtmlLabel2.AutoSize = false;
+            this.guna2HtmlLabel2.BackColor = System.Drawing.Color.Transparent;
+            this.guna2HtmlLabel2.Location = new System.Drawing.Point(3, 8);
+            this.guna2HtmlLabel2.Name = "guna2HtmlLabel2";
+            this.guna2HtmlLabel2.Size = new System.Drawing.Size(294, 29);
+            this.guna2HtmlLabel2.TabIndex = 1;
+            this.guna2HtmlLabel2.Text = "Текущие тренировки";
+            this.guna2HtmlLabel2.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // guna2Panel10
+            // 
+            this.guna2Panel10.BackColor = System.Drawing.Color.Gainsboro;
+            this.guna2Panel10.Controls.Add(this.guna2PictureBox5);
+            this.guna2Panel10.Controls.Add(this.guna2PictureBox4);
+            this.guna2Panel10.Controls.Add(this.guna2PictureBox3);
+            this.guna2Panel10.Controls.Add(this.guna2PictureBox2);
+            this.guna2Panel10.Controls.Add(this.guna2HtmlLabel3);
+            this.guna2Panel10.Controls.Add(this.guna2PictureBox1);
+            this.guna2Panel10.Location = new System.Drawing.Point(415, 78);
+            this.guna2Panel10.Name = "guna2Panel10";
+            this.guna2Panel10.Size = new System.Drawing.Size(355, 165);
+            this.guna2Panel10.TabIndex = 2;
+            // 
+            // guna2HtmlLabel3
+            // 
+            this.guna2HtmlLabel3.AutoSize = false;
+            this.guna2HtmlLabel3.BackColor = System.Drawing.Color.Transparent;
+            this.guna2HtmlLabel3.Location = new System.Drawing.Point(3, 3);
+            this.guna2HtmlLabel3.Name = "guna2HtmlLabel3";
+            this.guna2HtmlLabel3.Size = new System.Drawing.Size(240, 22);
+            this.guna2HtmlLabel3.TabIndex = 1;
+            this.guna2HtmlLabel3.Text = "Название тренировки";
+            // 
+            // guna2Button1
+            // 
+            this.guna2Button1.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
+            this.guna2Button1.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
+            this.guna2Button1.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.guna2Button1.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.guna2Button1.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.guna2Button1.ForeColor = System.Drawing.Color.White;
+            this.guna2Button1.Location = new System.Drawing.Point(540, 338);
+            this.guna2Button1.Name = "guna2Button1";
+            this.guna2Button1.Size = new System.Drawing.Size(180, 45);
+            this.guna2Button1.TabIndex = 3;
+            this.guna2Button1.Text = "Добавить тренировку";
+            this.guna2Button1.Click += new System.EventHandler(this.guna2Button1_Click_1);
+            // 
+            // TrainerPicture
+            // 
+            this.TrainerPicture.BorderRadius = 2;
+            this.TrainerPicture.ErrorImage = ((System.Drawing.Image)(resources.GetObject("TrainerPicture.ErrorImage")));
+            this.TrainerPicture.FillColor = System.Drawing.Color.Gray;
+            this.TrainerPicture.ImageRotate = 0F;
+            this.TrainerPicture.InitialImage = null;
+            this.TrainerPicture.Location = new System.Drawing.Point(4, 7);
+            this.TrainerPicture.Name = "TrainerPicture";
+            this.TrainerPicture.Size = new System.Drawing.Size(70, 66);
+            this.TrainerPicture.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.TrainerPicture.TabIndex = 22;
+            this.TrainerPicture.TabStop = false;
+            // 
+            // PlayerPicture5
+            // 
+            this.PlayerPicture5.BorderRadius = 2;
+            this.PlayerPicture5.ErrorImage = ((System.Drawing.Image)(resources.GetObject("PlayerPicture5.ErrorImage")));
+            this.PlayerPicture5.FillColor = System.Drawing.Color.Gray;
+            this.PlayerPicture5.ImageRotate = 0F;
+            this.PlayerPicture5.InitialImage = null;
+            this.PlayerPicture5.Location = new System.Drawing.Point(4, 7);
+            this.PlayerPicture5.Name = "PlayerPicture5";
+            this.PlayerPicture5.Size = new System.Drawing.Size(70, 66);
+            this.PlayerPicture5.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.PlayerPicture5.TabIndex = 22;
+            this.PlayerPicture5.TabStop = false;
+            // 
+            // PlayerPicture4
+            // 
+            this.PlayerPicture4.BorderRadius = 2;
+            this.PlayerPicture4.ErrorImage = ((System.Drawing.Image)(resources.GetObject("PlayerPicture4.ErrorImage")));
+            this.PlayerPicture4.FillColor = System.Drawing.Color.Gray;
+            this.PlayerPicture4.ImageRotate = 0F;
+            this.PlayerPicture4.InitialImage = null;
+            this.PlayerPicture4.Location = new System.Drawing.Point(4, 7);
+            this.PlayerPicture4.Name = "PlayerPicture4";
+            this.PlayerPicture4.Size = new System.Drawing.Size(70, 66);
+            this.PlayerPicture4.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.PlayerPicture4.TabIndex = 22;
+            this.PlayerPicture4.TabStop = false;
+            // 
+            // PlayerPicture3
+            // 
+            this.PlayerPicture3.BorderRadius = 2;
+            this.PlayerPicture3.ErrorImage = ((System.Drawing.Image)(resources.GetObject("PlayerPicture3.ErrorImage")));
+            this.PlayerPicture3.FillColor = System.Drawing.Color.Gray;
+            this.PlayerPicture3.ImageRotate = 0F;
+            this.PlayerPicture3.InitialImage = null;
+            this.PlayerPicture3.Location = new System.Drawing.Point(4, 7);
+            this.PlayerPicture3.Name = "PlayerPicture3";
+            this.PlayerPicture3.Size = new System.Drawing.Size(70, 66);
+            this.PlayerPicture3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.PlayerPicture3.TabIndex = 22;
+            this.PlayerPicture3.TabStop = false;
+            // 
+            // PlayerPicture2
+            // 
+            this.PlayerPicture2.BorderRadius = 2;
+            this.PlayerPicture2.ErrorImage = ((System.Drawing.Image)(resources.GetObject("PlayerPicture2.ErrorImage")));
+            this.PlayerPicture2.FillColor = System.Drawing.Color.Gray;
+            this.PlayerPicture2.ImageRotate = 0F;
+            this.PlayerPicture2.InitialImage = null;
+            this.PlayerPicture2.Location = new System.Drawing.Point(4, 7);
+            this.PlayerPicture2.Name = "PlayerPicture2";
+            this.PlayerPicture2.Size = new System.Drawing.Size(70, 66);
+            this.PlayerPicture2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.PlayerPicture2.TabIndex = 22;
+            this.PlayerPicture2.TabStop = false;
+            // 
+            // PlayerPicture1
+            // 
+            this.PlayerPicture1.BorderRadius = 2;
+            this.PlayerPicture1.ErrorImage = ((System.Drawing.Image)(resources.GetObject("PlayerPicture1.ErrorImage")));
+            this.PlayerPicture1.FillColor = System.Drawing.Color.Gray;
+            this.PlayerPicture1.ImageRotate = 0F;
+            this.PlayerPicture1.InitialImage = null;
+            this.PlayerPicture1.Location = new System.Drawing.Point(4, 7);
+            this.PlayerPicture1.Name = "PlayerPicture1";
+            this.PlayerPicture1.Size = new System.Drawing.Size(70, 66);
+            this.PlayerPicture1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.PlayerPicture1.TabIndex = 22;
+            this.PlayerPicture1.TabStop = false;
+            this.PlayerPicture1.Click += new System.EventHandler(this.PlayerPicture1_Click);
+            // 
+            // SelectedPlayerPicture
+            // 
+            this.SelectedPlayerPicture.BorderRadius = 2;
+            this.SelectedPlayerPicture.FillColor = System.Drawing.Color.Gray;
+            this.SelectedPlayerPicture.ImageRotate = 0F;
+            this.SelectedPlayerPicture.InitialImage = null;
+            this.SelectedPlayerPicture.Location = new System.Drawing.Point(6, 11);
+            this.SelectedPlayerPicture.Name = "SelectedPlayerPicture";
+            this.SelectedPlayerPicture.Size = new System.Drawing.Size(80, 80);
+            this.SelectedPlayerPicture.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.SelectedPlayerPicture.TabIndex = 23;
+            this.SelectedPlayerPicture.TabStop = false;
+            // 
+            // guna2PictureBox5
+            // 
+            this.guna2PictureBox5.BackColor = System.Drawing.Color.Gray;
+            this.guna2PictureBox5.FillColor = System.Drawing.Color.DarkGray;
+            this.guna2PictureBox5.ImageRotate = 0F;
+            this.guna2PictureBox5.Location = new System.Drawing.Point(237, 101);
+            this.guna2PictureBox5.Name = "guna2PictureBox5";
+            this.guna2PictureBox5.Size = new System.Drawing.Size(50, 50);
+            this.guna2PictureBox5.TabIndex = 5;
+            this.guna2PictureBox5.TabStop = false;
+            // 
+            // guna2PictureBox4
+            // 
+            this.guna2PictureBox4.BackColor = System.Drawing.Color.Gray;
+            this.guna2PictureBox4.FillColor = System.Drawing.Color.DarkGray;
+            this.guna2PictureBox4.ImageRotate = 0F;
+            this.guna2PictureBox4.Location = new System.Drawing.Point(181, 101);
+            this.guna2PictureBox4.Name = "guna2PictureBox4";
+            this.guna2PictureBox4.Size = new System.Drawing.Size(50, 50);
+            this.guna2PictureBox4.TabIndex = 4;
+            this.guna2PictureBox4.TabStop = false;
+            // 
+            // guna2PictureBox3
+            // 
+            this.guna2PictureBox3.BackColor = System.Drawing.Color.Gray;
+            this.guna2PictureBox3.FillColor = System.Drawing.Color.DarkGray;
+            this.guna2PictureBox3.ImageRotate = 0F;
+            this.guna2PictureBox3.Location = new System.Drawing.Point(125, 101);
+            this.guna2PictureBox3.Name = "guna2PictureBox3";
+            this.guna2PictureBox3.Size = new System.Drawing.Size(50, 50);
+            this.guna2PictureBox3.TabIndex = 3;
+            this.guna2PictureBox3.TabStop = false;
+            // 
+            // guna2PictureBox2
+            // 
+            this.guna2PictureBox2.BackColor = System.Drawing.Color.Gray;
+            this.guna2PictureBox2.FillColor = System.Drawing.Color.DarkGray;
+            this.guna2PictureBox2.ImageRotate = 0F;
+            this.guna2PictureBox2.Location = new System.Drawing.Point(69, 101);
+            this.guna2PictureBox2.Name = "guna2PictureBox2";
+            this.guna2PictureBox2.Size = new System.Drawing.Size(50, 50);
+            this.guna2PictureBox2.TabIndex = 2;
+            this.guna2PictureBox2.TabStop = false;
+            // 
+            // guna2PictureBox1
+            // 
+            this.guna2PictureBox1.BackColor = System.Drawing.Color.Gray;
+            this.guna2PictureBox1.FillColor = System.Drawing.Color.DarkGray;
+            this.guna2PictureBox1.ImageRotate = 0F;
+            this.guna2PictureBox1.Location = new System.Drawing.Point(13, 101);
+            this.guna2PictureBox1.Name = "guna2PictureBox1";
+            this.guna2PictureBox1.Size = new System.Drawing.Size(50, 50);
+            this.guna2PictureBox1.TabIndex = 0;
+            this.guna2PictureBox1.TabStop = false;
             // 
             // MainForm
             // 
@@ -1213,23 +1364,32 @@
             this.tabPage2.ResumeLayout(false);
             this.PanelWithButtons.ResumeLayout(false);
             this.guna2Panel7.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.TrainerPicture)).EndInit();
             this.guna2Panel5.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.PlayerPicture5)).EndInit();
             this.guna2Panel4.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.PlayerPicture4)).EndInit();
             this.guna2Panel3.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.PlayerPicture3)).EndInit();
             this.guna2Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.PlayerPicture2)).EndInit();
             this.guna2Panel1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.PlayerPicture1)).EndInit();
             this.tabPage3.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.SelectedPlayerPicture)).EndInit();
+            this.tabPage4.ResumeLayout(false);
             this.PanelWithTeams.ResumeLayout(false);
             this.guna2Panel6.ResumeLayout(false);
             this.guna2Panel8.ResumeLayout(false);
             this.MatchInfoPanel.ResumeLayout(false);
+            this.tabPage1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.webView21)).EndInit();
+            this.guna2Panel10.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.TrainerPicture)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.PlayerPicture5)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.PlayerPicture4)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.PlayerPicture3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.PlayerPicture2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.PlayerPicture1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.SelectedPlayerPicture)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.guna2PictureBox5)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.guna2PictureBox4)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.guna2PictureBox3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.guna2PictureBox2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.guna2PictureBox1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -1313,5 +1473,16 @@
         private Guna.UI2.WinForms.Guna2Button OpenInMatchDetailsForm;
         private Guna.UI2.WinForms.Guna2Panel MatchInfoPanel;
         private System.Windows.Forms.TabPage tabPage1;
+        private Microsoft.Web.WebView2.WinForms.WebView2 webView21;
+        private Guna.UI2.WinForms.Guna2Panel guna2Panel9;
+        private Guna.UI2.WinForms.Guna2Panel guna2Panel10;
+        private Guna.UI2.WinForms.Guna2HtmlLabel guna2HtmlLabel2;
+        private Guna.UI2.WinForms.Guna2HtmlLabel guna2HtmlLabel3;
+        private Guna.UI2.WinForms.Guna2PictureBox guna2PictureBox1;
+        private Guna.UI2.WinForms.Guna2Button guna2Button1;
+        private Guna.UI2.WinForms.Guna2PictureBox guna2PictureBox5;
+        private Guna.UI2.WinForms.Guna2PictureBox guna2PictureBox4;
+        private Guna.UI2.WinForms.Guna2PictureBox guna2PictureBox3;
+        private Guna.UI2.WinForms.Guna2PictureBox guna2PictureBox2;
     }
 }
