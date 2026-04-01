@@ -143,7 +143,7 @@ namespace Dota_2_Training_Platform
 
         private void SteamIDTextBox_TextChanged(object sender, EventArgs e) // SteamIDTextBox
         {
-            FieldChecker.FieldCheck(SteamIDTextBox, FieldChecker.CheckType.SteamID);
+            FieldChecker.FieldCheck(SteamIDTextBox, FieldChecker.CheckType.Numbers);
         }
         private void PasswordTextBox_TextChanged(object sender, EventArgs e) //PasswordTextBox
         {

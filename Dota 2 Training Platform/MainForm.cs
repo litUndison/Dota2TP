@@ -233,32 +233,32 @@ namespace Dota_2_Training_Platform
 
         private void TeamName_TextChanged(object sender, EventArgs e)
         {
-            FieldChecker.FieldCheck(PlayerID1, FieldChecker.CheckType.Team);
+            FieldChecker.FieldCheck(PlayerID1, FieldChecker.CheckType.Names);
         }
 
         private void PlayerID1_TextChanged(object sender, EventArgs e)
         {
-            FieldChecker.FieldCheck(PlayerID1, FieldChecker.CheckType.SteamID);
+            FieldChecker.FieldCheck(PlayerID1, FieldChecker.CheckType.Numbers);
         }
 
         private void PlayerID2_TextChanged(object sender, EventArgs e)
         {
-            FieldChecker.FieldCheck(PlayerID2, FieldChecker.CheckType.SteamID);
+            FieldChecker.FieldCheck(PlayerID2, FieldChecker.CheckType.Numbers);
         }
 
         private void PlayerID3_TextChanged(object sender, EventArgs e)
         {
-            FieldChecker.FieldCheck(PlayerID3, FieldChecker.CheckType.SteamID);
+            FieldChecker.FieldCheck(PlayerID3, FieldChecker.CheckType.Numbers);
         }
 
         private void PlayerID4_TextChanged(object sender, EventArgs e)
         {
-            FieldChecker.FieldCheck(PlayerID4, FieldChecker.CheckType.SteamID);
+            FieldChecker.FieldCheck(PlayerID4, FieldChecker.CheckType.Numbers);
         }
 
         private void PlayerID5_TextChanged(object sender, EventArgs e)
         {
-            FieldChecker.FieldCheck(PlayerID5, FieldChecker.CheckType.SteamID);
+            FieldChecker.FieldCheck(PlayerID5, FieldChecker.CheckType.Numbers);
         }
 
         private void ToEnterFormButton_Click(object sender, EventArgs e)
@@ -901,8 +901,12 @@ namespace Dota_2_Training_Platform
 
         private void guna2Button1_Click_1(object sender, EventArgs e)
         {
-            CreateTrainingTask taskForm = new CreateTrainingTask();
-            taskForm.Show();
+            CreateTrainingTask taskForm = new CreateTrainingTask(currentTeam);
+            taskForm.ShowDialog();
+            if(taskForm.DialogResult == DialogResult.OK)
+            {
+                //добавление тренировки
+            }
         }
     }
 }

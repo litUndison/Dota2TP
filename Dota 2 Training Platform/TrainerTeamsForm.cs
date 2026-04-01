@@ -218,33 +218,33 @@ namespace Dota_2_Training_Platform
 
         private void TeamNameBox_TextChanged(object sender, EventArgs e)
         {
-            FieldChecker.FieldCheck(PlayerBox1, FieldChecker.CheckType.Team);
+            FieldChecker.FieldCheck(PlayerBox1, FieldChecker.CheckType.Names);
             //string.IsNullOrWhiteSpace(TeamNameBox.Text)
         }
 
         private void PlayerBox1_TextChanged(object sender, EventArgs e)
         {
-            FieldChecker.FieldCheck(PlayerBox1, FieldChecker.CheckType.SteamID);
+            FieldChecker.FieldCheck(PlayerBox1, FieldChecker.CheckType.Numbers);
         }
 
         private void PlayerBox2_TextChanged(object sender, EventArgs e)
         {
-            FieldChecker.FieldCheck(PlayerBox2, FieldChecker.CheckType.SteamID);
+            FieldChecker.FieldCheck(PlayerBox2, FieldChecker.CheckType.Numbers);
         }
 
         private void PlayerBox3_TextChanged(object sender, EventArgs e)
         {
-            FieldChecker.FieldCheck(PlayerBox3, FieldChecker.CheckType.SteamID);
+            FieldChecker.FieldCheck(PlayerBox3, FieldChecker.CheckType.Numbers);
         }
 
         private void PlayerBox4_TextChanged(object sender, EventArgs e)
         {
-            FieldChecker.FieldCheck(PlayerBox4, FieldChecker.CheckType.SteamID);
+            FieldChecker.FieldCheck(PlayerBox4, FieldChecker.CheckType.Numbers);
         }
 
         private void PlayerBox5_TextChanged(object sender, EventArgs e)
         {
-            FieldChecker.FieldCheck(PlayerBox5, FieldChecker.CheckType.SteamID);
+            FieldChecker.FieldCheck(PlayerBox5, FieldChecker.CheckType.Numbers);
         }
 
         private void guna2GradientButton1_Click(object sender, EventArgs e) // ContinueButton

@@ -12,14 +12,14 @@ namespace Dota_2_Training_Platform.Functions
     static public class FieldChecker
     {
         public static string correctPasswordSymbols = "1234567890abcdefghijklmnopqrstuvwxyz-_";
-        public static string correctTeamSymbols = "абвгдеёжзийклмнопрстуфхцчшщъыьэюя 1234567890abcdefghijklmnopqrstuvwxyz-_";
-        public static string correctSteamIDSymbols = "1234567890";
+        public static string correctNameSymbols = "абвгдеёжзийклмнопрстуфхцчшщъыьэюя 1234567890abcdefghijklmnopqrstuvwxyz-_";
+        public static string correctNumberSymbols = "1234567890";
 
         public enum CheckType
         {
             Password,
-            Team,
-            SteamID
+            Names,
+            Numbers
         };
 
         public static void FieldCheck(Guna2TextBox currentTextBox, CheckType type)
@@ -32,14 +32,14 @@ namespace Dota_2_Training_Platform.Functions
                         validationString = correctPasswordSymbols;
                         break;
                     }
-                case CheckType.Team:
+                case CheckType.Names:
                     {
-                        validationString = correctTeamSymbols;
+                        validationString = correctNameSymbols;
                         break;
                     }
-                case CheckType.SteamID:
+                case CheckType.Numbers:
                     {
-                        validationString = correctSteamIDSymbols;
+                        validationString = correctNumberSymbols;
                         break;
                     }
             }
