@@ -1,6 +1,7 @@
 ﻿using DataBaseManager;
 using Dota_2_Training_Platform.Functions;
 using Dota_2_Training_Platform.Models;
+using Dota_2_Training_Platform.Models.Trainings;
 using Guna.UI2.WinForms;
 using System;
 using System.Collections.Generic;
@@ -14,6 +15,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using TheArtOfDevHtmlRenderer.Adapters;
 
 namespace Dota_2_Training_Platform
 {
@@ -24,6 +26,7 @@ namespace Dota_2_Training_Platform
 
         UserModel currentUser;
         TeamModel currentTeam;
+        List<TrainingTask> tasks = new List<TrainingTask>();
 
         Guna2PictureBox[] pictureBoxes;
         Guna2HtmlLabel[] htmlLabels;
@@ -99,6 +102,7 @@ namespace Dota_2_Training_Platform
 
             
             LoadTeam();
+            LoadTasks();
 
             TrainerPicture.LoadAsync(currentUser.Avatarfull);
             TrainerName.Text = currentUser.Name;
@@ -359,7 +363,7 @@ namespace Dota_2_Training_Platform
                 label.ForeColor = Color.Black;
                 label.Font = new Font("Segoe UI", 12, FontStyle.Bold);
                 label.AutoSize = false;
-                label.Width = 360;
+                label.Width = SelectedPlayerMatches.Width - 20;
                 label.Top = 20;
                 label.Left = 2;
                 label.TextAlign = ContentAlignment.MiddleCenter;
@@ -897,6 +901,95 @@ namespace Dota_2_Training_Platform
         }
 
         #region Trainings
+
+        private async void LoadTasks()
+        {
+            tasks.Clear();
+            tasks = await dbManager.GetTrainingTasksAsync(currentTeam.Id);
+
+
+            TrainingTasksPanel.Controls.Clear();
+
+            foreach (var task in tasks)
+            {
+                Guna2Panel taskPanel = new Guna2Panel();
+                Font font = new Font(guna2HtmlLabel1.Font, FontStyle.Regular);
+
+                taskPanel.Font = font;
+                taskPanel.Width = TrainingTasksPanel.Width - 17;
+                taskPanel.Height = 150;
+
+                taskPanel.Top = TrainingTasksPanel.Controls.Count == 0 ? 10 : TrainingTasksPanel.Controls[TrainingTasksPanel.Controls.Count - 1].Bottom + 2;
+
+                taskPanel.Tag = task;
+                taskPanel.Click += OpenTask;
+
+                TrainingTasksPanel.Controls.Add(taskPanel);
+            }
+        }
+        private void OpenTask(object sender, EventArgs e)
+        {
+            TrainingTask task = (sender as Guna2Panel).Tag as TrainingTask;
+        }
+
+        // Делает изображение красноватым
+        private Image MakePlayerRed(Image original)
+        {
+            Bitmap redBitmap = new Bitmap(original.Width, original.Height);
+
+            using (Graphics g = Graphics.FromImage(redBitmap))
+            {
+                var colorMatrix = new System.Drawing.Imaging.ColorMatrix(
+                    new float[][]
+                    {
+                new float[]{1.0f, 0f, 0f, 0, 0},  // Красный канал усиливаем
+                new float[]{0f, 0.3f, 0f, 0, 0},  // Зеленый ослабляем
+                new float[]{0f, 0f, 0.3f, 0, 0},  // Синий ослабляем
+                new float[]{0, 0, 0, 1, 0},
+                new float[]{0, 0, 0, 0, 1}
+                    });
+
+                var attributes = new System.Drawing.Imaging.ImageAttributes();
+                attributes.SetColorMatrix(colorMatrix);
+
+                g.DrawImage(original,
+                    new Rectangle(0, 0, original.Width, original.Height),
+                    0, 0, original.Width, original.Height,
+                    GraphicsUnit.Pixel, attributes);
+            }
+
+            return redBitmap;
+        }
+
+        // Делает изображение зеленоватым
+        private Image MakePlayerGreen(Image original)
+        {
+            Bitmap greenBitmap = new Bitmap(original.Width, original.Height);
+
+            using (Graphics g = Graphics.FromImage(greenBitmap))
+            {
+                var colorMatrix = new System.Drawing.Imaging.ColorMatrix(
+                    new float[][]
+                    {
+                new float[]{0.3f, 0f, 0f, 0, 0},  // Красный ослабляем
+                new float[]{0f, 1.0f, 0f, 0, 0},  // Зеленый усиливаем
+                new float[]{0f, 0f, 0.3f, 0, 0},  // Синий ослабляем
+                new float[]{0, 0, 0, 1, 0},
+                new float[]{0, 0, 0, 0, 1}
+                    });
+
+                var attributes = new System.Drawing.Imaging.ImageAttributes();
+                attributes.SetColorMatrix(colorMatrix);
+
+                g.DrawImage(original,
+                    new Rectangle(0, 0, original.Width, original.Height),
+                    0, 0, original.Width, original.Height,
+                    GraphicsUnit.Pixel, attributes);
+            }
+
+            return greenBitmap;
+        }
+
         #endregion
 
         private void guna2Button1_Click_1(object sender, EventArgs e)
@@ -908,5 +1001,6 @@ namespace Dota_2_Training_Platform
                 //добавление тренировки
             }
         }
+
     }
 }

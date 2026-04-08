@@ -234,6 +234,12 @@ namespace Dota_2_Training_Platform
             currentTask.Title = TrainingTaskName.Text;
             currentTask.Type = _trainingType;
             currentTask.PlayerIds = _selectedPlayers.Select(p => p.AccountID).ToList();
+            Dictionary<string, bool> buffer = new Dictionary<string, bool>();
+            foreach(var player in _selectedPlayers)
+            {
+                buffer.Add(player.AccountID, false);
+            }
+            currentTask.CompletedPlayers = buffer;
             currentTask.Metric = (TrainingMetric)Metric.SelectedIndex;
             currentTask.TargetValue = int.Parse(TargetValue.Text);
             currentTask.Comparison = (ComparisonType)comboBoxComparison.SelectedIndex;
@@ -256,7 +262,10 @@ namespace Dota_2_Training_Platform
                         break;
                     }
             }
+            currentTask.StartDate = DateTime.Parse($"{DateTime.Now.ToShortDateString()} {DateTime.Now.Hour}:{DateTime.Now.Minute}");
             currentTask.Deadline = DateTime.Parse($"{DateTime.Parse(Deadline.Text).ToShortDateString()} {DeadlineTimeHours.Text}:{DeadlineTimeMinutes.Text}");
+        
+            
         }
 
         private void Deadline_ValueChanged(object sender, EventArgs e)

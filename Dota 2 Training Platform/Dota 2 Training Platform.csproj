@@ -170,6 +170,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DB\DataBaseManager.cs" />
+    <Compile Include="Trainings\TrainingTasksAnalyzer.cs" />
     <EmbeddedResource Include="CreateTrainingTask.resx">
       <DependentUpon>CreateTrainingTask.cs</DependentUpon>
     </EmbeddedResource>

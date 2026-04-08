@@ -38,28 +38,44 @@
             this.guna2Panel7 = new Guna.UI2.WinForms.Guna2Panel();
             this.TrainerID = new Guna.UI2.WinForms.Guna2TextBox();
             this.TrainerName = new Guna.UI2.WinForms.Guna2HtmlLabel();
+            this.TrainerPicture = new Guna.UI2.WinForms.Guna2PictureBox();
             this.EditConfirm = new Guna.UI2.WinForms.Guna2Button();
             this.EditSwitcher = new Guna.UI2.WinForms.Guna2Button();
             this.TeamName = new Guna.UI2.WinForms.Guna2TextBox();
             this.guna2Panel5 = new Guna.UI2.WinForms.Guna2Panel();
             this.PlayerID5 = new Guna.UI2.WinForms.Guna2TextBox();
             this.PlayerName5 = new Guna.UI2.WinForms.Guna2HtmlLabel();
+            this.PlayerPicture5 = new Guna.UI2.WinForms.Guna2PictureBox();
             this.guna2Panel4 = new Guna.UI2.WinForms.Guna2Panel();
             this.PlayerID4 = new Guna.UI2.WinForms.Guna2TextBox();
             this.PlayerName4 = new Guna.UI2.WinForms.Guna2HtmlLabel();
+            this.PlayerPicture4 = new Guna.UI2.WinForms.Guna2PictureBox();
             this.guna2Panel3 = new Guna.UI2.WinForms.Guna2Panel();
             this.PlayerID3 = new Guna.UI2.WinForms.Guna2TextBox();
             this.PlayerName3 = new Guna.UI2.WinForms.Guna2HtmlLabel();
+            this.PlayerPicture3 = new Guna.UI2.WinForms.Guna2PictureBox();
             this.guna2Panel2 = new Guna.UI2.WinForms.Guna2Panel();
             this.PlayerID2 = new Guna.UI2.WinForms.Guna2TextBox();
             this.PlayerName2 = new Guna.UI2.WinForms.Guna2HtmlLabel();
+            this.PlayerPicture2 = new Guna.UI2.WinForms.Guna2PictureBox();
             this.guna2Panel1 = new Guna.UI2.WinForms.Guna2Panel();
             this.PlayerID1 = new Guna.UI2.WinForms.Guna2TextBox();
             this.PlayerName1 = new Guna.UI2.WinForms.Guna2HtmlLabel();
+            this.PlayerPicture1 = new Guna.UI2.WinForms.Guna2PictureBox();
             this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.SelectedPlayerMatches = new Guna.UI2.WinForms.Guna2Panel();
-            this.SelectPlayerComboBox = new Guna.UI2.WinForms.Guna2ComboBox();
-            this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.MatchInfoPanel = new Guna.UI2.WinForms.Guna2Panel();
+            this.MatchID = new Guna.UI2.WinForms.Guna2HtmlLabel();
+            this.GameMode = new Guna.UI2.WinForms.Guna2HtmlLabel();
+            this.WinnerLabel = new Guna.UI2.WinForms.Guna2HtmlLabel();
+            this.LobbyType = new Guna.UI2.WinForms.Guna2HtmlLabel();
+            this.DurationLabel = new Guna.UI2.WinForms.Guna2HtmlLabel();
+            this.guna2HtmlLabel12 = new Guna.UI2.WinForms.Guna2HtmlLabel();
+            this.RadiantScore = new Guna.UI2.WinForms.Guna2HtmlLabel();
+            this.guna2HtmlLabel11 = new Guna.UI2.WinForms.Guna2HtmlLabel();
+            this.DireScore = new Guna.UI2.WinForms.Guna2HtmlLabel();
+            this.guna2HtmlLabel10 = new Guna.UI2.WinForms.Guna2HtmlLabel();
+            this.StartTime = new Guna.UI2.WinForms.Guna2HtmlLabel();
+            this.OpenInMatchDetailsForm = new Guna.UI2.WinForms.Guna2Button();
             this.PanelWithTeams = new Guna.UI2.WinForms.Guna2Panel();
             this.guna2Panel6 = new Guna.UI2.WinForms.Guna2Panel();
             this.HeroTip = new Guna.UI2.WinForms.Guna2HtmlLabel();
@@ -85,68 +101,54 @@
             this.direPanel = new Guna.UI2.WinForms.Guna2Panel();
             this.RadiantTeam = new Guna.UI2.WinForms.Guna2HtmlLabel();
             this.DireTeam = new Guna.UI2.WinForms.Guna2HtmlLabel();
-            this.GameMode = new Guna.UI2.WinForms.Guna2HtmlLabel();
-            this.LobbyType = new Guna.UI2.WinForms.Guna2HtmlLabel();
-            this.guna2HtmlLabel12 = new Guna.UI2.WinForms.Guna2HtmlLabel();
-            this.guna2HtmlLabel11 = new Guna.UI2.WinForms.Guna2HtmlLabel();
-            this.guna2HtmlLabel10 = new Guna.UI2.WinForms.Guna2HtmlLabel();
-            this.StartTime = new Guna.UI2.WinForms.Guna2HtmlLabel();
-            this.DireScore = new Guna.UI2.WinForms.Guna2HtmlLabel();
-            this.RadiantScore = new Guna.UI2.WinForms.Guna2HtmlLabel();
-            this.MatchID = new Guna.UI2.WinForms.Guna2HtmlLabel();
-            this.DurationLabel = new Guna.UI2.WinForms.Guna2HtmlLabel();
-            this.WinnerLabel = new Guna.UI2.WinForms.Guna2HtmlLabel();
-            this.OpenInMatchDetailsForm = new Guna.UI2.WinForms.Guna2Button();
-            this.MatchInfoPanel = new Guna.UI2.WinForms.Guna2Panel();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.webView21 = new Microsoft.Web.WebView2.WinForms.WebView2();
-            this.guna2Panel9 = new Guna.UI2.WinForms.Guna2Panel();
-            this.guna2HtmlLabel2 = new Guna.UI2.WinForms.Guna2HtmlLabel();
-            this.guna2Panel10 = new Guna.UI2.WinForms.Guna2Panel();
-            this.guna2HtmlLabel3 = new Guna.UI2.WinForms.Guna2HtmlLabel();
-            this.guna2Button1 = new Guna.UI2.WinForms.Guna2Button();
-            this.TrainerPicture = new Guna.UI2.WinForms.Guna2PictureBox();
-            this.PlayerPicture5 = new Guna.UI2.WinForms.Guna2PictureBox();
-            this.PlayerPicture4 = new Guna.UI2.WinForms.Guna2PictureBox();
-            this.PlayerPicture3 = new Guna.UI2.WinForms.Guna2PictureBox();
-            this.PlayerPicture2 = new Guna.UI2.WinForms.Guna2PictureBox();
-            this.PlayerPicture1 = new Guna.UI2.WinForms.Guna2PictureBox();
+            this.SelectedPlayerMatches = new Guna.UI2.WinForms.Guna2Panel();
+            this.SelectPlayerComboBox = new Guna.UI2.WinForms.Guna2ComboBox();
             this.SelectedPlayerPicture = new Guna.UI2.WinForms.Guna2PictureBox();
+            this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.guna2Button1 = new Guna.UI2.WinForms.Guna2Button();
+            this.guna2Panel10 = new Guna.UI2.WinForms.Guna2Panel();
             this.guna2PictureBox5 = new Guna.UI2.WinForms.Guna2PictureBox();
             this.guna2PictureBox4 = new Guna.UI2.WinForms.Guna2PictureBox();
             this.guna2PictureBox3 = new Guna.UI2.WinForms.Guna2PictureBox();
             this.guna2PictureBox2 = new Guna.UI2.WinForms.Guna2PictureBox();
+            this.guna2HtmlLabel3 = new Guna.UI2.WinForms.Guna2HtmlLabel();
             this.guna2PictureBox1 = new Guna.UI2.WinForms.Guna2PictureBox();
+            this.guna2HtmlLabel2 = new Guna.UI2.WinForms.Guna2HtmlLabel();
+            this.TrainingTasksPanel = new Guna.UI2.WinForms.Guna2Panel();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.webView21 = new Microsoft.Web.WebView2.WinForms.WebView2();
+            this.guna2HtmlLabel4 = new Guna.UI2.WinForms.Guna2HtmlLabel();
+            this.guna2HtmlLabel5 = new Guna.UI2.WinForms.Guna2HtmlLabel();
             this.guna2TabControl1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.PanelWithButtons.SuspendLayout();
             this.guna2Panel7.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.TrainerPicture)).BeginInit();
             this.guna2Panel5.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.PlayerPicture5)).BeginInit();
             this.guna2Panel4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.PlayerPicture4)).BeginInit();
             this.guna2Panel3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.PlayerPicture3)).BeginInit();
             this.guna2Panel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.PlayerPicture2)).BeginInit();
             this.guna2Panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.PlayerPicture1)).BeginInit();
             this.tabPage3.SuspendLayout();
-            this.tabPage4.SuspendLayout();
+            this.MatchInfoPanel.SuspendLayout();
             this.PanelWithTeams.SuspendLayout();
             this.guna2Panel6.SuspendLayout();
             this.guna2Panel8.SuspendLayout();
-            this.MatchInfoPanel.SuspendLayout();
-            this.tabPage1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.webView21)).BeginInit();
-            this.guna2Panel10.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.TrainerPicture)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.PlayerPicture5)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.PlayerPicture4)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.PlayerPicture3)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.PlayerPicture2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.PlayerPicture1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.SelectedPlayerPicture)).BeginInit();
+            this.tabPage4.SuspendLayout();
+            this.guna2Panel10.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.guna2PictureBox5)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.guna2PictureBox4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.guna2PictureBox3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.guna2PictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.guna2PictureBox1)).BeginInit();
+            this.tabPage1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.webView21)).BeginInit();
             this.SuspendLayout();
             // 
             // guna2TabControl1
@@ -304,6 +306,20 @@
             this.TrainerName.Text = "Тренер";
             this.TrainerName.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
             // 
+            // TrainerPicture
+            // 
+            this.TrainerPicture.BorderRadius = 2;
+            this.TrainerPicture.ErrorImage = ((System.Drawing.Image)(resources.GetObject("TrainerPicture.ErrorImage")));
+            this.TrainerPicture.FillColor = System.Drawing.Color.Gray;
+            this.TrainerPicture.ImageRotate = 0F;
+            this.TrainerPicture.InitialImage = null;
+            this.TrainerPicture.Location = new System.Drawing.Point(4, 7);
+            this.TrainerPicture.Name = "TrainerPicture";
+            this.TrainerPicture.Size = new System.Drawing.Size(70, 66);
+            this.TrainerPicture.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.TrainerPicture.TabIndex = 22;
+            this.TrainerPicture.TabStop = false;
+            // 
             // EditConfirm
             // 
             this.EditConfirm.Animated = true;
@@ -407,6 +423,20 @@
             this.PlayerName5.Text = "Игрок";
             this.PlayerName5.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
             // 
+            // PlayerPicture5
+            // 
+            this.PlayerPicture5.BorderRadius = 2;
+            this.PlayerPicture5.ErrorImage = ((System.Drawing.Image)(resources.GetObject("PlayerPicture5.ErrorImage")));
+            this.PlayerPicture5.FillColor = System.Drawing.Color.Gray;
+            this.PlayerPicture5.ImageRotate = 0F;
+            this.PlayerPicture5.InitialImage = null;
+            this.PlayerPicture5.Location = new System.Drawing.Point(4, 7);
+            this.PlayerPicture5.Name = "PlayerPicture5";
+            this.PlayerPicture5.Size = new System.Drawing.Size(70, 66);
+            this.PlayerPicture5.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.PlayerPicture5.TabIndex = 22;
+            this.PlayerPicture5.TabStop = false;
+            // 
             // guna2Panel4
             // 
             this.guna2Panel4.Controls.Add(this.PlayerID4);
@@ -450,6 +480,20 @@
             this.PlayerName4.TabIndex = 23;
             this.PlayerName4.Text = "Игрок";
             this.PlayerName4.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // PlayerPicture4
+            // 
+            this.PlayerPicture4.BorderRadius = 2;
+            this.PlayerPicture4.ErrorImage = ((System.Drawing.Image)(resources.GetObject("PlayerPicture4.ErrorImage")));
+            this.PlayerPicture4.FillColor = System.Drawing.Color.Gray;
+            this.PlayerPicture4.ImageRotate = 0F;
+            this.PlayerPicture4.InitialImage = null;
+            this.PlayerPicture4.Location = new System.Drawing.Point(4, 7);
+            this.PlayerPicture4.Name = "PlayerPicture4";
+            this.PlayerPicture4.Size = new System.Drawing.Size(70, 66);
+            this.PlayerPicture4.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.PlayerPicture4.TabIndex = 22;
+            this.PlayerPicture4.TabStop = false;
             // 
             // guna2Panel3
             // 
@@ -495,6 +539,20 @@
             this.PlayerName3.Text = "Игрок";
             this.PlayerName3.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
             // 
+            // PlayerPicture3
+            // 
+            this.PlayerPicture3.BorderRadius = 2;
+            this.PlayerPicture3.ErrorImage = ((System.Drawing.Image)(resources.GetObject("PlayerPicture3.ErrorImage")));
+            this.PlayerPicture3.FillColor = System.Drawing.Color.Gray;
+            this.PlayerPicture3.ImageRotate = 0F;
+            this.PlayerPicture3.InitialImage = null;
+            this.PlayerPicture3.Location = new System.Drawing.Point(4, 7);
+            this.PlayerPicture3.Name = "PlayerPicture3";
+            this.PlayerPicture3.Size = new System.Drawing.Size(70, 66);
+            this.PlayerPicture3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.PlayerPicture3.TabIndex = 22;
+            this.PlayerPicture3.TabStop = false;
+            // 
             // guna2Panel2
             // 
             this.guna2Panel2.Controls.Add(this.PlayerID2);
@@ -538,6 +596,20 @@
             this.PlayerName2.TabIndex = 23;
             this.PlayerName2.Text = "Игрок";
             this.PlayerName2.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // PlayerPicture2
+            // 
+            this.PlayerPicture2.BorderRadius = 2;
+            this.PlayerPicture2.ErrorImage = ((System.Drawing.Image)(resources.GetObject("PlayerPicture2.ErrorImage")));
+            this.PlayerPicture2.FillColor = System.Drawing.Color.Gray;
+            this.PlayerPicture2.ImageRotate = 0F;
+            this.PlayerPicture2.InitialImage = null;
+            this.PlayerPicture2.Location = new System.Drawing.Point(4, 7);
+            this.PlayerPicture2.Name = "PlayerPicture2";
+            this.PlayerPicture2.Size = new System.Drawing.Size(70, 66);
+            this.PlayerPicture2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.PlayerPicture2.TabIndex = 22;
+            this.PlayerPicture2.TabStop = false;
             // 
             // guna2Panel1
             // 
@@ -583,6 +655,21 @@
             this.PlayerName1.Text = "Игрок";
             this.PlayerName1.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
             // 
+            // PlayerPicture1
+            // 
+            this.PlayerPicture1.BorderRadius = 2;
+            this.PlayerPicture1.ErrorImage = ((System.Drawing.Image)(resources.GetObject("PlayerPicture1.ErrorImage")));
+            this.PlayerPicture1.FillColor = System.Drawing.Color.Gray;
+            this.PlayerPicture1.ImageRotate = 0F;
+            this.PlayerPicture1.InitialImage = null;
+            this.PlayerPicture1.Location = new System.Drawing.Point(4, 7);
+            this.PlayerPicture1.Name = "PlayerPicture1";
+            this.PlayerPicture1.Size = new System.Drawing.Size(70, 66);
+            this.PlayerPicture1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.PlayerPicture1.TabIndex = 22;
+            this.PlayerPicture1.TabStop = false;
+            this.PlayerPicture1.Click += new System.EventHandler(this.PlayerPicture1_Click);
+            // 
             // tabPage3
             // 
             this.tabPage3.Controls.Add(this.MatchInfoPanel);
@@ -599,45 +686,175 @@
             this.tabPage3.Text = "Анализ статистики";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
-            // SelectedPlayerMatches
+            // MatchInfoPanel
             // 
-            this.SelectedPlayerMatches.AutoScroll = true;
-            this.SelectedPlayerMatches.BackColor = System.Drawing.Color.Gainsboro;
-            this.SelectedPlayerMatches.Location = new System.Drawing.Point(6, 97);
-            this.SelectedPlayerMatches.Name = "SelectedPlayerMatches";
-            this.SelectedPlayerMatches.Size = new System.Drawing.Size(280, 654);
-            this.SelectedPlayerMatches.TabIndex = 1;
+            this.MatchInfoPanel.Controls.Add(this.MatchID);
+            this.MatchInfoPanel.Controls.Add(this.GameMode);
+            this.MatchInfoPanel.Controls.Add(this.WinnerLabel);
+            this.MatchInfoPanel.Controls.Add(this.LobbyType);
+            this.MatchInfoPanel.Controls.Add(this.DurationLabel);
+            this.MatchInfoPanel.Controls.Add(this.guna2HtmlLabel12);
+            this.MatchInfoPanel.Controls.Add(this.RadiantScore);
+            this.MatchInfoPanel.Controls.Add(this.guna2HtmlLabel11);
+            this.MatchInfoPanel.Controls.Add(this.DireScore);
+            this.MatchInfoPanel.Controls.Add(this.guna2HtmlLabel10);
+            this.MatchInfoPanel.Controls.Add(this.StartTime);
+            this.MatchInfoPanel.Location = new System.Drawing.Point(292, 14);
+            this.MatchInfoPanel.Name = "MatchInfoPanel";
+            this.MatchInfoPanel.Size = new System.Drawing.Size(688, 120);
+            this.MatchInfoPanel.TabIndex = 52;
             // 
-            // SelectPlayerComboBox
+            // MatchID
             // 
-            this.SelectPlayerComboBox.BackColor = System.Drawing.Color.Transparent;
-            this.SelectPlayerComboBox.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.SelectPlayerComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.SelectPlayerComboBox.FillColor = System.Drawing.Color.Silver;
-            this.SelectPlayerComboBox.FocusedColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
-            this.SelectPlayerComboBox.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
-            this.SelectPlayerComboBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SelectPlayerComboBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(68)))), ((int)(((byte)(88)))), ((int)(((byte)(112)))));
-            this.SelectPlayerComboBox.ItemHeight = 30;
-            this.SelectPlayerComboBox.Location = new System.Drawing.Point(92, 33);
-            this.SelectPlayerComboBox.Name = "SelectPlayerComboBox";
-            this.SelectPlayerComboBox.Size = new System.Drawing.Size(194, 36);
-            this.SelectPlayerComboBox.TabIndex = 0;
-            this.SelectPlayerComboBox.SelectedIndexChanged += new System.EventHandler(this.SelectPlayerComboBox_SelectedIndexChanged);
+            this.MatchID.AutoSize = false;
+            this.MatchID.BackColor = System.Drawing.Color.Transparent;
+            this.MatchID.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.MatchID.Location = new System.Drawing.Point(-1, 0);
+            this.MatchID.Name = "MatchID";
+            this.MatchID.Size = new System.Drawing.Size(242, 15);
+            this.MatchID.TabIndex = 42;
+            this.MatchID.Text = "MatchID";
+            this.MatchID.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // tabPage4
+            // GameMode
             // 
-            this.tabPage4.Controls.Add(this.guna2Button1);
-            this.tabPage4.Controls.Add(this.guna2Panel10);
-            this.tabPage4.Controls.Add(this.guna2HtmlLabel2);
-            this.tabPage4.Controls.Add(this.guna2Panel9);
-            this.tabPage4.Location = new System.Drawing.Point(184, 4);
-            this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage4.Size = new System.Drawing.Size(997, 757);
-            this.tabPage4.TabIndex = 3;
-            this.tabPage4.Text = "Тренировки";
-            this.tabPage4.UseVisualStyleBackColor = true;
+            this.GameMode.AutoSize = false;
+            this.GameMode.BackColor = System.Drawing.Color.Transparent;
+            this.GameMode.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.GameMode.Location = new System.Drawing.Point(380, 0);
+            this.GameMode.Name = "GameMode";
+            this.GameMode.Size = new System.Drawing.Size(139, 18);
+            this.GameMode.TabIndex = 50;
+            this.GameMode.Text = "All pick";
+            this.GameMode.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // WinnerLabel
+            // 
+            this.WinnerLabel.AutoSize = false;
+            this.WinnerLabel.BackColor = System.Drawing.Color.Transparent;
+            this.WinnerLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.WinnerLabel.Location = new System.Drawing.Point(232, 62);
+            this.WinnerLabel.Name = "WinnerLabel";
+            this.WinnerLabel.Size = new System.Drawing.Size(214, 26);
+            this.WinnerLabel.TabIndex = 40;
+            this.WinnerLabel.Text = "Winner";
+            this.WinnerLabel.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // LobbyType
+            // 
+            this.LobbyType.AutoSize = false;
+            this.LobbyType.BackColor = System.Drawing.Color.Transparent;
+            this.LobbyType.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LobbyType.Location = new System.Drawing.Point(235, 0);
+            this.LobbyType.Name = "LobbyType";
+            this.LobbyType.Size = new System.Drawing.Size(139, 18);
+            this.LobbyType.TabIndex = 49;
+            this.LobbyType.Text = "Рейтинговый";
+            this.LobbyType.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // DurationLabel
+            // 
+            this.DurationLabel.AutoSize = false;
+            this.DurationLabel.BackColor = System.Drawing.Color.Transparent;
+            this.DurationLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DurationLabel.Location = new System.Drawing.Point(232, 94);
+            this.DurationLabel.Name = "DurationLabel";
+            this.DurationLabel.Size = new System.Drawing.Size(214, 23);
+            this.DurationLabel.TabIndex = 41;
+            this.DurationLabel.Text = "Duration";
+            this.DurationLabel.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // guna2HtmlLabel12
+            // 
+            this.guna2HtmlLabel12.AutoSize = false;
+            this.guna2HtmlLabel12.BackColor = System.Drawing.Color.Transparent;
+            this.guna2HtmlLabel12.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.guna2HtmlLabel12.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
+            this.guna2HtmlLabel12.Location = new System.Drawing.Point(525, 24);
+            this.guna2HtmlLabel12.Name = "guna2HtmlLabel12";
+            this.guna2HtmlLabel12.Size = new System.Drawing.Size(158, 20);
+            this.guna2HtmlLabel12.TabIndex = 48;
+            this.guna2HtmlLabel12.Text = "Матч проведён";
+            this.guna2HtmlLabel12.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // RadiantScore
+            // 
+            this.RadiantScore.AutoSize = false;
+            this.RadiantScore.BackColor = System.Drawing.Color.Transparent;
+            this.RadiantScore.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.RadiantScore.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(105)))), ((int)(((byte)(136)))), ((int)(((byte)(36)))));
+            this.RadiantScore.Location = new System.Drawing.Point(-5, 94);
+            this.RadiantScore.Name = "RadiantScore";
+            this.RadiantScore.Size = new System.Drawing.Size(231, 23);
+            this.RadiantScore.TabIndex = 43;
+            this.RadiantScore.Text = "10";
+            this.RadiantScore.TextAlignment = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // guna2HtmlLabel11
+            // 
+            this.guna2HtmlLabel11.AutoSize = false;
+            this.guna2HtmlLabel11.BackColor = System.Drawing.Color.Transparent;
+            this.guna2HtmlLabel11.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.guna2HtmlLabel11.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
+            this.guna2HtmlLabel11.Location = new System.Drawing.Point(380, 24);
+            this.guna2HtmlLabel11.Name = "guna2HtmlLabel11";
+            this.guna2HtmlLabel11.Size = new System.Drawing.Size(139, 20);
+            this.guna2HtmlLabel11.TabIndex = 47;
+            this.guna2HtmlLabel11.Text = "Режим игры";
+            this.guna2HtmlLabel11.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // DireScore
+            // 
+            this.DireScore.AutoSize = false;
+            this.DireScore.BackColor = System.Drawing.Color.Transparent;
+            this.DireScore.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DireScore.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(172)))), ((int)(((byte)(60)))), ((int)(((byte)(42)))));
+            this.DireScore.Location = new System.Drawing.Point(452, 94);
+            this.DireScore.Name = "DireScore";
+            this.DireScore.Size = new System.Drawing.Size(231, 23);
+            this.DireScore.TabIndex = 44;
+            this.DireScore.Text = "10";
+            this.DireScore.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // guna2HtmlLabel10
+            // 
+            this.guna2HtmlLabel10.AutoSize = false;
+            this.guna2HtmlLabel10.BackColor = System.Drawing.Color.Transparent;
+            this.guna2HtmlLabel10.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.guna2HtmlLabel10.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
+            this.guna2HtmlLabel10.Location = new System.Drawing.Point(235, 24);
+            this.guna2HtmlLabel10.Name = "guna2HtmlLabel10";
+            this.guna2HtmlLabel10.Size = new System.Drawing.Size(139, 20);
+            this.guna2HtmlLabel10.TabIndex = 46;
+            this.guna2HtmlLabel10.Text = "Тип лобби";
+            this.guna2HtmlLabel10.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // StartTime
+            // 
+            this.StartTime.AutoSize = false;
+            this.StartTime.BackColor = System.Drawing.Color.Transparent;
+            this.StartTime.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.StartTime.Location = new System.Drawing.Point(525, 0);
+            this.StartTime.Name = "StartTime";
+            this.StartTime.Size = new System.Drawing.Size(158, 15);
+            this.StartTime.TabIndex = 45;
+            this.StartTime.Text = "Время проведения";
+            this.StartTime.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // OpenInMatchDetailsForm
+            // 
+            this.OpenInMatchDetailsForm.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
+            this.OpenInMatchDetailsForm.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
+            this.OpenInMatchDetailsForm.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.OpenInMatchDetailsForm.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.OpenInMatchDetailsForm.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.OpenInMatchDetailsForm.ForeColor = System.Drawing.Color.White;
+            this.OpenInMatchDetailsForm.Location = new System.Drawing.Point(550, 695);
+            this.OpenInMatchDetailsForm.Name = "OpenInMatchDetailsForm";
+            this.OpenInMatchDetailsForm.Size = new System.Drawing.Size(180, 45);
+            this.OpenInMatchDetailsForm.TabIndex = 51;
+            this.OpenInMatchDetailsForm.Text = "Открыть в отдельном окне";
+            this.OpenInMatchDetailsForm.Click += new System.EventHandler(this.guna2Button1_Click);
             // 
             // PanelWithTeams
             // 
@@ -945,240 +1162,58 @@
             this.DireTeam.Text = "СИЛЫ ТЬМЫ";
             this.DireTeam.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // GameMode
+            // SelectedPlayerMatches
             // 
-            this.GameMode.AutoSize = false;
-            this.GameMode.BackColor = System.Drawing.Color.Transparent;
-            this.GameMode.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.GameMode.Location = new System.Drawing.Point(380, 0);
-            this.GameMode.Name = "GameMode";
-            this.GameMode.Size = new System.Drawing.Size(139, 18);
-            this.GameMode.TabIndex = 50;
-            this.GameMode.Text = "All pick";
-            this.GameMode.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
+            this.SelectedPlayerMatches.AutoScroll = true;
+            this.SelectedPlayerMatches.BackColor = System.Drawing.Color.Gainsboro;
+            this.SelectedPlayerMatches.Location = new System.Drawing.Point(6, 97);
+            this.SelectedPlayerMatches.Name = "SelectedPlayerMatches";
+            this.SelectedPlayerMatches.Size = new System.Drawing.Size(280, 654);
+            this.SelectedPlayerMatches.TabIndex = 1;
             // 
-            // LobbyType
+            // SelectPlayerComboBox
             // 
-            this.LobbyType.AutoSize = false;
-            this.LobbyType.BackColor = System.Drawing.Color.Transparent;
-            this.LobbyType.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LobbyType.Location = new System.Drawing.Point(235, 0);
-            this.LobbyType.Name = "LobbyType";
-            this.LobbyType.Size = new System.Drawing.Size(139, 18);
-            this.LobbyType.TabIndex = 49;
-            this.LobbyType.Text = "Рейтинговый";
-            this.LobbyType.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
+            this.SelectPlayerComboBox.BackColor = System.Drawing.Color.Transparent;
+            this.SelectPlayerComboBox.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.SelectPlayerComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.SelectPlayerComboBox.FillColor = System.Drawing.Color.Silver;
+            this.SelectPlayerComboBox.FocusedColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
+            this.SelectPlayerComboBox.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
+            this.SelectPlayerComboBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SelectPlayerComboBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(68)))), ((int)(((byte)(88)))), ((int)(((byte)(112)))));
+            this.SelectPlayerComboBox.ItemHeight = 30;
+            this.SelectPlayerComboBox.Location = new System.Drawing.Point(92, 33);
+            this.SelectPlayerComboBox.Name = "SelectPlayerComboBox";
+            this.SelectPlayerComboBox.Size = new System.Drawing.Size(194, 36);
+            this.SelectPlayerComboBox.TabIndex = 0;
+            this.SelectPlayerComboBox.SelectedIndexChanged += new System.EventHandler(this.SelectPlayerComboBox_SelectedIndexChanged);
             // 
-            // guna2HtmlLabel12
+            // SelectedPlayerPicture
             // 
-            this.guna2HtmlLabel12.AutoSize = false;
-            this.guna2HtmlLabel12.BackColor = System.Drawing.Color.Transparent;
-            this.guna2HtmlLabel12.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.guna2HtmlLabel12.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
-            this.guna2HtmlLabel12.Location = new System.Drawing.Point(525, 24);
-            this.guna2HtmlLabel12.Name = "guna2HtmlLabel12";
-            this.guna2HtmlLabel12.Size = new System.Drawing.Size(158, 20);
-            this.guna2HtmlLabel12.TabIndex = 48;
-            this.guna2HtmlLabel12.Text = "Матч проведён";
-            this.guna2HtmlLabel12.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
+            this.SelectedPlayerPicture.BorderRadius = 2;
+            this.SelectedPlayerPicture.FillColor = System.Drawing.Color.Gray;
+            this.SelectedPlayerPicture.ImageRotate = 0F;
+            this.SelectedPlayerPicture.InitialImage = null;
+            this.SelectedPlayerPicture.Location = new System.Drawing.Point(6, 11);
+            this.SelectedPlayerPicture.Name = "SelectedPlayerPicture";
+            this.SelectedPlayerPicture.Size = new System.Drawing.Size(80, 80);
+            this.SelectedPlayerPicture.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.SelectedPlayerPicture.TabIndex = 23;
+            this.SelectedPlayerPicture.TabStop = false;
             // 
-            // guna2HtmlLabel11
+            // tabPage4
             // 
-            this.guna2HtmlLabel11.AutoSize = false;
-            this.guna2HtmlLabel11.BackColor = System.Drawing.Color.Transparent;
-            this.guna2HtmlLabel11.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.guna2HtmlLabel11.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
-            this.guna2HtmlLabel11.Location = new System.Drawing.Point(380, 24);
-            this.guna2HtmlLabel11.Name = "guna2HtmlLabel11";
-            this.guna2HtmlLabel11.Size = new System.Drawing.Size(139, 20);
-            this.guna2HtmlLabel11.TabIndex = 47;
-            this.guna2HtmlLabel11.Text = "Режим игры";
-            this.guna2HtmlLabel11.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // guna2HtmlLabel10
-            // 
-            this.guna2HtmlLabel10.AutoSize = false;
-            this.guna2HtmlLabel10.BackColor = System.Drawing.Color.Transparent;
-            this.guna2HtmlLabel10.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.guna2HtmlLabel10.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
-            this.guna2HtmlLabel10.Location = new System.Drawing.Point(235, 24);
-            this.guna2HtmlLabel10.Name = "guna2HtmlLabel10";
-            this.guna2HtmlLabel10.Size = new System.Drawing.Size(139, 20);
-            this.guna2HtmlLabel10.TabIndex = 46;
-            this.guna2HtmlLabel10.Text = "Тип лобби";
-            this.guna2HtmlLabel10.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // StartTime
-            // 
-            this.StartTime.AutoSize = false;
-            this.StartTime.BackColor = System.Drawing.Color.Transparent;
-            this.StartTime.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.StartTime.Location = new System.Drawing.Point(525, 0);
-            this.StartTime.Name = "StartTime";
-            this.StartTime.Size = new System.Drawing.Size(158, 15);
-            this.StartTime.TabIndex = 45;
-            this.StartTime.Text = "Время проведения";
-            this.StartTime.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // DireScore
-            // 
-            this.DireScore.AutoSize = false;
-            this.DireScore.BackColor = System.Drawing.Color.Transparent;
-            this.DireScore.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DireScore.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(172)))), ((int)(((byte)(60)))), ((int)(((byte)(42)))));
-            this.DireScore.Location = new System.Drawing.Point(452, 94);
-            this.DireScore.Name = "DireScore";
-            this.DireScore.Size = new System.Drawing.Size(231, 23);
-            this.DireScore.TabIndex = 44;
-            this.DireScore.Text = "10";
-            this.DireScore.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // RadiantScore
-            // 
-            this.RadiantScore.AutoSize = false;
-            this.RadiantScore.BackColor = System.Drawing.Color.Transparent;
-            this.RadiantScore.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.RadiantScore.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(105)))), ((int)(((byte)(136)))), ((int)(((byte)(36)))));
-            this.RadiantScore.Location = new System.Drawing.Point(-5, 94);
-            this.RadiantScore.Name = "RadiantScore";
-            this.RadiantScore.Size = new System.Drawing.Size(231, 23);
-            this.RadiantScore.TabIndex = 43;
-            this.RadiantScore.Text = "10";
-            this.RadiantScore.TextAlignment = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // MatchID
-            // 
-            this.MatchID.AutoSize = false;
-            this.MatchID.BackColor = System.Drawing.Color.Transparent;
-            this.MatchID.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.MatchID.Location = new System.Drawing.Point(-1, 0);
-            this.MatchID.Name = "MatchID";
-            this.MatchID.Size = new System.Drawing.Size(242, 15);
-            this.MatchID.TabIndex = 42;
-            this.MatchID.Text = "MatchID";
-            this.MatchID.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // DurationLabel
-            // 
-            this.DurationLabel.AutoSize = false;
-            this.DurationLabel.BackColor = System.Drawing.Color.Transparent;
-            this.DurationLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DurationLabel.Location = new System.Drawing.Point(232, 94);
-            this.DurationLabel.Name = "DurationLabel";
-            this.DurationLabel.Size = new System.Drawing.Size(214, 23);
-            this.DurationLabel.TabIndex = 41;
-            this.DurationLabel.Text = "Duration";
-            this.DurationLabel.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // WinnerLabel
-            // 
-            this.WinnerLabel.AutoSize = false;
-            this.WinnerLabel.BackColor = System.Drawing.Color.Transparent;
-            this.WinnerLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.WinnerLabel.Location = new System.Drawing.Point(232, 62);
-            this.WinnerLabel.Name = "WinnerLabel";
-            this.WinnerLabel.Size = new System.Drawing.Size(214, 26);
-            this.WinnerLabel.TabIndex = 40;
-            this.WinnerLabel.Text = "Winner";
-            this.WinnerLabel.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // OpenInMatchDetailsForm
-            // 
-            this.OpenInMatchDetailsForm.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
-            this.OpenInMatchDetailsForm.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
-            this.OpenInMatchDetailsForm.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
-            this.OpenInMatchDetailsForm.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
-            this.OpenInMatchDetailsForm.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.OpenInMatchDetailsForm.ForeColor = System.Drawing.Color.White;
-            this.OpenInMatchDetailsForm.Location = new System.Drawing.Point(550, 695);
-            this.OpenInMatchDetailsForm.Name = "OpenInMatchDetailsForm";
-            this.OpenInMatchDetailsForm.Size = new System.Drawing.Size(180, 45);
-            this.OpenInMatchDetailsForm.TabIndex = 51;
-            this.OpenInMatchDetailsForm.Text = "Открыть в отдельном окне";
-            this.OpenInMatchDetailsForm.Click += new System.EventHandler(this.guna2Button1_Click);
-            // 
-            // MatchInfoPanel
-            // 
-            this.MatchInfoPanel.Controls.Add(this.MatchID);
-            this.MatchInfoPanel.Controls.Add(this.GameMode);
-            this.MatchInfoPanel.Controls.Add(this.WinnerLabel);
-            this.MatchInfoPanel.Controls.Add(this.LobbyType);
-            this.MatchInfoPanel.Controls.Add(this.DurationLabel);
-            this.MatchInfoPanel.Controls.Add(this.guna2HtmlLabel12);
-            this.MatchInfoPanel.Controls.Add(this.RadiantScore);
-            this.MatchInfoPanel.Controls.Add(this.guna2HtmlLabel11);
-            this.MatchInfoPanel.Controls.Add(this.DireScore);
-            this.MatchInfoPanel.Controls.Add(this.guna2HtmlLabel10);
-            this.MatchInfoPanel.Controls.Add(this.StartTime);
-            this.MatchInfoPanel.Location = new System.Drawing.Point(292, 14);
-            this.MatchInfoPanel.Name = "MatchInfoPanel";
-            this.MatchInfoPanel.Size = new System.Drawing.Size(688, 120);
-            this.MatchInfoPanel.TabIndex = 52;
-            // 
-            // tabPage1
-            // 
-            this.tabPage1.Controls.Add(this.webView21);
-            this.tabPage1.Location = new System.Drawing.Point(184, 4);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(997, 757);
-            this.tabPage1.TabIndex = 4;
-            this.tabPage1.Text = "Twitch";
-            this.tabPage1.UseVisualStyleBackColor = true;
-            // 
-            // webView21
-            // 
-            this.webView21.AllowExternalDrop = true;
-            this.webView21.CreationProperties = null;
-            this.webView21.DefaultBackgroundColor = System.Drawing.Color.White;
-            this.webView21.Location = new System.Drawing.Point(0, -4);
-            this.webView21.Name = "webView21";
-            this.webView21.Size = new System.Drawing.Size(997, 639);
-            this.webView21.Source = new System.Uri("https://www.twitch.tv/directory/category/dota-2", System.UriKind.Absolute);
-            this.webView21.TabIndex = 0;
-            this.webView21.ZoomFactor = 1D;
-            // 
-            // guna2Panel9
-            // 
-            this.guna2Panel9.Location = new System.Drawing.Point(3, 59);
-            this.guna2Panel9.Name = "guna2Panel9";
-            this.guna2Panel9.Size = new System.Drawing.Size(300, 692);
-            this.guna2Panel9.TabIndex = 0;
-            // 
-            // guna2HtmlLabel2
-            // 
-            this.guna2HtmlLabel2.AutoSize = false;
-            this.guna2HtmlLabel2.BackColor = System.Drawing.Color.Transparent;
-            this.guna2HtmlLabel2.Location = new System.Drawing.Point(3, 8);
-            this.guna2HtmlLabel2.Name = "guna2HtmlLabel2";
-            this.guna2HtmlLabel2.Size = new System.Drawing.Size(294, 29);
-            this.guna2HtmlLabel2.TabIndex = 1;
-            this.guna2HtmlLabel2.Text = "Текущие тренировки";
-            this.guna2HtmlLabel2.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // guna2Panel10
-            // 
-            this.guna2Panel10.BackColor = System.Drawing.Color.Gainsboro;
-            this.guna2Panel10.Controls.Add(this.guna2PictureBox5);
-            this.guna2Panel10.Controls.Add(this.guna2PictureBox4);
-            this.guna2Panel10.Controls.Add(this.guna2PictureBox3);
-            this.guna2Panel10.Controls.Add(this.guna2PictureBox2);
-            this.guna2Panel10.Controls.Add(this.guna2HtmlLabel3);
-            this.guna2Panel10.Controls.Add(this.guna2PictureBox1);
-            this.guna2Panel10.Location = new System.Drawing.Point(415, 78);
-            this.guna2Panel10.Name = "guna2Panel10";
-            this.guna2Panel10.Size = new System.Drawing.Size(355, 165);
-            this.guna2Panel10.TabIndex = 2;
-            // 
-            // guna2HtmlLabel3
-            // 
-            this.guna2HtmlLabel3.AutoSize = false;
-            this.guna2HtmlLabel3.BackColor = System.Drawing.Color.Transparent;
-            this.guna2HtmlLabel3.Location = new System.Drawing.Point(3, 3);
-            this.guna2HtmlLabel3.Name = "guna2HtmlLabel3";
-            this.guna2HtmlLabel3.Size = new System.Drawing.Size(240, 22);
-            this.guna2HtmlLabel3.TabIndex = 1;
-            this.guna2HtmlLabel3.Text = "Название тренировки";
+            this.tabPage4.Controls.Add(this.guna2Panel10);
+            this.tabPage4.Controls.Add(this.guna2Button1);
+            this.tabPage4.Controls.Add(this.guna2HtmlLabel2);
+            this.tabPage4.Controls.Add(this.TrainingTasksPanel);
+            this.tabPage4.Location = new System.Drawing.Point(184, 4);
+            this.tabPage4.Name = "tabPage4";
+            this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage4.Size = new System.Drawing.Size(997, 757);
+            this.tabPage4.TabIndex = 3;
+            this.tabPage4.Text = "Тренировки";
+            this.tabPage4.UseVisualStyleBackColor = true;
             // 
             // guna2Button1
             // 
@@ -1195,103 +1230,21 @@
             this.guna2Button1.Text = "Добавить тренировку";
             this.guna2Button1.Click += new System.EventHandler(this.guna2Button1_Click_1);
             // 
-            // TrainerPicture
+            // guna2Panel10
             // 
-            this.TrainerPicture.BorderRadius = 2;
-            this.TrainerPicture.ErrorImage = ((System.Drawing.Image)(resources.GetObject("TrainerPicture.ErrorImage")));
-            this.TrainerPicture.FillColor = System.Drawing.Color.Gray;
-            this.TrainerPicture.ImageRotate = 0F;
-            this.TrainerPicture.InitialImage = null;
-            this.TrainerPicture.Location = new System.Drawing.Point(4, 7);
-            this.TrainerPicture.Name = "TrainerPicture";
-            this.TrainerPicture.Size = new System.Drawing.Size(70, 66);
-            this.TrainerPicture.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.TrainerPicture.TabIndex = 22;
-            this.TrainerPicture.TabStop = false;
-            // 
-            // PlayerPicture5
-            // 
-            this.PlayerPicture5.BorderRadius = 2;
-            this.PlayerPicture5.ErrorImage = ((System.Drawing.Image)(resources.GetObject("PlayerPicture5.ErrorImage")));
-            this.PlayerPicture5.FillColor = System.Drawing.Color.Gray;
-            this.PlayerPicture5.ImageRotate = 0F;
-            this.PlayerPicture5.InitialImage = null;
-            this.PlayerPicture5.Location = new System.Drawing.Point(4, 7);
-            this.PlayerPicture5.Name = "PlayerPicture5";
-            this.PlayerPicture5.Size = new System.Drawing.Size(70, 66);
-            this.PlayerPicture5.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.PlayerPicture5.TabIndex = 22;
-            this.PlayerPicture5.TabStop = false;
-            // 
-            // PlayerPicture4
-            // 
-            this.PlayerPicture4.BorderRadius = 2;
-            this.PlayerPicture4.ErrorImage = ((System.Drawing.Image)(resources.GetObject("PlayerPicture4.ErrorImage")));
-            this.PlayerPicture4.FillColor = System.Drawing.Color.Gray;
-            this.PlayerPicture4.ImageRotate = 0F;
-            this.PlayerPicture4.InitialImage = null;
-            this.PlayerPicture4.Location = new System.Drawing.Point(4, 7);
-            this.PlayerPicture4.Name = "PlayerPicture4";
-            this.PlayerPicture4.Size = new System.Drawing.Size(70, 66);
-            this.PlayerPicture4.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.PlayerPicture4.TabIndex = 22;
-            this.PlayerPicture4.TabStop = false;
-            // 
-            // PlayerPicture3
-            // 
-            this.PlayerPicture3.BorderRadius = 2;
-            this.PlayerPicture3.ErrorImage = ((System.Drawing.Image)(resources.GetObject("PlayerPicture3.ErrorImage")));
-            this.PlayerPicture3.FillColor = System.Drawing.Color.Gray;
-            this.PlayerPicture3.ImageRotate = 0F;
-            this.PlayerPicture3.InitialImage = null;
-            this.PlayerPicture3.Location = new System.Drawing.Point(4, 7);
-            this.PlayerPicture3.Name = "PlayerPicture3";
-            this.PlayerPicture3.Size = new System.Drawing.Size(70, 66);
-            this.PlayerPicture3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.PlayerPicture3.TabIndex = 22;
-            this.PlayerPicture3.TabStop = false;
-            // 
-            // PlayerPicture2
-            // 
-            this.PlayerPicture2.BorderRadius = 2;
-            this.PlayerPicture2.ErrorImage = ((System.Drawing.Image)(resources.GetObject("PlayerPicture2.ErrorImage")));
-            this.PlayerPicture2.FillColor = System.Drawing.Color.Gray;
-            this.PlayerPicture2.ImageRotate = 0F;
-            this.PlayerPicture2.InitialImage = null;
-            this.PlayerPicture2.Location = new System.Drawing.Point(4, 7);
-            this.PlayerPicture2.Name = "PlayerPicture2";
-            this.PlayerPicture2.Size = new System.Drawing.Size(70, 66);
-            this.PlayerPicture2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.PlayerPicture2.TabIndex = 22;
-            this.PlayerPicture2.TabStop = false;
-            // 
-            // PlayerPicture1
-            // 
-            this.PlayerPicture1.BorderRadius = 2;
-            this.PlayerPicture1.ErrorImage = ((System.Drawing.Image)(resources.GetObject("PlayerPicture1.ErrorImage")));
-            this.PlayerPicture1.FillColor = System.Drawing.Color.Gray;
-            this.PlayerPicture1.ImageRotate = 0F;
-            this.PlayerPicture1.InitialImage = null;
-            this.PlayerPicture1.Location = new System.Drawing.Point(4, 7);
-            this.PlayerPicture1.Name = "PlayerPicture1";
-            this.PlayerPicture1.Size = new System.Drawing.Size(70, 66);
-            this.PlayerPicture1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.PlayerPicture1.TabIndex = 22;
-            this.PlayerPicture1.TabStop = false;
-            this.PlayerPicture1.Click += new System.EventHandler(this.PlayerPicture1_Click);
-            // 
-            // SelectedPlayerPicture
-            // 
-            this.SelectedPlayerPicture.BorderRadius = 2;
-            this.SelectedPlayerPicture.FillColor = System.Drawing.Color.Gray;
-            this.SelectedPlayerPicture.ImageRotate = 0F;
-            this.SelectedPlayerPicture.InitialImage = null;
-            this.SelectedPlayerPicture.Location = new System.Drawing.Point(6, 11);
-            this.SelectedPlayerPicture.Name = "SelectedPlayerPicture";
-            this.SelectedPlayerPicture.Size = new System.Drawing.Size(80, 80);
-            this.SelectedPlayerPicture.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.SelectedPlayerPicture.TabIndex = 23;
-            this.SelectedPlayerPicture.TabStop = false;
+            this.guna2Panel10.BackColor = System.Drawing.Color.Gainsboro;
+            this.guna2Panel10.Controls.Add(this.guna2HtmlLabel5);
+            this.guna2Panel10.Controls.Add(this.guna2HtmlLabel4);
+            this.guna2Panel10.Controls.Add(this.guna2PictureBox5);
+            this.guna2Panel10.Controls.Add(this.guna2PictureBox4);
+            this.guna2Panel10.Controls.Add(this.guna2PictureBox3);
+            this.guna2Panel10.Controls.Add(this.guna2PictureBox2);
+            this.guna2Panel10.Controls.Add(this.guna2HtmlLabel3);
+            this.guna2Panel10.Controls.Add(this.guna2PictureBox1);
+            this.guna2Panel10.Location = new System.Drawing.Point(428, 86);
+            this.guna2Panel10.Name = "guna2Panel10";
+            this.guna2Panel10.Size = new System.Drawing.Size(335, 180);
+            this.guna2Panel10.TabIndex = 2;
             // 
             // guna2PictureBox5
             // 
@@ -1337,6 +1290,16 @@
             this.guna2PictureBox2.TabIndex = 2;
             this.guna2PictureBox2.TabStop = false;
             // 
+            // guna2HtmlLabel3
+            // 
+            this.guna2HtmlLabel3.AutoSize = false;
+            this.guna2HtmlLabel3.BackColor = System.Drawing.Color.Transparent;
+            this.guna2HtmlLabel3.Location = new System.Drawing.Point(13, 14);
+            this.guna2HtmlLabel3.Name = "guna2HtmlLabel3";
+            this.guna2HtmlLabel3.Size = new System.Drawing.Size(240, 22);
+            this.guna2HtmlLabel3.TabIndex = 1;
+            this.guna2HtmlLabel3.Text = "Название тренировки";
+            // 
             // guna2PictureBox1
             // 
             this.guna2PictureBox1.BackColor = System.Drawing.Color.Gray;
@@ -1347,6 +1310,68 @@
             this.guna2PictureBox1.Size = new System.Drawing.Size(50, 50);
             this.guna2PictureBox1.TabIndex = 0;
             this.guna2PictureBox1.TabStop = false;
+            // 
+            // guna2HtmlLabel2
+            // 
+            this.guna2HtmlLabel2.AutoSize = false;
+            this.guna2HtmlLabel2.BackColor = System.Drawing.Color.Transparent;
+            this.guna2HtmlLabel2.Location = new System.Drawing.Point(3, 8);
+            this.guna2HtmlLabel2.Name = "guna2HtmlLabel2";
+            this.guna2HtmlLabel2.Size = new System.Drawing.Size(294, 29);
+            this.guna2HtmlLabel2.TabIndex = 1;
+            this.guna2HtmlLabel2.Text = "Текущие тренировки";
+            this.guna2HtmlLabel2.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // TrainingTasksPanel
+            // 
+            this.TrainingTasksPanel.AutoScroll = true;
+            this.TrainingTasksPanel.Location = new System.Drawing.Point(3, 59);
+            this.TrainingTasksPanel.Name = "TrainingTasksPanel";
+            this.TrainingTasksPanel.Size = new System.Drawing.Size(352, 692);
+            this.TrainingTasksPanel.TabIndex = 0;
+            // 
+            // tabPage1
+            // 
+            this.tabPage1.Controls.Add(this.webView21);
+            this.tabPage1.Location = new System.Drawing.Point(184, 4);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage1.Size = new System.Drawing.Size(997, 757);
+            this.tabPage1.TabIndex = 4;
+            this.tabPage1.Text = "Twitch";
+            this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // webView21
+            // 
+            this.webView21.AllowExternalDrop = true;
+            this.webView21.CreationProperties = null;
+            this.webView21.DefaultBackgroundColor = System.Drawing.Color.White;
+            this.webView21.Location = new System.Drawing.Point(0, -4);
+            this.webView21.Name = "webView21";
+            this.webView21.Size = new System.Drawing.Size(997, 639);
+            this.webView21.Source = new System.Uri("https://www.twitch.tv/directory/category/dota-2", System.UriKind.Absolute);
+            this.webView21.TabIndex = 0;
+            this.webView21.ZoomFactor = 1D;
+            // 
+            // guna2HtmlLabel4
+            // 
+            this.guna2HtmlLabel4.AutoSize = false;
+            this.guna2HtmlLabel4.BackColor = System.Drawing.Color.Transparent;
+            this.guna2HtmlLabel4.Location = new System.Drawing.Point(13, 42);
+            this.guna2HtmlLabel4.Name = "guna2HtmlLabel4";
+            this.guna2HtmlLabel4.Size = new System.Drawing.Size(240, 22);
+            this.guna2HtmlLabel4.TabIndex = 6;
+            this.guna2HtmlLabel4.Text = "Время начала";
+            // 
+            // guna2HtmlLabel5
+            // 
+            this.guna2HtmlLabel5.AutoSize = false;
+            this.guna2HtmlLabel5.BackColor = System.Drawing.Color.Transparent;
+            this.guna2HtmlLabel5.Location = new System.Drawing.Point(13, 70);
+            this.guna2HtmlLabel5.Name = "guna2HtmlLabel5";
+            this.guna2HtmlLabel5.Size = new System.Drawing.Size(240, 22);
+            this.guna2HtmlLabel5.TabIndex = 7;
+            this.guna2HtmlLabel5.Text = "Время конца";
             // 
             // MainForm
             // 
@@ -1364,32 +1389,32 @@
             this.tabPage2.ResumeLayout(false);
             this.PanelWithButtons.ResumeLayout(false);
             this.guna2Panel7.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.TrainerPicture)).EndInit();
             this.guna2Panel5.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.PlayerPicture5)).EndInit();
             this.guna2Panel4.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.PlayerPicture4)).EndInit();
             this.guna2Panel3.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.PlayerPicture3)).EndInit();
             this.guna2Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.PlayerPicture2)).EndInit();
             this.guna2Panel1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.PlayerPicture1)).EndInit();
             this.tabPage3.ResumeLayout(false);
-            this.tabPage4.ResumeLayout(false);
+            this.MatchInfoPanel.ResumeLayout(false);
             this.PanelWithTeams.ResumeLayout(false);
             this.guna2Panel6.ResumeLayout(false);
             this.guna2Panel8.ResumeLayout(false);
-            this.MatchInfoPanel.ResumeLayout(false);
-            this.tabPage1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.webView21)).EndInit();
-            this.guna2Panel10.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.TrainerPicture)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.PlayerPicture5)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.PlayerPicture4)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.PlayerPicture3)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.PlayerPicture2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.PlayerPicture1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.SelectedPlayerPicture)).EndInit();
+            this.tabPage4.ResumeLayout(false);
+            this.guna2Panel10.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.guna2PictureBox5)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.guna2PictureBox4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.guna2PictureBox3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.guna2PictureBox2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.guna2PictureBox1)).EndInit();
+            this.tabPage1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.webView21)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -1474,7 +1499,7 @@
         private Guna.UI2.WinForms.Guna2Panel MatchInfoPanel;
         private System.Windows.Forms.TabPage tabPage1;
         private Microsoft.Web.WebView2.WinForms.WebView2 webView21;
-        private Guna.UI2.WinForms.Guna2Panel guna2Panel9;
+        private Guna.UI2.WinForms.Guna2Panel TrainingTasksPanel;
         private Guna.UI2.WinForms.Guna2Panel guna2Panel10;
         private Guna.UI2.WinForms.Guna2HtmlLabel guna2HtmlLabel2;
         private Guna.UI2.WinForms.Guna2HtmlLabel guna2HtmlLabel3;
@@ -1484,5 +1509,7 @@
         private Guna.UI2.WinForms.Guna2PictureBox guna2PictureBox4;
         private Guna.UI2.WinForms.Guna2PictureBox guna2PictureBox3;
         private Guna.UI2.WinForms.Guna2PictureBox guna2PictureBox2;
+        private Guna.UI2.WinForms.Guna2HtmlLabel guna2HtmlLabel4;
+        private Guna.UI2.WinForms.Guna2HtmlLabel guna2HtmlLabel5;
     }
 }

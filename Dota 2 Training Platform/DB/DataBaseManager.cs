@@ -91,28 +91,45 @@ namespace DataBaseManager
                     command.CommandText =
                     @"
             CREATE TABLE IF NOT EXISTS TrainingTasks (
-                Id INTEGER PRIMARY KEY AUTOINCREMENT,
-                Title TEXT,
-                Type INTEGER,
-                Metric INTEGER,
-                TargetValue INTEGER,
-                Period INTEGER,
-                PeriodValue INTEGER,
-                Deadline TEXT,
-                IsCompleted INTEGER
+            Id INTEGER PRIMARY KEY AUTOINCREMENT,
+            TeamId INTEGER,
+            Title TEXT,
+            Type INTEGER,
+            Metric INTEGER,
+            TargetValue INTEGER,
+            Comparison INTEGER,
+            Period INTEGER,
+            PeriodValue INTEGER,
+            StartDate TEXT,
+            Deadline TEXT,
+            IsCompleted INTEGER,
+            FOREIGN KEY (TeamId) REFERENCES Teams(Id) ON DELETE CASCADE
             );";
                     command.ExecuteNonQuery();
 
                     command.CommandText =
                     @"
-            CREATE TABLE IF NOT EXISTS TrainingTaskPlayers (
-                Id INTEGER PRIMARY KEY AUTOINCREMENT,
-                TaskId INTEGER,
-                PlayerId TEXT,
+                    CREATE TABLE IF NOT EXISTS TrainingTaskPlayers (
+                        Id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        TaskId INTEGER,
+                        PlayerId TEXT,
 
-                FOREIGN KEY (TaskId) REFERENCES TrainingTasks(Id) ON DELETE CASCADE,
-                FOREIGN KEY (PlayerId) REFERENCES TeamPlayers(AccountId) ON DELETE CASCADE
-            );";
+                        FOREIGN KEY (TaskId) REFERENCES TrainingTasks(Id) ON DELETE CASCADE,
+                        FOREIGN KEY (PlayerId) REFERENCES TeamPlayers(AccountId) ON DELETE CASCADE
+                    );";
+                    command.ExecuteNonQuery();
+
+                    command.CommandText =
+                    @"
+                    CREATE TABLE IF NOT EXISTS TrainingTaskProgress (
+                        Id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        TaskId INTEGER, 
+                        PlayerId TEXT,
+                        IsCompleted INTEGER DEFAULT 0,
+
+                        FOREIGN KEY (TaskId) REFERENCES TrainingTasks(Id) ON DELETE CASCADE,
+                        FOREIGN KEY (PlayerId) REFERENCES TeamPlayers(AccountId) ON DELETE CASCADE
+                    );";
                     command.ExecuteNonQuery();
 
 
@@ -1106,7 +1123,7 @@ namespace DataBaseManager
 
         #region TrainingTasks
 
-        public static async Task AddTrainingTaskAsync(TrainingTask task)
+        public static async Task AddTrainingTaskAsync(TrainingTask task, int teamId)
         {
             using (var connection = new SQLiteConnection(connectionString))
             {
@@ -1119,11 +1136,12 @@ namespace DataBaseManager
                         // 1. Добавляем тренировку
                         string insertTask = @"
                         INSERT INTO TrainingTasks 
-                        (Title, Type, Metric, TargetValue, Period, PeriodValue, Deadline, IsCompleted)
+                        (Title, Type, Metric, TargetValue, Comparison, Period, PeriodValue, StartDate, Deadline, IsCompleted, TeamId)
                         VALUES
-                        (@Title, @Type, @Metric, @TargetValue, @Period, @PeriodValue, @Deadline, @IsCompleted);
-                
+                        (@Title, @Type, @Metric, @TargetValue, @Comparison, @Period, @PeriodValue, @StartDate, @Deadline, @IsCompleted, @TeamId);
                         SELECT last_insert_rowid();";
+
+                        
 
                         long taskId;
 
@@ -1133,26 +1151,35 @@ namespace DataBaseManager
                             cmd.Parameters.AddWithValue("@Type", (int)task.Type);
                             cmd.Parameters.AddWithValue("@Metric", (int)task.Metric);
                             cmd.Parameters.AddWithValue("@TargetValue", task.TargetValue);
+                            cmd.Parameters.AddWithValue("@Comparison", (int)task.Comparison);
                             cmd.Parameters.AddWithValue("@Period", (int)task.Period);
                             cmd.Parameters.AddWithValue("@PeriodValue", task.PeriodValue);
+                            cmd.Parameters.AddWithValue("@StartDate", task.StartDate.ToString("o"));
                             cmd.Parameters.AddWithValue("@Deadline", task.Deadline.ToString("o"));
                             cmd.Parameters.AddWithValue("@IsCompleted", task.IsCompleted ? 1 : 0);
+                            cmd.Parameters.AddWithValue("@TeamId", teamId);
 
                             taskId = (long)await cmd.ExecuteScalarAsync();
                         }
 
-                        // 2. Добавляем игроков
+                        // 2. Добавляем игроков + прогресс
                         foreach (var playerId in task.PlayerIds)
                         {
-                            string insertPlayer = @"
-                    INSERT INTO TrainingTaskPlayers (TaskId, PlayerId)
-                    VALUES (@TaskId, @PlayerId)";
-
-                            using (var cmd = new SQLiteCommand(insertPlayer, connection))
+                            // связь игрока
+                            using (var cmd = new SQLiteCommand(
+                                "INSERT INTO TrainingTaskPlayers (TaskId, PlayerId) VALUES (@TaskId, @PlayerId)", connection))
                             {
                                 cmd.Parameters.AddWithValue("@TaskId", taskId);
                                 cmd.Parameters.AddWithValue("@PlayerId", playerId);
+                                await cmd.ExecuteNonQueryAsync();
+                            }
 
+                            // прогресс игрока
+                            using (var cmd = new SQLiteCommand(
+                                "INSERT INTO TrainingTaskProgress (TaskId, PlayerId, IsCompleted) VALUES (@TaskId, @PlayerId, 0)", connection))
+                            {
+                                cmd.Parameters.AddWithValue("@TaskId", taskId);
+                                cmd.Parameters.AddWithValue("@PlayerId", playerId);
                                 await cmd.ExecuteNonQueryAsync();
                             }
                         }
@@ -1168,7 +1195,7 @@ namespace DataBaseManager
             }
         }
 
-        public static async Task<List<TrainingTask>> GetTrainingTasksAsync()
+        public static async Task<List<TrainingTask>> GetTrainingTasksAsync(int teamId)
         {
             var dict = new Dictionary<int, TrainingTask>();
 
@@ -1177,37 +1204,54 @@ namespace DataBaseManager
                 await connection.OpenAsync();
 
                 string query = @"
-                SELECT t.*, p.PlayerId
-                FROM TrainingTasks t
-                LEFT JOIN TrainingTaskPlayers p ON t.Id = p.TaskId";
+        SELECT t.*, p.PlayerId, pr.IsCompleted as PlayerCompleted
+        FROM TrainingTasks t
+        LEFT JOIN TrainingTaskPlayers p ON t.Id = p.TaskId
+        LEFT JOIN TrainingTaskProgress pr 
+            ON t.Id = pr.TaskId AND p.PlayerId = pr.PlayerId
+        WHERE t.TeamId = @TeamId";
 
                 using (var cmd = new SQLiteCommand(query, connection))
-                using (var reader = await cmd.ExecuteReaderAsync())
                 {
-                    while (await reader.ReadAsync())
+                    cmd.Parameters.AddWithValue("@TeamId", teamId);
+
+                    using (var reader = await cmd.ExecuteReaderAsync())
                     {
-                        int taskId = Convert.ToInt32(reader["Id"]);
-
-                        if (!dict.ContainsKey(taskId))
+                        while (await reader.ReadAsync())
                         {
-                            dict[taskId] = new TrainingTask
+                            int taskId = Convert.ToInt32(reader["Id"]);
+
+                            if (!dict.ContainsKey(taskId))
                             {
-                                Id = taskId,
-                                Title = reader["Title"].ToString(),
-                                Type = (TrainingType)Convert.ToInt32(reader["Type"]),
-                                Metric = (TrainingMetric)Convert.ToInt32(reader["Metric"]),
-                                TargetValue = Convert.ToInt32(reader["TargetValue"]),
-                                Period = (TrainingPeriod)Convert.ToInt32(reader["Period"]),
-                                PeriodValue = Convert.ToInt32(reader["PeriodValue"]),
-                                Deadline = DateTime.Parse(reader["Deadline"].ToString()),
-                                IsCompleted = Convert.ToInt32(reader["IsCompleted"]) == 1,
-                                PlayerIds = new List<string>()
-                            };
-                        }
+                                dict[taskId] = new TrainingTask
+                                {
+                                    Id = taskId,
+                                    Title = reader["Title"].ToString(),
+                                    Type = (TrainingType)Convert.ToInt32(reader["Type"]),
+                                    Metric = (TrainingMetric)Convert.ToInt32(reader["Metric"]),
+                                    TargetValue = Convert.ToInt32(reader["TargetValue"]),
+                                    Comparison = (ComparisonType)Convert.ToInt32(reader["Comparison"]),
+                                    Period = (TrainingPeriod)Convert.ToInt32(reader["Period"]),
+                                    PeriodValue = Convert.ToInt32(reader["PeriodValue"]),
+                                    StartDate = DateTime.Parse(reader["StartDate"].ToString()),
+                                    Deadline = DateTime.Parse(reader["Deadline"].ToString()),
+                                    IsCompleted = Convert.ToInt32(reader["IsCompleted"]) == 1,
+                                    PlayerIds = new List<string>(),
+                                    CompletedPlayers = new Dictionary<string, bool>()
+                                };
+                            }
 
-                        if (reader["PlayerId"] != DBNull.Value)
-                        {
-                            dict[taskId].PlayerIds.Add(reader["PlayerId"].ToString());
+                            if (reader["PlayerId"] != DBNull.Value)
+                            {
+                                string playerId = reader["PlayerId"].ToString();
+
+                                dict[taskId].PlayerIds.Add(playerId);
+
+                                bool completed = reader["PlayerCompleted"] != DBNull.Value &&
+                                                 Convert.ToInt32(reader["PlayerCompleted"]) == 1;
+
+                                dict[taskId].CompletedPlayers[playerId] = completed;
+                            }
                         }
                     }
                 }
@@ -1222,12 +1266,129 @@ namespace DataBaseManager
             {
                 await connection.OpenAsync();
 
-                string query = "DELETE FROM TrainingTaskPlayers WHERE PlayerId = @PlayerId";
-
-                using (var cmd = new SQLiteCommand(query, connection))
+                using (var transaction = connection.BeginTransaction())
                 {
-                    cmd.Parameters.AddWithValue("@PlayerId", playerId);
-                    await cmd.ExecuteNonQueryAsync();
+                    try
+                    {
+                        // удалить связи
+                        using (var cmd = new SQLiteCommand(
+                            "DELETE FROM TrainingTaskPlayers WHERE PlayerId = @PlayerId", connection))
+                        {
+                            cmd.Parameters.AddWithValue("@PlayerId", playerId);
+                            await cmd.ExecuteNonQueryAsync();
+                        }
+
+                        // удалить прогресс
+                        using (var cmd = new SQLiteCommand(
+                            "DELETE FROM TrainingTaskProgress WHERE PlayerId = @PlayerId", connection))
+                        {
+                            cmd.Parameters.AddWithValue("@PlayerId", playerId);
+                            await cmd.ExecuteNonQueryAsync();
+                        }
+
+                        transaction.Commit();
+                    }
+                    catch
+                    {
+                        transaction.Rollback();
+                        throw;
+                    }
+                }
+            }
+        }
+
+        //public static async Task<List<TrainingTask>> GetTrainingsByTeam(int teamId)
+        //{
+        //    var list = new List<TrainingTask>();
+
+        //    using (var connection = new SQLiteConnection(connectionString))
+        //    {
+        //        await connection.OpenAsync();
+
+        //        using (var cmd = connection.CreateCommand())
+        //        {
+        //            cmd.CommandText = @"
+        //        SELECT * FROM TrainingTasks
+        //        WHERE TeamId = @teamId";
+
+        //            cmd.Parameters.AddWithValue("@teamId", teamId);
+
+        //            using (var reader = await cmd.ExecuteReaderAsync())
+        //            {
+        //                while (await reader.ReadAsync())
+        //                {
+        //                    list.Add(new TrainingTask
+        //                    {
+        //                        Id = reader.GetInt32(0),
+        //                        TeamId = reader.GetInt32(1),
+        //                        Title = reader.GetString(2),
+        //                        Type = (TrainingType)reader.GetInt32(3),
+        //                        Metric = (TrainingMetric)reader.GetInt32(4),
+        //                        TargetValue = reader.GetInt32(5),
+        //                        Comparison = (ComparisonType)reader.GetInt32(6),
+        //                        Period = (TrainingPeriod)reader.GetInt32(7),
+        //                        PeriodValue = reader.GetInt32(8),
+        //                        StartDate = DateTime.Parse(reader.GetString(9)),
+        //                        Deadline = DateTime.Parse(reader.GetString(9)),
+        //                        IsCompleted = reader.GetInt32(10) == 1
+        //                    });
+        //                }
+        //            }
+        //        }
+        //    }
+
+        //    return list;
+        //}
+
+        public static async Task UpdatePlayerProgressAsync(int taskId, string playerId, bool isCompleted)
+        {
+            using (var connection = new SQLiteConnection(connectionString))
+            {
+                await connection.OpenAsync();
+
+                using (var transaction = connection.BeginTransaction())
+                {
+                    try
+                    {
+                        //Обновляем прогресс конкретного игрока
+                        using (var cmd = new SQLiteCommand(
+                            "UPDATE TrainingTaskProgress SET IsCompleted = @IsCompleted WHERE TaskId = @TaskId AND PlayerId = @PlayerId",
+                            connection))
+                        {
+                            cmd.Parameters.AddWithValue("@IsCompleted", isCompleted ? 1 : 0);
+                            cmd.Parameters.AddWithValue("@TaskId", taskId);
+                            cmd.Parameters.AddWithValue("@PlayerId", playerId);
+                            await cmd.ExecuteNonQueryAsync();
+                        }
+
+                        //Проверяем, все ли игроки выполнили задачу
+                        bool allCompleted;
+                        using (var cmd = new SQLiteCommand(
+                            "SELECT COUNT(*) FROM TrainingTaskProgress WHERE TaskId = @TaskId AND IsCompleted = 0",
+                            connection))
+                        {
+                            cmd.Parameters.AddWithValue("@TaskId", taskId);
+                            long count = (long)await cmd.ExecuteScalarAsync();
+                            allCompleted = count == 0;
+                        }
+
+                        //Обновляем общий статус задачи
+                        using (var cmd = new SQLiteCommand(
+                            "UPDATE TrainingTasks SET IsCompleted = @IsCompleted WHERE Id = @TaskId",
+                            connection))
+                        {
+                            cmd.Parameters.AddWithValue("@IsCompleted", allCompleted ? 1 : 0);
+                            cmd.Parameters.AddWithValue("@TaskId", taskId);
+                            await cmd.ExecuteNonQueryAsync();
+                        }
+
+                        transaction.Commit();
+                    }
+                    catch
+                    {
+                        transaction.Rollback();
+                        throw;
+                    }
                 }
             }
         }

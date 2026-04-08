@@ -39,18 +39,19 @@ namespace Dota_2_Training_Platform.Models.Trainings
     public class TrainingTask
     {
         public int Id { get; set; }
+        public int TeamId { get; set; }
         public string Title { get; set; }
         public TrainingType Type { get; set; }
 
         public List<string> PlayerIds { get; set; } = new List<string>();
-
+        public Dictionary<string, bool> CompletedPlayers { get; set; } = new Dictionary<string, bool>();
         public TrainingMetric Metric { get; set; }
         public int TargetValue { get; set; }
         public ComparisonType Comparison { get; set; }
 
         public TrainingPeriod Period { get; set; }
         public int PeriodValue { get; set; }
-
+        public DateTime StartDate { get; set; }
         public DateTime Deadline { get; set; }
         public bool IsCompleted { get; set; }
     }
