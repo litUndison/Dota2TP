@@ -93,7 +93,14 @@ namespace Dota_2_Training_Platform
                 MessageBox.Show("Название команды не введено или менее 5 символов");
                 return;
             }
-
+            for(int i = 0; i < playerBoxes.Length; i++)
+            {
+                if(playerBoxes[i].Text.Trim() == currentUser.AccountID)
+                {
+                    MessageBox.Show("Нельзя указать тренера как игрока");
+                    return;
+                }
+            }
             // Список задач API
             List<Task<ApiCourier.ApiResult<DotaPlayerProfileModel>>> apiTasks = new List<Task<ApiCourier.ApiResult<DotaPlayerProfileModel>>>();
 

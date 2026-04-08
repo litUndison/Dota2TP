@@ -21,10 +21,12 @@ namespace Dota_2_Training_Platform
         private Guna2CheckBox[] _playerCheckBoxes = new Guna2CheckBox[5];
         private List<UserModel> _selectedPlayers = new List<UserModel>();
         private TrainingType _trainingType;
-        public CreateTrainingTask(TeamModel team)
+        private MainForm _form;
+        public CreateTrainingTask(TeamModel team, MainForm form)
         {
             
             _team = team;
+            _form = form;
             InitializeComponent();
             Metric.Items.Clear();
             #region MetricFill // заполнение метрики полями
@@ -230,7 +232,7 @@ namespace Dota_2_Training_Platform
                 }
             }
 
-            SubmitButton.DialogResult = DialogResult.OK;
+            currentTask.TeamId = _team.Id;
             currentTask.Title = TrainingTaskName.Text;
             currentTask.Type = _trainingType;
             currentTask.PlayerIds = _selectedPlayers.Select(p => p.AccountID).ToList();
@@ -264,8 +266,8 @@ namespace Dota_2_Training_Platform
             }
             currentTask.StartDate = DateTime.Parse($"{DateTime.Now.ToShortDateString()} {DateTime.Now.Hour}:{DateTime.Now.Minute}");
             currentTask.Deadline = DateTime.Parse($"{DateTime.Parse(Deadline.Text).ToShortDateString()} {DeadlineTimeHours.Text}:{DeadlineTimeMinutes.Text}");
-        
-            
+
+            _form.CreateTask(this);
         }
 
         private void Deadline_ValueChanged(object sender, EventArgs e)

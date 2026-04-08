@@ -917,9 +917,96 @@ namespace Dota_2_Training_Platform
 
                 taskPanel.Font = font;
                 taskPanel.Width = TrainingTasksPanel.Width - 17;
-                taskPanel.Height = 150;
+                taskPanel.Height = 190;
+                taskPanel.FillColor = Color.Gray;
 
                 taskPanel.Top = TrainingTasksPanel.Controls.Count == 0 ? 10 : TrainingTasksPanel.Controls[TrainingTasksPanel.Controls.Count - 1].Bottom + 2;
+
+                taskPanel.Controls.Add(new Guna2HtmlLabel()
+                {
+                    Font = font,
+                    AutoSize = false,
+                    Location = new Point(13, 5),
+                    Size = new Size(274, 22),
+                    Text = task.Title
+                });
+                taskPanel.Controls.Add(new Guna2HtmlLabel()
+                {
+                    Font = font,
+                    AutoSize = true,
+                    Location = new Point(13, 31),
+                    Text = "Начало:" + task.StartDate
+                });
+                taskPanel.Controls.Add(new Guna2HtmlLabel()
+                {
+                    Font = font,
+                    AutoSize = true,
+                    Location = new Point(13, 54),
+                    Text = "Конец:" + task.Deadline
+                });
+                string compare = string.Empty;
+                switch(task.Comparison)
+                {
+                    case ComparisonType.GreaterOrEqual: // >=
+                        compare = "больше или равно";
+                        break;
+                    case ComparisonType.LessOrEqual:     // <=
+                        compare = "меньше или равно";
+                        break;
+                    case ComparisonType.Greater:       // >
+                        compare = "больше";
+                        break;
+                    case ComparisonType.Less:             // <
+                        compare = "меньше";
+                        break;
+                    case ComparisonType.Equal:             // ==
+                        compare = "равно";
+                        break;
+                }
+                string taskText = compare == "равно" ? "набрать" : $"набрать в среднем {compare}";
+                taskPanel.Controls.Add(new Guna2HtmlLabel()
+                {
+                    Font = font,
+                    AutoSize = true,
+                    Location = new Point(13, 77),
+                    Text = $"Цель: {taskText} {task.TargetValue}"
+                });
+                if(task.PeriodValue != -1)
+                {
+                    taskPanel.Controls.Add(new Guna2HtmlLabel()
+                    {
+                        Font = font,
+                        AutoSize = true,
+                        Location = new Point(13, 100),
+                        Text = $"Кол-во матчей для выполнения: {task.PeriodValue}"
+                    });
+                }
+                Point Loc = new Point(13, 123);
+                List <UserModel> players = new List<UserModel>();
+                foreach(var playerId in task.PlayerIds)
+                {
+                    players.InsertRange(players.Count, currentTeam.Players.Where(p => p.AccountID == playerId).ToList());
+                }
+                for (int i = 0; i < players.Count; i++)
+                {
+                    Guna2PictureBox playerImg = new Guna2PictureBox();
+                    playerImg.FillColor = Color.DarkGray;
+                    playerImg.Width = 50;
+                    playerImg.Height = 50;
+                    if (i == 0)
+                    {
+                        playerImg.Location = Loc;
+                    }
+                    else
+                    {
+                        Loc.X += playerImg.Width + 3;
+                        playerImg.Location = Loc;
+                    }
+                    playerImg.SizeMode = PictureBoxSizeMode.StretchImage;
+                    playerImg.Load(players[i].Avatarfull);
+                    taskPanel.Controls.Add(playerImg);
+
+                }
 
                 taskPanel.Tag = task;
                 taskPanel.Click += OpenTask;
@@ -992,14 +1079,16 @@ namespace Dota_2_Training_Platform
 
         #endregion
 
-        private void guna2Button1_Click_1(object sender, EventArgs e)
+        private async void guna2Button1_Click_1(object sender, EventArgs e)
         {
-            CreateTrainingTask taskForm = new CreateTrainingTask(currentTeam);
+            CreateTrainingTask taskForm = new CreateTrainingTask(currentTeam, this);
             taskForm.ShowDialog();
-            if(taskForm.DialogResult == DialogResult.OK)
-            {
-                //добавление тренировки
-            }
+        }
+        public async void CreateTask(CreateTrainingTask form)
+        {
+            await dbManager.AddTrainingTaskAsync(form.currentTask, currentTeam.Id);
+            form.Dispose();
+            LoadTasks();
         }
 
     }

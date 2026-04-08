@@ -119,6 +119,8 @@
             this.webView21 = new Microsoft.Web.WebView2.WinForms.WebView2();
             this.guna2HtmlLabel4 = new Guna.UI2.WinForms.Guna2HtmlLabel();
             this.guna2HtmlLabel5 = new Guna.UI2.WinForms.Guna2HtmlLabel();
+            this.guna2HtmlLabel6 = new Guna.UI2.WinForms.Guna2HtmlLabel();
+            this.guna2HtmlLabel7 = new Guna.UI2.WinForms.Guna2HtmlLabel();
             this.guna2TabControl1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.PanelWithButtons.SuspendLayout();
@@ -1233,6 +1235,8 @@
             // guna2Panel10
             // 
             this.guna2Panel10.BackColor = System.Drawing.Color.Gainsboro;
+            this.guna2Panel10.Controls.Add(this.guna2HtmlLabel7);
+            this.guna2Panel10.Controls.Add(this.guna2HtmlLabel6);
             this.guna2Panel10.Controls.Add(this.guna2HtmlLabel5);
             this.guna2Panel10.Controls.Add(this.guna2HtmlLabel4);
             this.guna2Panel10.Controls.Add(this.guna2PictureBox5);
@@ -1243,7 +1247,7 @@
             this.guna2Panel10.Controls.Add(this.guna2PictureBox1);
             this.guna2Panel10.Location = new System.Drawing.Point(428, 86);
             this.guna2Panel10.Name = "guna2Panel10";
-            this.guna2Panel10.Size = new System.Drawing.Size(335, 180);
+            this.guna2Panel10.Size = new System.Drawing.Size(323, 190);
             this.guna2Panel10.TabIndex = 2;
             // 
             // guna2PictureBox5
@@ -1251,7 +1255,7 @@
             this.guna2PictureBox5.BackColor = System.Drawing.Color.Gray;
             this.guna2PictureBox5.FillColor = System.Drawing.Color.DarkGray;
             this.guna2PictureBox5.ImageRotate = 0F;
-            this.guna2PictureBox5.Location = new System.Drawing.Point(237, 101);
+            this.guna2PictureBox5.Location = new System.Drawing.Point(237, 123);
             this.guna2PictureBox5.Name = "guna2PictureBox5";
             this.guna2PictureBox5.Size = new System.Drawing.Size(50, 50);
             this.guna2PictureBox5.TabIndex = 5;
@@ -1262,7 +1266,7 @@
             this.guna2PictureBox4.BackColor = System.Drawing.Color.Gray;
             this.guna2PictureBox4.FillColor = System.Drawing.Color.DarkGray;
             this.guna2PictureBox4.ImageRotate = 0F;
-            this.guna2PictureBox4.Location = new System.Drawing.Point(181, 101);
+            this.guna2PictureBox4.Location = new System.Drawing.Point(181, 123);
             this.guna2PictureBox4.Name = "guna2PictureBox4";
             this.guna2PictureBox4.Size = new System.Drawing.Size(50, 50);
             this.guna2PictureBox4.TabIndex = 4;
@@ -1273,7 +1277,7 @@
             this.guna2PictureBox3.BackColor = System.Drawing.Color.Gray;
             this.guna2PictureBox3.FillColor = System.Drawing.Color.DarkGray;
             this.guna2PictureBox3.ImageRotate = 0F;
-            this.guna2PictureBox3.Location = new System.Drawing.Point(125, 101);
+            this.guna2PictureBox3.Location = new System.Drawing.Point(125, 123);
             this.guna2PictureBox3.Name = "guna2PictureBox3";
             this.guna2PictureBox3.Size = new System.Drawing.Size(50, 50);
             this.guna2PictureBox3.TabIndex = 3;
@@ -1284,7 +1288,7 @@
             this.guna2PictureBox2.BackColor = System.Drawing.Color.Gray;
             this.guna2PictureBox2.FillColor = System.Drawing.Color.DarkGray;
             this.guna2PictureBox2.ImageRotate = 0F;
-            this.guna2PictureBox2.Location = new System.Drawing.Point(69, 101);
+            this.guna2PictureBox2.Location = new System.Drawing.Point(69, 123);
             this.guna2PictureBox2.Name = "guna2PictureBox2";
             this.guna2PictureBox2.Size = new System.Drawing.Size(50, 50);
             this.guna2PictureBox2.TabIndex = 2;
@@ -1294,18 +1298,19 @@
             // 
             this.guna2HtmlLabel3.AutoSize = false;
             this.guna2HtmlLabel3.BackColor = System.Drawing.Color.Transparent;
-            this.guna2HtmlLabel3.Location = new System.Drawing.Point(13, 14);
+            this.guna2HtmlLabel3.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.guna2HtmlLabel3.Location = new System.Drawing.Point(13, 3);
             this.guna2HtmlLabel3.Name = "guna2HtmlLabel3";
-            this.guna2HtmlLabel3.Size = new System.Drawing.Size(240, 22);
+            this.guna2HtmlLabel3.Size = new System.Drawing.Size(274, 22);
             this.guna2HtmlLabel3.TabIndex = 1;
-            this.guna2HtmlLabel3.Text = "Название тренировки";
+            this.guna2HtmlLabel3.Text = "Разминка лошков";
             // 
             // guna2PictureBox1
             // 
             this.guna2PictureBox1.BackColor = System.Drawing.Color.Gray;
             this.guna2PictureBox1.FillColor = System.Drawing.Color.DarkGray;
             this.guna2PictureBox1.ImageRotate = 0F;
-            this.guna2PictureBox1.Location = new System.Drawing.Point(13, 101);
+            this.guna2PictureBox1.Location = new System.Drawing.Point(13, 123);
             this.guna2PictureBox1.Name = "guna2PictureBox1";
             this.guna2PictureBox1.Size = new System.Drawing.Size(50, 50);
             this.guna2PictureBox1.TabIndex = 0;
@@ -1355,23 +1360,43 @@
             // 
             // guna2HtmlLabel4
             // 
-            this.guna2HtmlLabel4.AutoSize = false;
             this.guna2HtmlLabel4.BackColor = System.Drawing.Color.Transparent;
-            this.guna2HtmlLabel4.Location = new System.Drawing.Point(13, 42);
+            this.guna2HtmlLabel4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.guna2HtmlLabel4.Location = new System.Drawing.Point(13, 31);
             this.guna2HtmlLabel4.Name = "guna2HtmlLabel4";
-            this.guna2HtmlLabel4.Size = new System.Drawing.Size(240, 22);
+            this.guna2HtmlLabel4.Size = new System.Drawing.Size(150, 17);
             this.guna2HtmlLabel4.TabIndex = 6;
-            this.guna2HtmlLabel4.Text = "Время начала";
+            this.guna2HtmlLabel4.Text = "Начало: 2026-04-08 18:00";
             // 
             // guna2HtmlLabel5
             // 
-            this.guna2HtmlLabel5.AutoSize = false;
             this.guna2HtmlLabel5.BackColor = System.Drawing.Color.Transparent;
-            this.guna2HtmlLabel5.Location = new System.Drawing.Point(13, 70);
+            this.guna2HtmlLabel5.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.guna2HtmlLabel5.Location = new System.Drawing.Point(13, 54);
             this.guna2HtmlLabel5.Name = "guna2HtmlLabel5";
-            this.guna2HtmlLabel5.Size = new System.Drawing.Size(240, 22);
+            this.guna2HtmlLabel5.Size = new System.Drawing.Size(143, 17);
             this.guna2HtmlLabel5.TabIndex = 7;
-            this.guna2HtmlLabel5.Text = "Время конца";
+            this.guna2HtmlLabel5.Text = "Конец: 2026-04-08 18:00";
+            // 
+            // guna2HtmlLabel6
+            // 
+            this.guna2HtmlLabel6.BackColor = System.Drawing.Color.Transparent;
+            this.guna2HtmlLabel6.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.guna2HtmlLabel6.Location = new System.Drawing.Point(13, 77);
+            this.guna2HtmlLabel6.Name = "guna2HtmlLabel6";
+            this.guna2HtmlLabel6.Size = new System.Drawing.Size(150, 17);
+            this.guna2HtmlLabel6.TabIndex = 8;
+            this.guna2HtmlLabel6.Text = "Цель: Иметь в среднем...";
+            // 
+            // guna2HtmlLabel7
+            // 
+            this.guna2HtmlLabel7.BackColor = System.Drawing.Color.Transparent;
+            this.guna2HtmlLabel7.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.guna2HtmlLabel7.Location = new System.Drawing.Point(13, 100);
+            this.guna2HtmlLabel7.Name = "guna2HtmlLabel7";
+            this.guna2HtmlLabel7.Size = new System.Drawing.Size(191, 17);
+            this.guna2HtmlLabel7.TabIndex = 9;
+            this.guna2HtmlLabel7.Text = "Кол-во матчей для выполнения:";
             // 
             // MainForm
             // 
@@ -1408,6 +1433,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.SelectedPlayerPicture)).EndInit();
             this.tabPage4.ResumeLayout(false);
             this.guna2Panel10.ResumeLayout(false);
+            this.guna2Panel10.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.guna2PictureBox5)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.guna2PictureBox4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.guna2PictureBox3)).EndInit();
@@ -1511,5 +1537,7 @@
         private Guna.UI2.WinForms.Guna2PictureBox guna2PictureBox2;
         private Guna.UI2.WinForms.Guna2HtmlLabel guna2HtmlLabel4;
         private Guna.UI2.WinForms.Guna2HtmlLabel guna2HtmlLabel5;
+        private Guna.UI2.WinForms.Guna2HtmlLabel guna2HtmlLabel6;
+        private Guna.UI2.WinForms.Guna2HtmlLabel guna2HtmlLabel7;
     }
 }

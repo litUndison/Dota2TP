@@ -15,7 +15,7 @@ namespace DataBaseManager
     {
         static public List<UserModel> Players { get; private set; } = new List<UserModel>();
         static public List<UserModel> Trainers { get; private set; } = new List<UserModel>();
-        private static readonly string dbPath = "users.db"; //TrainingPolygon.db
+        private static readonly string dbPath = "TrainingPolygon.db"; //TrainingPolygon.db
         private static string connectionString;
         static dbManager()
         {
@@ -89,7 +89,7 @@ namespace DataBaseManager
                     command.ExecuteNonQuery();
 
                     command.CommandText =
-                    @"
+                    @" 
             CREATE TABLE IF NOT EXISTS TrainingTasks (
             Id INTEGER PRIMARY KEY AUTOINCREMENT,
             TeamId INTEGER,
