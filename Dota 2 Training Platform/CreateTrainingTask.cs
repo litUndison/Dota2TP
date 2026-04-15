@@ -46,6 +46,7 @@ namespace Dota_2_Training_Platform
             comboBoxComparison.Items.Add("Равно (=)");
             #endregion
 
+            Metric.SelectedIndexChanged += Metric_SelectedIndexChanged;
         }
 
         private void Period_SelectedIndexChanged(object sender, EventArgs e)
@@ -85,6 +86,31 @@ namespace Dota_2_Training_Platform
                         break;
                     }
             }
+            UpdatePeriodValueVisibility();
+        }
+
+        private void Metric_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            UpdatePeriodValueVisibility();
+        }
+
+        private void UpdatePeriodValueVisibility()
+        {
+            bool isMatchesPlayedMetric = Metric.SelectedIndex == (int)TrainingMetric.MatchesPlayed;
+            if (isMatchesPlayedMetric)
+            {
+                // Для "Сыграть матчей" оставляем только дедлайн по времени.
+                if (Period.SelectedIndex != 2)
+                {
+                    Period.SelectedIndex = 2;
+                }
+            }
+
+            Period.Visible = !isMatchesPlayedMetric;
+            guna2HtmlLabel5.Visible = !isMatchesPlayedMetric;
+
+            bool shouldShowPeriodValue = Period.SelectedIndex == 1 && !isMatchesPlayedMetric;
+            PeriodValue.Visible = shouldShowPeriodValue;
         }
 
         private void CreateTrainingTask_Load(object sender, EventArgs e)
@@ -195,12 +221,13 @@ namespace Dota_2_Training_Platform
                 MessageBox.Show("Период выполнения не выбран");
                 return;
             }
-            if (Period.SelectedIndex == 1 && string.IsNullOrEmpty(PeriodValue.Text))
+            bool isMatchesPlayedMetricSelected = Metric.SelectedIndex == (int)TrainingMetric.MatchesPlayed;
+            if (Period.SelectedIndex == 1 && !isMatchesPlayedMetricSelected && string.IsNullOrEmpty(PeriodValue.Text))
             {
                 MessageBox.Show("Количество матчей не указано");
                 return;
             }
-            if(Period.SelectedIndex == 1 && !int.TryParse(PeriodValue.Text, out int value2))
+            if(Period.SelectedIndex == 1 && !isMatchesPlayedMetricSelected && !int.TryParse(PeriodValue.Text, out int value2))
             {
                 MessageBox.Show("Кол-во матчей указано неверно");
                 return;
@@ -255,7 +282,9 @@ namespace Dota_2_Training_Platform
                     }
                 case 1:
                     {
-                        currentTask.PeriodValue = int.Parse(PeriodValue.Text);
+                        currentTask.PeriodValue = isMatchesPlayedMetricSelected
+                            ? -1
+                            : int.Parse(PeriodValue.Text);
                         break;
                     }
                 case 2:

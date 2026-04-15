@@ -45,6 +45,12 @@ namespace Dota_2_Training_Platform.Models
         [JsonPropertyName("assists")]
         public int Assists { get; set; }
 
+        [JsonPropertyName("gold_per_min")]
+        public int? GoldPerMin { get; set; }
+
+        [JsonPropertyName("last_hits")]
+        public int? LastHits { get; set; }
+
         [JsonPropertyName("average_rank")]
         public int? AverageRank { get; set; }
 

@@ -2,6 +2,7 @@
 using Dota_2_Training_Platform.Functions;
 using Dota_2_Training_Platform.Models;
 using Dota_2_Training_Platform.Models.Trainings;
+using Dota_2_Training_Platform.Trainings;
 using Guna.UI2.WinForms;
 using System;
 using System.Collections.Generic;
@@ -11,11 +12,15 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
+using System.Configuration;
 using System.Text;
+using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Forms.DataVisualization.Charting;
 using TheArtOfDevHtmlRenderer.Adapters;
+using Microsoft.Web.WebView2.Core;
 
 namespace Dota_2_Training_Platform
 {
@@ -27,6 +32,31 @@ namespace Dota_2_Training_Platform
         UserModel currentUser;
         TeamModel currentTeam;
         List<TrainingTask> tasks = new List<TrainingTask>();
+        bool isTasksLoading = false;
+        bool isTaskAnalysisRunning = false;
+        bool progressDataDirty = true;
+        bool isTaskDeleteMode = false;
+        Guna2HtmlLabel tasksLoadingLabel;
+        bool isProgressLoading = false;
+        bool pendingProgressMetricRefresh = false;
+        bool pendingProgressPlayerRefresh = false;
+
+        private TabPage progressTabPage;
+        private Label progressStatusLabel;
+        private Label kpiActiveLabel;
+        private Label kpiOverdueLabel;
+        private Label kpiCompletedWeekLabel;
+        private Label kpiCompletionRateLabel;
+        private FlowLayoutPanel progressDeadlinesPanel;
+        private FlowLayoutPanel progressTaskProgressPanel;
+        private ComboBox progressPlayerComboBox;
+        private ComboBox progressMetricComboBox;
+        private Chart playerTrendChart;
+        private Chart teamCompareChart;
+        private const string DotaTwitchCategoryUrl = "https://www.twitch.tv/directory/category/dota-2";
+        private bool isTwitchForcedRedirect = false;
+        private static readonly HttpClient _aiHttpClient = new HttpClient();
+        private static DateTime _aiRateLimitUntilUtc = DateTime.MinValue;
 
         Guna2PictureBox[] pictureBoxes;
         Guna2HtmlLabel[] htmlLabels;
@@ -102,7 +132,7 @@ namespace Dota_2_Training_Platform
 
             
             LoadTeam();
-            LoadTasks();
+     
 
             TrainerPicture.LoadAsync(currentUser.Avatarfull);
             TrainerName.Text = currentUser.Name;
@@ -120,10 +150,232 @@ namespace Dota_2_Training_Platform
             PanelWithButtons.Location = new Point(0, PanelWithButtons.Location.Y);
             PanelWithButtons.Anchor = AnchorStyles.Top | AnchorStyles.Left;
 
+            guna2TabControl1.SelectedIndexChanged += Guna2TabControl1_SelectedIndexChanged;
 
             //добавление всех игроков в выпадающий список (в анализе статистики)
-
             PlayersComboBoxFill();
+            InitializeProgressTab();
+            InitializeTasksLoadingLabel();
+            InitializeTwitchRestrictions();
+            _ = RefreshTasksAsync();
+        }
+        private async void Guna2TabControl1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ExitTaskDeleteMode();
+            if (guna2TabControl1.SelectedTab == tabPage5 && progressDataDirty)
+            {
+                await RefreshProgressTabAsync();
+                progressDataDirty = false;
+            }
+        }
+        private void InitializeTasksLoadingLabel()
+        {
+            tasksLoadingLabel = new Guna2HtmlLabel();
+            tasksLoadingLabel.Text = "Загрузка тренировок...";
+            tasksLoadingLabel.AutoSize = false;
+            tasksLoadingLabel.Width = guna2HtmlLabel2.Width;
+            tasksLoadingLabel.Height = guna2HtmlLabel2.Height;
+            tasksLoadingLabel.TextAlignment = ContentAlignment.MiddleCenter;
+            tasksLoadingLabel.ForeColor = Color.DimGray;
+            tasksLoadingLabel.BackColor = Color.Transparent;
+            tasksLoadingLabel.Location = guna2HtmlLabel2.Location;
+            tasksLoadingLabel.Visible = false;
+            tabPage4.Controls.Add(tasksLoadingLabel);
+            tasksLoadingLabel.BringToFront();
+        }
+
+        private void InitializeProgressTab()
+        {
+            progressTabPage = tabPage5;
+            progressTabPage.BackColor = Color.White;
+            progressTabPage.Padding = new Padding(8);
+            progressTabPage.Controls.Clear();
+
+            kpiActiveLabel = new Label { Left = 10, Top = 10, Width = 220, Height = 28, Font = new Font("Segoe UI", 10F, FontStyle.Bold) };
+            kpiOverdueLabel = new Label { Left = 240, Top = 10, Width = 220, Height = 28, Font = new Font("Segoe UI", 10F, FontStyle.Bold) };
+            kpiCompletedWeekLabel = new Label { Left = 470, Top = 10, Width = 260, Height = 28, Font = new Font("Segoe UI", 10F, FontStyle.Bold) };
+            kpiCompletionRateLabel = new Label { Left = 740, Top = 10, Width = 240, Height = 28, Font = new Font("Segoe UI", 10F, FontStyle.Bold) };
+
+            var deadlinesTitle = new Label { Text = "Ближайшие дедлайны", Left = 10, Top = 45, Width = 300, Height = 22, Font = new Font("Segoe UI", 9F, FontStyle.Bold) };
+            progressDeadlinesPanel = new FlowLayoutPanel
+            {
+                Left = 10,
+                Top = 70,
+                Width = 470,
+                Height = 140,
+                FlowDirection = FlowDirection.TopDown,
+                AutoScroll = true,
+                WrapContents = false
+            };
+
+            var progressTitle = new Label { Text = "Прогресс активных задач", Left = 500, Top = 45, Width = 300, Height = 22, Font = new Font("Segoe UI", 9F, FontStyle.Bold) };
+            progressTaskProgressPanel = new FlowLayoutPanel
+            {
+                Left = 500,
+                Top = 70,
+                Width = 480,
+                Height = 140,
+                FlowDirection = FlowDirection.TopDown,
+                AutoScroll = true,
+                WrapContents = false
+            };
+
+            progressPlayerComboBox = new ComboBox { Left = 10, Top = 220, Width = 220, DropDownStyle = ComboBoxStyle.DropDownList };
+            progressMetricComboBox = new ComboBox { Left = 240, Top = 220, Width = 220, DropDownStyle = ComboBoxStyle.DropDownList };
+            progressMetricComboBox.Items.AddRange(new object[]
+            {
+                "Убийства",
+                "Помощи",
+                "Смерти",
+                "Сыграть матчей"
+            });
+            progressMetricComboBox.SelectedIndex = 0;
+            progressPlayerComboBox.SelectedIndexChanged += ProgressPlayerComboBox_SelectedIndexChanged;
+            progressMetricComboBox.SelectedIndexChanged += ProgressMetricComboBox_SelectedIndexChanged;
+
+            var rangeLabel = new Label
+            {
+                Left = 10,
+                Top = 245,
+                Width = 970,
+                Height = 18,
+                TextAlign = ContentAlignment.MiddleCenter,
+                ForeColor = Color.DimGray,
+                Text = "Статистика за последние 30 дней"
+            };
+
+            playerTrendChart = BuildChart("Динамика игрока");
+            playerTrendChart.Left = 10;
+            playerTrendChart.Top = 255;
+            playerTrendChart.Width = 480;
+            playerTrendChart.Height = 450;
+
+            teamCompareChart = BuildChart("Сравнение игроков");
+            teamCompareChart.Left = 500;
+            teamCompareChart.Top = 255;
+            teamCompareChart.Width = 480;
+            teamCompareChart.Height = 450;
+
+            progressStatusLabel = new Label
+            {
+                Left = 500,
+                Top = 220,
+                Width = 480,
+                Height = 22,
+                TextAlign = ContentAlignment.MiddleRight,
+                ForeColor = Color.DimGray,
+                Text = ""
+            };
+
+            progressTabPage.Controls.Add(kpiActiveLabel);
+            progressTabPage.Controls.Add(kpiOverdueLabel);
+            progressTabPage.Controls.Add(kpiCompletedWeekLabel);
+            progressTabPage.Controls.Add(kpiCompletionRateLabel);
+            progressTabPage.Controls.Add(deadlinesTitle);
+            progressTabPage.Controls.Add(progressDeadlinesPanel);
+            progressTabPage.Controls.Add(progressTitle);
+            progressTabPage.Controls.Add(progressTaskProgressPanel);
+            progressTabPage.Controls.Add(progressPlayerComboBox);
+            progressTabPage.Controls.Add(progressMetricComboBox);
+            progressTabPage.Controls.Add(rangeLabel);
+            progressTabPage.Controls.Add(playerTrendChart);
+            progressTabPage.Controls.Add(teamCompareChart);
+            progressTabPage.Controls.Add(progressStatusLabel);
+        }
+
+        private Chart BuildChart(string title)
+        {
+            var chart = new Chart();
+            chart.ChartAreas.Add(new ChartArea("main"));
+            chart.Titles.Add(title);
+            chart.Legends.Add(new Legend("legend"));
+            chart.BackColor = Color.WhiteSmoke;
+            return chart;
+        }
+
+        private void InitializeTwitchRestrictions()
+        {
+            webView21.CoreWebView2InitializationCompleted += WebView21_CoreWebView2InitializationCompleted;
+            if (webView21.CoreWebView2 != null)
+            {
+                AttachTwitchRestrictions();
+            }
+            else
+            {
+                _ = webView21.EnsureCoreWebView2Async();
+            }
+
+            if (webView21.Source == null || !webView21.Source.AbsoluteUri.Contains("/directory/category/dota-2"))
+            {
+                webView21.Source = new Uri(DotaTwitchCategoryUrl);
+            }
+        }
+
+        private void WebView21_CoreWebView2InitializationCompleted(object sender, CoreWebView2InitializationCompletedEventArgs e)
+        {
+            if (e.IsSuccess)
+            {
+                AttachTwitchRestrictions();
+            }
+        }
+
+        private void AttachTwitchRestrictions()
+        {
+            if (webView21.CoreWebView2 == null)
+            {
+                return;
+            }
+            webView21.CoreWebView2.NavigationStarting -= CoreWebView2_NavigationStarting;
+            webView21.CoreWebView2.NavigationStarting += CoreWebView2_NavigationStarting;
+        }
+
+        private void CoreWebView2_NavigationStarting(object sender, CoreWebView2NavigationStartingEventArgs e)
+        {
+            if (isTwitchForcedRedirect)
+            {
+                isTwitchForcedRedirect = false;
+                return;
+            }
+
+            if (!Uri.TryCreate(e.Uri, UriKind.Absolute, out var targetUri) || !IsAllowedTwitchUri(targetUri))
+            {
+                e.Cancel = true;
+                ForceTwitchDotaPage();
+            }
+        }
+
+        private bool IsAllowedTwitchUri(Uri uri)
+        {
+            if (uri == null)
+            {
+                return false;
+            }
+
+            var host = uri.Host.ToLowerInvariant();
+            if (host != "www.twitch.tv" && host != "twitch.tv")
+            {
+                return false;
+            }
+
+            var path = uri.AbsolutePath.TrimEnd('/');
+            if (path.Equals("/directory/category/dota-2", StringComparison.OrdinalIgnoreCase))
+            {
+                return true;
+            }
+
+            // Разрешаем только страницы каналов вида /channel_name.
+            return Regex.IsMatch(path, "^/[A-Za-z0-9_]+$");
+        }
+
+        private void ForceTwitchDotaPage()
+        {
+            if (webView21 == null)
+            {
+                return;
+            }
+
+            isTwitchForcedRedirect = true;
+            webView21.Source = new Uri(DotaTwitchCategoryUrl);
         }
         private void PlayersComboBoxFill()
         {
@@ -304,6 +556,7 @@ namespace Dota_2_Training_Platform
         private async void SelectPlayerComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             SelectedPlayerMatches.Controls.Clear();
+            AiAdviceButton.Visible = false;
             if (SelectPlayerComboBox.SelectedIndex == -1)
             {
                 return;
@@ -382,10 +635,9 @@ namespace Dota_2_Training_Platform
                     DateTimeOffset.FromUnixTimeSeconds(match.StartTime).LocalDateTime;
 
                 TimeSpan duration = TimeSpan.FromSeconds(match.Duration);
-
                 string text =
                     //$"Победитель: {winnerSide}\n" +
-                    $"Время старта: {matchDate:dd.MM.yyyy HH:mm}\nДлительность: {duration:mm\\:ss}\nID:{match.MatchId}";
+                    $"Время старта: {matchDate:dd.MM.yyyy HH:mm}\nДлительность: {(int)duration.TotalMinutes}:{duration.Seconds:D2}\nID:{match.MatchId}";
 
                 Guna2Button button = new Guna2Button();
                 button.Animated = true;
@@ -441,6 +693,7 @@ namespace Dota_2_Training_Platform
             PanelWithTeams.Visible = true;
             OpenInMatchDetailsForm.Visible = true;
             MatchInfoPanel.Visible = true;
+            AiAdviceButton.Visible = true;
             InitCustomTooltip();
             LoadMatch(match);
 
@@ -449,6 +702,236 @@ namespace Dota_2_Training_Platform
             tooltipTimer.Tick += Checker;
 
             //form.Show();
+        }
+
+        private async void AiAdviceButton_Click(object sender, EventArgs e)
+        {
+            if (match == null || SelectPlayerComboBox.SelectedIndex < 0 || SelectPlayerComboBox.SelectedIndex >= currentTeam.Players.Count)
+            {
+                MessageBox.Show("Сначала выберите игрока и матч.");
+                return;
+            }
+
+            AiAdviceButton.Enabled = false;
+            try
+            {
+                var playerAccountId = currentTeam.Players[SelectPlayerComboBox.SelectedIndex].AccountID;
+                long accountId;
+                if (!long.TryParse(playerAccountId, out accountId))
+                {
+                    ShowAiAdviceWindow("Ошибка AI", "Не удалось определить игрока.");
+                    return;
+                }
+
+                var player = match.players?.FirstOrDefault(p => p.account_id == accountId);
+                if (player == null)
+                {
+                    ShowAiAdviceWindow("Ошибка AI", "Игрок не найден в выбранном матче.");
+                    return;
+                }
+
+                string heroName = ApiCourier.Heroes.ContainsKey(player.hero_id)
+                    ? ApiCourier.Heroes[player.hero_id].localized_name
+                    : $"hero_id={player.hero_id}";
+
+                string position = GuessPosition(player);
+                string winner = match.radiant_win ? "Radiant" : "Dire";
+                string playerSide = player.isRadiant ? "Radiant" : "Dire";
+                string result = winner == playerSide ? "Победа" : "Поражение";
+
+                string prompt =
+                    "Ты тренер по Dota 2. Дай ровно 4-5 коротких предложения на русском языке. Не обращайся к игроку на прямую. Говори как третье, независимое лицо.\n" +
+                    "Формат: 1-2 сильная сторона, 1-2 точки роста, 1-2 практический совет к следующей игре.\n" +
+                    "Без воды и без общих фраз. Не зацикливайся на роли игрока, роль не всегда корректно вычисляется\n\n" +
+                    $"Герой: {heroName}\n" +
+                    $"Позиция (приблизительное решение): {position}\n" +
+                    $"Результат матча: {result}\n" +
+                    $"K/D/A: {player.kills}/{player.deaths}/{player.assists}\n" +
+                    $"GPM/XPM: {player.gold_per_min}/{player.xp_per_min}\n" +
+                    $"LH/DN: {player.last_hits}/{player.denies}\n" +
+                    $"NetWorth: {player.net_worth}\n" +
+                    $"Hero/Tower damage: {player.hero_damage}/{player.tower_damage}\n" +
+                    $"Длительность матча в секундах: {match.duration}\n";
+
+                var advice = await GetGeminiAdviceAsync(prompt);
+                ShowAiAdviceWindow("AI-рекомендация", advice);
+            }
+            catch (Exception ex)
+            {
+                ShowAiAdviceWindow("Ошибка AI", $"Ошибка AI: {ex.Message}");
+            }
+            finally
+            {
+                AiAdviceButton.Enabled = true;
+            }
+        }
+
+        private void ShowAiAdviceWindow(string title, string text)
+        {
+            using (var form = new Form())
+            using (var box = new TextBox())
+            {
+                form.Text = title;
+                form.StartPosition = FormStartPosition.CenterParent;
+                form.FormBorderStyle = FormBorderStyle.SizableToolWindow;
+                form.Width = 640;
+                form.Height = 360;
+
+                box.Multiline = true;
+                box.ReadOnly = true;
+                box.ScrollBars = ScrollBars.Vertical;
+                box.Dock = DockStyle.Fill;
+                box.Font = new Font("Segoe UI", 10F);
+                box.Text = text ?? "";
+
+                form.Controls.Add(box);
+                form.ShowDialog(this);
+            }
+        }
+
+        private string GuessPosition(MatchPlayerModel player)
+        {
+            if (player.gold_per_min >= 600 && player.last_hits >= 180) return "Керри (позиция 1)";
+            if (player.gold_per_min >= 500 && player.assists >= 8) return "Мид/Оффлейн (позиция 2-3)";
+            if (player.assists >= 12 && player.last_hits < 90) return "Саппорт (позиция 4-5)";
+            return "Позиция не определена";
+        }
+
+        private async Task<string> GetGeminiAdviceAsync(string prompt)
+        {
+            if (DateTime.UtcNow < _aiRateLimitUntilUtc)
+            {
+                int waitSeconds = (int)Math.Ceiling((_aiRateLimitUntilUtc - DateTime.UtcNow).TotalSeconds);
+                return $"Слишком много запросов к AI. Подождите примерно {Math.Max(1, waitSeconds)} сек. и попробуйте снова.";
+            }
+
+            string apiKey = Environment.GetEnvironmentVariable("GEMINI_API_KEY");
+            if (string.IsNullOrWhiteSpace(apiKey))
+            {
+                apiKey = System.Configuration.ConfigurationManager.AppSettings["GeminiApiKey"];
+            }
+
+            if (string.IsNullOrWhiteSpace(apiKey))
+            {
+                return "Не найден Gemini API ключ. Добавьте GEMINI_API_KEY или App.config key GeminiApiKey.";
+            }
+
+            string preferredModel = System.Configuration.ConfigurationManager.AppSettings["GeminiModel"];
+            if (string.IsNullOrWhiteSpace(preferredModel))
+            {
+                preferredModel = "gemini-2.0-flash";
+            }
+
+            var modelsToTry = new List<string>();
+            modelsToTry.Add(preferredModel);
+            foreach (var model in new[] { "gemini-2.0-flash", "gemini-1.5-flash-latest", "gemini-1.5-flash" })
+            {
+                if (!modelsToTry.Contains(model))
+                {
+                    modelsToTry.Add(model);
+                }
+            }
+
+            string lastError = "AI не вернул текст рекомендации.";
+
+            foreach (var model in modelsToTry)
+            {
+                string endpoint = $"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={apiKey}";
+                var payload = new
+                {
+                    contents = new[]
+                    {
+                        new
+                        {
+                            parts = new[]
+                            {
+                                new { text = prompt }
+                            }
+                        }
+                    }
+                    //generationConfig = new
+                    //{
+                    //    temperature = 0.5,
+                    //    maxOutputTokens = 180
+                    //}
+                };
+
+                var json = JsonSerializer.Serialize(payload);
+                using (var content = new StringContent(json, Encoding.UTF8, "application/json"))
+                {
+                    var response = await _aiHttpClient.PostAsync(endpoint, content);
+                    var body = await response.Content.ReadAsStringAsync();
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        using (var doc = JsonDocument.Parse(body))
+                        {
+                            var root = doc.RootElement;
+                            if (root.TryGetProperty("candidates", out var candidates) && candidates.GetArrayLength() > 0)
+                            {
+                                var text = candidates[0]
+                                    .GetProperty("content")
+                                    .GetProperty("parts")[0]
+                                    .GetProperty("text")
+                                    .GetString();
+                                if (!string.IsNullOrWhiteSpace(text))
+                                {
+                                    return text.Trim();
+                                }
+                            }
+                        }
+
+                        lastError = "AI вернул пустой ответ.";
+                        continue;
+                    }
+
+                    // Если модель не найдена - пробуем следующую.
+                    if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+                    {
+                        lastError = $"Модель {model} недоступна (404).";
+                        continue;
+                    }
+
+                    if ((int)response.StatusCode == 429)
+                    {
+                        // Короткий backoff + одна повторная попытка для текущей модели.
+                        await Task.Delay(2000);
+                        using (var retryContent = new StringContent(json, Encoding.UTF8, "application/json"))
+                        {
+                            var retryResponse = await _aiHttpClient.PostAsync(endpoint, retryContent);
+                            if (retryResponse.IsSuccessStatusCode)
+                            {
+                                var retryBody = await retryResponse.Content.ReadAsStringAsync();
+                                using (var retryDoc = JsonDocument.Parse(retryBody))
+                                {
+                                    var retryRoot = retryDoc.RootElement;
+                                    if (retryRoot.TryGetProperty("candidates", out var retryCandidates) && retryCandidates.GetArrayLength() > 0)
+                                    {
+                                        var retryText = retryCandidates[0]
+                                            .GetProperty("content")
+                                            .GetProperty("parts")[0]
+                                            .GetProperty("text")
+                                            .GetString();
+                                        if (!string.IsNullOrWhiteSpace(retryText))
+                                        {
+                                            return retryText.Trim();
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        _aiRateLimitUntilUtc = DateTime.UtcNow.AddSeconds(35);
+                        lastError = "Ошибка 429: превышен лимит Gemini. Подождите ~30-40 сек. и попробуйте снова.";
+                        break;
+                    }
+
+                    lastError = $"Ошибка Gemini API: {response.StatusCode}\n{body}";
+                    break;
+                }
+            }
+
+            return lastError;
         }
         void Checker(object sender, EventArgs e)
         {
@@ -473,7 +956,8 @@ namespace Dota_2_Training_Platform
             LobbyType.Text = LobbyAndGameModes.LobbyTypes.ContainsKey(match.lobby_type) ? LobbyAndGameModes.LobbyTypes[match.lobby_type] : "Неизвестно";
 
             TimeSpan duration = TimeSpan.FromSeconds(match.duration);
-            DurationLabel.Text = duration.ToString(@"mm\:ss");
+            DurationLabel.Text = $"{(int)duration.TotalMinutes}:{duration.Seconds:D2}";
+            //DurationLabel.Text = duration.ToString(@"mm\:ss");
 
             DateTime matchDate = DateTimeOffset.FromUnixTimeSeconds(match.start_time).LocalDateTime;
             StartTime.Text = $"{matchDate:dd.MM.yyyy HH:mm}";
@@ -902,25 +1386,462 @@ namespace Dota_2_Training_Platform
 
         #region Trainings
 
-        private async void LoadTasks()
+        private async Task RefreshTasksAsync()
         {
-            tasks.Clear();
-            tasks = await dbManager.GetTrainingTasksAsync(currentTeam.Id);
+            if (isTasksLoading)
+            {
+                return;
+            }
 
+            try
+            {
+                SetTasksLoadingState(true, "Загрузка тренировок...");
+                tasks.Clear();
+                tasks = await dbManager.GetTrainingTasksAsync(currentTeam.Id);
+                RenderTasks();
+                progressDataDirty = true;
+                _ = AnalyzeAndRefreshTasksAsync();
+            }
+            finally
+            {
+                SetTasksLoadingState(false);
+            }
+        }
 
+        private async Task AnalyzeAndRefreshTasksAsync()
+        {
+            if (isTaskAnalysisRunning)
+            {
+                return;
+            }
+
+            isTaskAnalysisRunning = true;
+            try
+            {
+                await AnalyzeTrainingTasksProgressAsync();
+                RenderTasks();
+                progressDataDirty = true;
+                if (guna2TabControl1.SelectedTab == tabPage5)
+                {
+                    await RefreshProgressTabAsync();
+                    progressDataDirty = false;
+                }
+            }
+            finally
+            {
+                isTaskAnalysisRunning = false;
+            }
+        }
+
+        private void RenderTasks()
+        {
             TrainingTasksPanel.Controls.Clear();
+            ArchiveTasksPanel.Controls.Clear();
+            var activeTasks = tasks.Where(t => t.Deadline >= DateTime.Now).OrderBy(t => t.Deadline).ToList();
+            var archiveTasks = tasks.Where(t => t.Deadline < DateTime.Now).OrderByDescending(t => t.Deadline).ToList();
+            RenderTaskList(TrainingTasksPanel, activeTasks, true);
+            RenderTaskList(ArchiveTasksPanel, archiveTasks, false);
+            RenderTeamPageActiveTasksPreview(activeTasks);
+        }
 
-            foreach (var task in tasks)
+        private void RenderTeamPageActiveTasksPreview(List<TrainingTask> activeTasks)
+        {
+            TeamPageTasksPanel.Controls.Clear();
+
+            if (activeTasks.Count == 0)
+            {
+                TeamPageTasksPanel.Controls.Add(new Label
+                {
+                    Text = "Нет актуальных тренировок",
+                    AutoSize = false,
+                    Width = TeamPageTasksPanel.Width - 20,
+                    Height = 30,
+                    Left = 10,
+                    Top = 12,
+                    TextAlign = ContentAlignment.MiddleLeft
+                });
+                return;
+            }
+
+            RenderTaskList(TeamPageTasksPanel, activeTasks, false);
+        }
+
+        private async Task RefreshProgressTabAsync()
+        {
+            if (progressTabPage == null || isProgressLoading)
+            {
+                return;
+            }
+
+            isProgressLoading = true;
+            progressStatusLabel.Text = "Обновление...";
+
+            try
+            {
+                var activeTasks = tasks.Where(t => t.Deadline >= DateTime.Now).ToList();
+                var overdueTasks = tasks.Where(t => t.Deadline < DateTime.Now && !t.IsCompleted).ToList();
+                var completedWeekTasks = tasks.Where(t => t.IsCompleted && t.Deadline >= DateTime.Now.AddDays(-7)).ToList();
+
+                kpiActiveLabel.Text = $"Активные: {activeTasks.Count}";
+                kpiOverdueLabel.Text = $"Просроченные: {overdueTasks.Count}";
+                kpiCompletedWeekLabel.Text = $"Выполнено (7 дн.): {completedWeekTasks.Count}";
+
+                double averageCompletion = activeTasks.Count == 0
+                    ? 0
+                    : activeTasks.Average(GetTaskCompletionRatio) * 100.0;
+                kpiCompletionRateLabel.Text = $"Средний прогресс: {averageCompletion:0}%";
+
+                RenderProgressDeadlines(activeTasks);
+                RenderProgressTaskBars(activeTasks);
+                RefreshProgressPlayerFilter();
+                await RenderAllChartsAsync();
+                progressStatusLabel.Text = $"Обновлено: {DateTime.Now:HH:mm:ss}";
+            }
+            catch (Exception ex)
+            {
+                progressStatusLabel.Text = $"Ошибка: {ex.Message}";
+            }
+            finally
+            {
+                isProgressLoading = false;
+                _ = ExecutePendingProgressRefreshAsync();
+            }
+        }
+
+        private async Task ExecutePendingProgressRefreshAsync()
+        {
+            if (isProgressLoading || guna2TabControl1.SelectedTab != tabPage5)
+            {
+                return;
+            }
+
+            bool needMetricRefresh = pendingProgressMetricRefresh;
+            bool needPlayerRefresh = pendingProgressPlayerRefresh;
+            pendingProgressMetricRefresh = false;
+            pendingProgressPlayerRefresh = false;
+
+            if (needMetricRefresh)
+            {
+                progressStatusLabel.Text = "Обновление графиков...";
+                await RenderAllChartsAsync();
+                progressStatusLabel.Text = $"Обновлено: {DateTime.Now:HH:mm:ss}";
+                return;
+            }
+
+            if (needPlayerRefresh)
+            {
+                progressStatusLabel.Text = "Обновление графика игрока...";
+                await RenderPlayerTrendChartAsync();
+                progressStatusLabel.Text = $"Обновлено: {DateTime.Now:HH:mm:ss}";
+            }
+        }
+
+        private async Task RenderAllChartsAsync()
+        {
+            await RenderPlayerTrendChartAsync();
+            await RenderTeamCompareChartAsync();
+        }
+
+        private async void ProgressPlayerComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (guna2TabControl1.SelectedTab != tabPage5)
+            {
+                return;
+            }
+
+            if (isProgressLoading)
+            {
+                pendingProgressPlayerRefresh = true;
+                return;
+            }
+
+            progressStatusLabel.Text = "Обновление графика игрока...";
+            await RenderPlayerTrendChartAsync();
+            progressStatusLabel.Text = $"Обновлено: {DateTime.Now:HH:mm:ss}";
+        }
+
+        private async void ProgressMetricComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (guna2TabControl1.SelectedTab != tabPage5)
+            {
+                return;
+            }
+
+            if (isProgressLoading)
+            {
+                pendingProgressMetricRefresh = true;
+                return;
+            }
+
+            progressStatusLabel.Text = "Обновление графиков...";
+            await RenderAllChartsAsync();
+            progressStatusLabel.Text = $"Обновлено: {DateTime.Now:HH:mm:ss}";
+        }
+
+        private void RenderProgressDeadlines(List<TrainingTask> activeTasks)
+        {
+            progressDeadlinesPanel.Controls.Clear();
+            foreach (var task in activeTasks.OrderBy(t => t.Deadline).Take(5))
+            {
+                progressDeadlinesPanel.Controls.Add(new Label
+                {
+                    AutoSize = false,
+                    Width = progressDeadlinesPanel.Width - 30,
+                    Height = 24,
+                    Text = $"{task.Title} - до {task.Deadline:dd.MM HH:mm}",
+                    TextAlign = ContentAlignment.MiddleLeft
+                });
+            }
+        }
+
+        private void RenderProgressTaskBars(List<TrainingTask> activeTasks)
+        {
+            progressTaskProgressPanel.Controls.Clear();
+            foreach (var task in activeTasks.OrderBy(t => t.Deadline).Take(7))
+            {
+                double ratio = GetTaskCompletionRatio(task);
+                var container = new Panel { Width = progressTaskProgressPanel.Width - 30, Height = 44 };
+                var label = new Label
+                {
+                    Left = 0,
+                    Top = 0,
+                    Width = container.Width,
+                    Height = 18,
+                    Text = $"{task.Title} ({ratio * 100:0}%)"
+                };
+                var track = new Panel
+                {
+                    Left = 0,
+                    Top = 20,
+                    Width = container.Width,
+                    Height = 18,
+                    BackColor = Color.FromArgb(220, 220, 220)
+                };
+                int fillWidth = Math.Max(0, Math.Min(track.Width, (int)(track.Width * ratio)));
+                var fill = new Panel
+                {
+                    Left = 0,
+                    Top = 0,
+                    Width = fillWidth,
+                    Height = track.Height,
+                    BackColor = Color.FromArgb(80, 170, 80)
+                };
+                track.Controls.Add(fill);
+                container.Controls.Add(label);
+                container.Controls.Add(track);
+                progressTaskProgressPanel.Controls.Add(container);
+            }
+        }
+
+        private void RefreshProgressPlayerFilter()
+        {
+            string selected = progressPlayerComboBox.SelectedItem as string;
+            progressPlayerComboBox.Items.Clear();
+            foreach (var player in currentTeam.Players)
+            {
+                progressPlayerComboBox.Items.Add(player.Name);
+            }
+
+            if (progressPlayerComboBox.Items.Count == 0)
+            {
+                return;
+            }
+
+            int oldIdx = selected == null ? -1 : progressPlayerComboBox.Items.IndexOf(selected);
+            progressPlayerComboBox.SelectedIndex = oldIdx >= 0 ? oldIdx : 0;
+        }
+
+        private async Task RenderPlayerTrendChartAsync()
+        {
+            playerTrendChart.Series.Clear();
+            var series = new Series("Игрок")
+            {
+                ChartType = SeriesChartType.Line,
+                BorderWidth = 2
+            };
+            playerTrendChart.Series.Add(series);
+
+            if (progressPlayerComboBox.SelectedIndex < 0 || progressPlayerComboBox.SelectedIndex >= currentTeam.Players.Count)
+            {
+                return;
+            }
+
+            var player = currentTeam.Players[progressPlayerComboBox.SelectedIndex];
+            var matchesResult = await ApiCourier.TryGetPlayerMatchesInPeriod(player.AccountID, DateTime.Now.AddDays(-30), DateTime.Now, 60, 600);
+            if (!matchesResult.IsSuccess || matchesResult.Data == null)
+            {
+                return;
+            }
+
+            if (GetSelectedProgressMetric() == TrainingMetric.MatchesPlayed)
+            {
+                int cumulativeMatches = 0;
+                var groupedByDay = matchesResult.Data
+                    .OrderBy(m => m.StartTime)
+                    .GroupBy(m => DateTimeOffset.FromUnixTimeSeconds(m.StartTime).Date);
+
+                foreach (var dayGroup in groupedByDay)
+                {
+                    cumulativeMatches += dayGroup.Count();
+                    int idx = series.Points.AddXY(dayGroup.Key.ToString("dd.MM"), cumulativeMatches);
+                    series.Points[idx].ToolTip = $"Дата: {dayGroup.Key:dd.MM.yyyy}\nЗначение: {cumulativeMatches}";
+                }
+                return;
+            }
+
+            var detailsCache = new Dictionary<long, DotaMatchDetailsModel>();
+            foreach (var match in matchesResult.Data.OrderBy(m => m.StartTime))
+            {
+                var date = DateTimeOffset.FromUnixTimeSeconds(match.StartTime).DateTime;
+                double? value = await GetMatchMetricValueAsync(match, player.AccountID, detailsCache);
+                if (!value.HasValue)
+                {
+                    continue;
+                }
+                int idx = series.Points.AddXY(date.ToString("dd.MM"), value.Value);
+                series.Points[idx].ToolTip = $"Дата: {date:dd.MM.yyyy}\nЗначение: {value.Value:0.##}";
+            }
+        }
+
+        private async Task RenderTeamCompareChartAsync()
+        {
+            teamCompareChart.Series.Clear();
+            var series = new Series("Среднее")
+            {
+                ChartType = SeriesChartType.Column,
+            };
+            teamCompareChart.Series.Add(series);
+
+            var detailsCache = new Dictionary<long, DotaMatchDetailsModel>();
+            foreach (var player in currentTeam.Players)
+            {
+                var result = await ApiCourier.TryGetPlayerMatchesInPeriod(player.AccountID, DateTime.Now.AddDays(-30), DateTime.Now, 60, 600);
+                if (!result.IsSuccess || result.Data == null || result.Data.Count == 0)
+                {
+                    continue;
+                }
+
+                if (GetSelectedProgressMetric() == TrainingMetric.MatchesPlayed)
+                {
+                    int idx = series.Points.AddXY(player.Name, result.Data.Count);
+                    series.Points[idx].ToolTip = $"Игрок: {player.Name}\nЗначение: {result.Data.Count}";
+                    continue;
+                }
+
+                var values = new List<double>();
+                foreach (var match in result.Data)
+                {
+                    double? value = await GetMatchMetricValueAsync(match, player.AccountID, detailsCache);
+                    if (value.HasValue)
+                    {
+                        values.Add(value.Value);
+                    }
+                }
+
+                if (values.Count == 0)
+                {
+                    int noDataIdx = series.Points.AddXY(player.Name, 0);
+                    series.Points[noDataIdx].ToolTip = $"Игрок: {player.Name}\nНет данных за 30 дней";
+                    series.Points[noDataIdx].Label = "н/д";
+                    continue;
+                }
+
+                double avg = values.Average();
+                int pointIndex = series.Points.AddXY(player.Name, avg);
+                series.Points[pointIndex].ToolTip = $"Игрок: {player.Name}\nЗначение: {avg:0.##}";
+            }
+        }
+
+        private double GetTaskCompletionRatio(TrainingTask task)
+        {
+            if (task.PlayerIds == null || task.PlayerIds.Count == 0)
+            {
+                return 0;
+            }
+
+            int done = task.PlayerIds.Count(pid =>
+                task.CompletedPlayers != null &&
+                task.CompletedPlayers.ContainsKey(pid) &&
+                task.CompletedPlayers[pid]);
+            return (double)done / task.PlayerIds.Count;
+        }
+
+        private TrainingMetric GetSelectedProgressMetric()
+        {
+            if (progressMetricComboBox == null || progressMetricComboBox.SelectedItem == null)
+            {
+                return TrainingMetric.Kills;
+            }
+
+            switch (progressMetricComboBox.SelectedItem.ToString())
+            {
+                case "Помощи": return TrainingMetric.Assists;
+                case "Смерти": return TrainingMetric.Deaths;
+                // case "Золото в минуту": return TrainingMetric.GPM;
+                // case "Добито крипов": return TrainingMetric.LastHits;
+                case "Сыграть матчей": return TrainingMetric.MatchesPlayed;
+                default: return TrainingMetric.Kills;
+            }
+        }
+
+        private async Task<double?> GetMatchMetricValueAsync(
+            DotaMatchModel match,
+            string playerAccountId,
+            Dictionary<long, DotaMatchDetailsModel> detailsCache)
+        {
+            var selected = GetSelectedProgressMetric();
+            if (selected == TrainingMetric.Kills) return match.Kills;
+            if (selected == TrainingMetric.Assists) return match.Assists;
+            if (selected == TrainingMetric.Deaths) return match.Deaths;
+            if (selected == TrainingMetric.MatchesPlayed) return 1;
+            // if (selected == TrainingMetric.GPM && match.GoldPerMin.HasValue) return match.GoldPerMin.Value;
+            // if (selected == TrainingMetric.LastHits && match.LastHits.HasValue) return match.LastHits.Value;
+
+            if (!detailsCache.ContainsKey(match.MatchId))
+            {
+                var detailsResult = await ApiCourier.TryGetMatch(match.MatchId);
+                if (!detailsResult.IsSuccess || detailsResult.Data == null)
+                {
+                    return null;
+                }
+                detailsCache[match.MatchId] = detailsResult.Data;
+            }
+
+            var details = detailsCache[match.MatchId];
+            long parsedId;
+            if (!long.TryParse(playerAccountId, out parsedId))
+            {
+                return null;
+            }
+
+            var player = details.players?.FirstOrDefault(p => p.account_id == parsedId);
+            if (player == null)
+            {
+                return null;
+            }
+
+            switch (selected)
+            {
+                // case TrainingMetric.GPM: return player.gold_per_min;
+                // case TrainingMetric.LastHits: return player.last_hits;
+                default: return null;
+            }
+        }
+
+        private void RenderTaskList(Guna2Panel hostPanel, List<TrainingTask> tasksToRender, bool canDeleteFromThisPanel)
+        {
+            foreach (var task in tasksToRender)
             {
                 Guna2Panel taskPanel = new Guna2Panel();
                 Font font = new Font(guna2HtmlLabel1.Font, FontStyle.Regular);
 
                 taskPanel.Font = font;
-                taskPanel.Width = TrainingTasksPanel.Width - 17;
+                taskPanel.Width = hostPanel.Width - 17;
                 taskPanel.Height = 190;
                 taskPanel.FillColor = Color.Gray;
+                taskPanel.BorderThickness = 0;
 
-                taskPanel.Top = TrainingTasksPanel.Controls.Count == 0 ? 10 : TrainingTasksPanel.Controls[TrainingTasksPanel.Controls.Count - 1].Bottom + 2;
+                taskPanel.Top = hostPanel.Controls.Count == 0 ? 10 : hostPanel.Controls[hostPanel.Controls.Count - 1].Bottom + 2;
 
                 taskPanel.Controls.Add(new Guna2HtmlLabel()
                 {
@@ -963,13 +1884,14 @@ namespace Dota_2_Training_Platform
                         compare = "равно";
                         break;
                 }
-                string taskText = compare == "равно" ? "набрать" : $"набрать в среднем {compare}";
+                string taskText = $"набрать {compare} чем";
+                string metricText = GetMetricText(task.Metric);
                 taskPanel.Controls.Add(new Guna2HtmlLabel()
                 {
                     Font = font,
                     AutoSize = true,
                     Location = new Point(13, 77),
-                    Text = $"Цель: {taskText} {task.TargetValue}"
+                    Text = $"Цель: {taskText} {task.TargetValue} ({metricText})"
                 });
                 if(task.PeriodValue != -1)
                 {
@@ -1004,19 +1926,164 @@ namespace Dota_2_Training_Platform
                     }
                     playerImg.SizeMode = PictureBoxSizeMode.StretchImage;
                     playerImg.Load(players[i].Avatarfull);
+
+                    if (playerImg.Image != null)
+                    {
+                        bool isTaskActive = DateTime.Now <= task.Deadline;
+                        bool isCompleted = task.CompletedPlayers.ContainsKey(players[i].AccountID)
+                            && task.CompletedPlayers[players[i].AccountID];
+                        if (isTaskActive)
+                        {
+                            playerImg.Image = isCompleted
+                                ? MakePlayerGreen(playerImg.Image)
+                                : MakeItemGray(playerImg.Image);
+                        }
+                        else
+                        {
+                            playerImg.Image = isCompleted
+                                ? MakePlayerGreen(playerImg.Image)
+                                : MakePlayerRed(playerImg.Image);
+                        }
+                    }
+
                     taskPanel.Controls.Add(playerImg);
 
                 }
 
                 taskPanel.Tag = task;
                 taskPanel.Click += OpenTask;
+                if (canDeleteFromThisPanel)
+                {
+                    taskPanel.MouseEnter += TaskPanel_MouseEnter;
+                    taskPanel.MouseLeave += TaskPanel_MouseLeave;
+                }
+                foreach (Control child in taskPanel.Controls)
+                {
+                    child.Click += (s, e) => OpenTask(taskPanel, e);
+                    if (canDeleteFromThisPanel)
+                    {
+                        child.MouseEnter += (s, e) => TaskPanel_MouseEnter(taskPanel, e);
+                        child.MouseLeave += (s, e) => TaskPanel_MouseLeave(taskPanel, e);
+                    }
+                }
 
-                TrainingTasksPanel.Controls.Add(taskPanel);
+                hostPanel.Controls.Add(taskPanel);
             }
+        }
+        private void TaskPanel_MouseEnter(object sender, EventArgs e)
+        {
+            if (!isTaskDeleteMode) return;
+            var panel = sender as Guna2Panel;
+            if (panel == null) return;
+            panel.BorderColor = Color.FromArgb(76, 132, 255);
+            panel.BorderThickness = 2;
+        }
+        private void TaskPanel_MouseLeave(object sender, EventArgs e)
+        {
+            if (!isTaskDeleteMode) return;
+            var panel = sender as Guna2Panel;
+            if (panel == null) return;
+            panel.BorderThickness = 0;
         }
         private void OpenTask(object sender, EventArgs e)
         {
             TrainingTask task = (sender as Guna2Panel).Tag as TrainingTask;
+            if (task == null)
+            {
+                return;
+            }
+
+            if (!isTaskDeleteMode)
+            {
+                return;
+            }
+
+            if (task.Deadline < DateTime.Now)
+            {
+                MessageBox.Show("Можно удалять только актуальные задачи");
+                return;
+            }
+
+            var confirm = MessageBox.Show(
+                $"Удалить задачу \"{task.Title}\"?",
+                "Подтверждение удаления",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Warning);
+
+            if (confirm != DialogResult.Yes)
+            {
+                return;
+            }
+
+            _ = DeleteTaskAndReloadAsync(task.Id);
+        }
+        private async Task DeleteTaskAndReloadAsync(int taskId)
+        {
+            ExitTaskDeleteMode();
+            await dbManager.RemoveTrainingTaskAsync(taskId);
+            await RefreshTasksAsync();
+        }
+
+        private async Task AnalyzeTrainingTasksProgressAsync()
+        {
+            var detailsCache = new Dictionary<long, DotaMatchDetailsModel>();
+
+            foreach (var task in tasks)
+            {
+                if (task.Deadline < DateTime.Now)
+                {
+                    continue;
+                }
+
+                if (task.CompletedPlayers == null)
+                {
+                    task.CompletedPlayers = new Dictionary<string, bool>();
+                }
+
+                foreach (var playerId in task.PlayerIds)
+                {
+                    var matchesResult = await ApiCourier.TryGetPlayerMatchesInPeriod(playerId, task.StartDate, task.Deadline);
+                    if (!matchesResult.IsSuccess)
+                    {
+                        continue;
+                    }
+
+                    var details = new List<DotaMatchDetailsModel>();
+
+                    foreach (var match in matchesResult.Data)
+                    {
+                        if (!detailsCache.ContainsKey(match.MatchId))
+                        {
+                            var matchResult = await ApiCourier.TryGetMatch(match.MatchId);
+                            if (!matchResult.IsSuccess || matchResult.Data == null)
+                            {
+                                continue;
+                            }
+
+                            detailsCache[match.MatchId] = matchResult.Data;
+                        }
+
+                        details.Add(detailsCache[match.MatchId]);
+                    }
+
+                    bool isCompleted = await TrainingTasksAnalyzer.CheckTrainingAsync(task, playerId, details);
+                    task.CompletedPlayers[playerId] = isCompleted;
+                }
+            }
+        }
+
+        private string GetMetricText(TrainingMetric metric)
+        {
+            switch (metric)
+            {
+                case TrainingMetric.Kills: return "убийства";
+                case TrainingMetric.Assists: return "помощь";
+                case TrainingMetric.Deaths: return "смерти";
+                case TrainingMetric.GPM: return "золото в минуту";
+                case TrainingMetric.LastHits: return "добитые крипы";
+                case TrainingMetric.MatchesPlayed: return "сыгранные матчи";
+                default: return "метрика";
+            }
         }
 
         // Делает изображение красноватым
@@ -1081,6 +2148,7 @@ namespace Dota_2_Training_Platform
 
         private async void guna2Button1_Click_1(object sender, EventArgs e)
         {
+            ExitTaskDeleteMode();
             CreateTrainingTask taskForm = new CreateTrainingTask(currentTeam, this);
             taskForm.ShowDialog();
         }
@@ -1088,7 +2156,92 @@ namespace Dota_2_Training_Platform
         {
             await dbManager.AddTrainingTaskAsync(form.currentTask, currentTeam.Id);
             form.Dispose();
-            LoadTasks();
+            await RefreshTasksAsync();
+        }
+
+        private async void ClearArchiveButton_Click(object sender, EventArgs e)
+        {
+            if (isTasksLoading)
+            {
+                return;
+            }
+
+            var result = MessageBox.Show(
+                "Очистить архив завершившихся задач?",
+                "Подтверждение",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question);
+
+            if (result != DialogResult.Yes)
+            {
+                return;
+            }
+
+            ExitTaskDeleteMode();
+            await dbManager.ClearTrainingArchiveAsync(currentTeam.Id, DateTime.Now);
+            await RefreshTasksAsync();
+        }
+
+        private async void DeleteTaskButton_Click(object sender, EventArgs e)
+        {
+            if (isTasksLoading)
+            {
+                return;
+            }
+
+            if (isTaskDeleteMode)
+            {
+                ExitTaskDeleteMode();
+                MessageBox.Show("Выбор удаления задач отменён");
+                return;
+            }
+
+            var hasActiveTasks = tasks.Any(t => t.Deadline >= DateTime.Now);
+            if (!hasActiveTasks)
+            {
+                MessageBox.Show("Нет актуальных задач для удаления");
+                return;
+            }
+
+            isTaskDeleteMode = true;
+            DeleteTaskButton.Text = "Отменить удаление";
+            MessageBox.Show("Выберите тренировку");
+        }
+
+        private void ExitTaskDeleteMode()
+        {
+            if (!isTaskDeleteMode)
+            {
+                return;
+            }
+
+            isTaskDeleteMode = false;
+            DeleteTaskButton.Text = "Удалить тренировку";
+            foreach (Control control in TrainingTasksPanel.Controls)
+            {
+                if (control is Guna2Panel panel)
+                {
+                    panel.BorderThickness = 0;
+                }
+            }
+        }
+
+        private void SetTasksLoadingState(bool isLoading, string text = "Загрузка тренировок...")
+        {
+            isTasksLoading = isLoading;
+            ClearArchiveButton.Enabled = !isLoading;
+            DeleteTaskButton.Enabled = !isLoading;
+            guna2Button1.Enabled = !isLoading;
+            TrainingTasksPanel.Enabled = !isLoading;
+            ArchiveTasksPanel.Enabled = !isLoading;
+            TeamPageTasksPanel.Enabled = !isLoading;
+            Cursor = isLoading ? Cursors.WaitCursor : Cursors.Default;
+
+            if (tasksLoadingLabel != null)
+            {
+                tasksLoadingLabel.Text = text;
+                tasksLoadingLabel.Visible = isLoading;
+            }
         }
 
     }

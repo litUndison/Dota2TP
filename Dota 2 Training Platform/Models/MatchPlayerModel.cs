@@ -29,7 +29,7 @@ namespace Dota_2_Training_Platform.Models
         public int hero_healing { get; set; }
         public int level { get; set; }
         public double kda { get; set; }
-        public PlayerBenchmarks benchmarks { get; set; }
+        //public PlayerBenchmarks benchmarks { get; set; }
 
         // предметы игрока
         public int item_0 { get; set; }

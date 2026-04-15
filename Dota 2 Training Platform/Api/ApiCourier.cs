@@ -161,6 +161,108 @@ namespace Dota_2_Training_Platform
             }
         }
 
+        public static async Task<ApiResult<List<DotaMatchModel>>> TryGetPlayerMatchesInPeriod(
+            string steamId,
+            DateTime startDate,
+            DateTime endDate,
+            int pageLimit = 100,
+            int maxFetchedMatches = 3000)
+        {
+            long? lessThanMatchId = null;
+            var collected = new List<DotaMatchModel>();
+            int fetched = 0;
+
+            long startUnix = new DateTimeOffset(startDate).ToUnixTimeSeconds();
+            long endUnix = new DateTimeOffset(endDate).ToUnixTimeSeconds();
+
+            while (fetched < maxFetchedMatches)
+            {
+                string url = $"https://api.opendota.com/api/players/{steamId}/matches?limit={pageLimit}";
+                if (lessThanMatchId.HasValue)
+                {
+                    url += $"&less_than_match_id={lessThanMatchId.Value}";
+                }
+
+                ApiResult<List<DotaMatchModel>> pageResult;
+                try
+                {
+                    var response = await _apiHttpClient.GetAsync(url);
+                    if (!response.IsSuccessStatusCode)
+                    {
+                        return new ApiResult<List<DotaMatchModel>>
+                        {
+                            Status = response.StatusCode == System.Net.HttpStatusCode.NotFound
+                                ? ApiResultStatus.NotFound
+                                : ApiResultStatus.NetworkError,
+                            ErrorMessage = $"Server returned {response.StatusCode}"
+                        };
+                    }
+
+                    var json = await response.Content.ReadAsStringAsync();
+                    var page = JsonSerializer.Deserialize<List<DotaMatchModel>>(
+                        json,
+                        new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+                    pageResult = new ApiResult<List<DotaMatchModel>>
+                    {
+                        Status = ApiResultStatus.Success,
+                        Data = page ?? new List<DotaMatchModel>()
+                    };
+                }
+                catch (HttpRequestException)
+                {
+                    return new ApiResult<List<DotaMatchModel>>
+                    {
+                        Status = ApiResultStatus.NetworkError,
+                        ErrorMessage = "No internet connection or server unavailable"
+                    };
+                }
+                catch (Exception ex)
+                {
+                    return new ApiResult<List<DotaMatchModel>>
+                    {
+                        Status = ApiResultStatus.InvalidResponse,
+                        ErrorMessage = ex.Message
+                    };
+                }
+
+                var pageData = pageResult.Data;
+                if (pageData.Count == 0)
+                {
+                    break;
+                }
+
+                fetched += pageData.Count;
+
+                foreach (var match in pageData)
+                {
+                    if (match.StartTime >= startUnix && match.StartTime <= endUnix)
+                    {
+                        collected.Add(match);
+                    }
+                }
+
+                long oldestStartTime = pageData.Min(m => m.StartTime);
+                if (oldestStartTime < startUnix)
+                {
+                    break;
+                }
+
+                if (pageData.Count < pageLimit)
+                {
+                    break;
+                }
+
+                lessThanMatchId = pageData.Min(m => m.MatchId);
+            }
+
+            return new ApiResult<List<DotaMatchModel>>
+            {
+                Status = ApiResultStatus.Success,
+                Data = collected
+            };
+        }
+
         public static async Task<ApiResult<DotaMatchDetailsModel>> TryGetMatch(long matchId)
         {
             string url = $"https://api.opendota.com/api/matches/{matchId}";

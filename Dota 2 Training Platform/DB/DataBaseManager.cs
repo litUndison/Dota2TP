@@ -1393,6 +1393,39 @@ namespace DataBaseManager
             }
         }
 
+        public static async Task RemoveTrainingTaskAsync(int taskId)
+        {
+            using (var connection = new SQLiteConnection(connectionString))
+            {
+                await connection.OpenAsync();
+
+                using (var cmd = new SQLiteCommand(
+                    "DELETE FROM TrainingTasks WHERE Id = @TaskId",
+                    connection))
+                {
+                    cmd.Parameters.AddWithValue("@TaskId", taskId);
+                    await cmd.ExecuteNonQueryAsync();
+                }
+            }
+        }
+
+        public static async Task ClearTrainingArchiveAsync(int teamId, DateTime archiveBorderDate)
+        {
+            using (var connection = new SQLiteConnection(connectionString))
+            {
+                await connection.OpenAsync();
+
+                using (var cmd = new SQLiteCommand(
+                    "DELETE FROM TrainingTasks WHERE TeamId = @TeamId AND Deadline < @BorderDate",
+                    connection))
+                {
+                    cmd.Parameters.AddWithValue("@TeamId", teamId);
+                    cmd.Parameters.AddWithValue("@BorderDate", archiveBorderDate.ToString("o"));
+                    await cmd.ExecuteNonQueryAsync();
+                }
+            }
+        }
+
         #endregion
     }
 }
