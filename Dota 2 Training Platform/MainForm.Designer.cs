@@ -66,6 +66,7 @@
             this.PlayerName1 = new Guna.UI2.WinForms.Guna2HtmlLabel();
             this.PlayerPicture1 = new Guna.UI2.WinForms.Guna2PictureBox();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.comparePlayersBtn = new Guna.UI2.WinForms.Guna2Button();
             this.AiAdviceButton = new Guna.UI2.WinForms.Guna2Button();
             this.MatchInfoPanel = new Guna.UI2.WinForms.Guna2Panel();
             this.MatchID = new Guna.UI2.WinForms.Guna2HtmlLabel();
@@ -116,9 +117,9 @@
             this.ArchiveTasksPanel = new Guna.UI2.WinForms.Guna2Panel();
             this.guna2HtmlLabel2 = new Guna.UI2.WinForms.Guna2HtmlLabel();
             this.TrainingTasksPanel = new Guna.UI2.WinForms.Guna2Panel();
+            this.tabPage5 = new System.Windows.Forms.TabPage();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.webView21 = new Microsoft.Web.WebView2.WinForms.WebView2();
-            this.tabPage5 = new System.Windows.Forms.TabPage();
             this.guna2TabControl1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.PanelWithButtons.SuspendLayout();
@@ -196,7 +197,7 @@
             this.tabPage2.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tabPage2.Location = new System.Drawing.Point(184, 4);
             this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
             this.tabPage2.Size = new System.Drawing.Size(997, 757);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Команда";
@@ -703,6 +704,7 @@
             // 
             // tabPage3
             // 
+            this.tabPage3.Controls.Add(this.comparePlayersBtn);
             this.tabPage3.Controls.Add(this.AiAdviceButton);
             this.tabPage3.Controls.Add(this.MatchInfoPanel);
             this.tabPage3.Controls.Add(this.OpenInMatchDetailsForm);
@@ -712,11 +714,26 @@
             this.tabPage3.Controls.Add(this.SelectedPlayerPicture);
             this.tabPage3.Location = new System.Drawing.Point(184, 4);
             this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage3.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
             this.tabPage3.Size = new System.Drawing.Size(997, 757);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Анализ статистики";
             this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // comparePlayersBtn
+            // 
+            this.comparePlayersBtn.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
+            this.comparePlayersBtn.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
+            this.comparePlayersBtn.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.comparePlayersBtn.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.comparePlayersBtn.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.comparePlayersBtn.ForeColor = System.Drawing.Color.White;
+            this.comparePlayersBtn.Location = new System.Drawing.Point(91, 11);
+            this.comparePlayersBtn.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.comparePlayersBtn.Name = "comparePlayersBtn";
+            this.comparePlayersBtn.Size = new System.Drawing.Size(193, 37);
+            this.comparePlayersBtn.TabIndex = 54;
+            this.comparePlayersBtn.Text = "Сравнить игроков";
             // 
             // AiAdviceButton
             // 
@@ -1230,7 +1247,7 @@
             this.SelectPlayerComboBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.SelectPlayerComboBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(68)))), ((int)(((byte)(88)))), ((int)(((byte)(112)))));
             this.SelectPlayerComboBox.ItemHeight = 30;
-            this.SelectPlayerComboBox.Location = new System.Drawing.Point(92, 33);
+            this.SelectPlayerComboBox.Location = new System.Drawing.Point(91, 56);
             this.SelectPlayerComboBox.Name = "SelectPlayerComboBox";
             this.SelectPlayerComboBox.Size = new System.Drawing.Size(194, 36);
             this.SelectPlayerComboBox.TabIndex = 0;
@@ -1260,7 +1277,7 @@
             this.tabPage4.Controls.Add(this.TrainingTasksPanel);
             this.tabPage4.Location = new System.Drawing.Point(184, 4);
             this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage4.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
             this.tabPage4.Size = new System.Drawing.Size(997, 757);
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "Тренировки";
@@ -1351,12 +1368,22 @@
             this.TrainingTasksPanel.Size = new System.Drawing.Size(419, 628);
             this.TrainingTasksPanel.TabIndex = 0;
             // 
+            // tabPage5
+            // 
+            this.tabPage5.Location = new System.Drawing.Point(184, 4);
+            this.tabPage5.Name = "tabPage5";
+            this.tabPage5.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabPage5.Size = new System.Drawing.Size(997, 757);
+            this.tabPage5.TabIndex = 5;
+            this.tabPage5.Text = "Прогресс";
+            this.tabPage5.UseVisualStyleBackColor = true;
+            // 
             // tabPage1
             // 
             this.tabPage1.Controls.Add(this.webView21);
             this.tabPage1.Location = new System.Drawing.Point(184, 4);
             this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
             this.tabPage1.Size = new System.Drawing.Size(997, 757);
             this.tabPage1.TabIndex = 4;
             this.tabPage1.Text = "Twitch";
@@ -1374,21 +1401,11 @@
             this.webView21.TabIndex = 0;
             this.webView21.ZoomFactor = 1D;
             // 
-            // tabPage5
-            // 
-            this.tabPage5.Location = new System.Drawing.Point(184, 4);
-            this.tabPage5.Name = "tabPage5";
-            this.tabPage5.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage5.Size = new System.Drawing.Size(997, 757);
-            this.tabPage5.TabIndex = 5;
-            this.tabPage5.Text = "Прогресс";
-            this.tabPage5.UseVisualStyleBackColor = true;
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1185, 754);
+            this.ClientSize = new System.Drawing.Size(1184, 751);
             this.Controls.Add(this.guna2TabControl1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
@@ -1516,5 +1533,6 @@
         private Guna.UI2.WinForms.Guna2HtmlLabel TeamPageTasksLabel;
         private Guna.UI2.WinForms.Guna2HtmlLabel guna2HtmlLabel3;
         private System.Windows.Forms.TabPage tabPage5;
+        private Guna.UI2.WinForms.Guna2Button comparePlayersBtn;
     }
 }

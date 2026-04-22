@@ -153,6 +153,12 @@
     <Compile Include="Models\MatchModel.cs" />
     <Compile Include="Models\MatchPlayerModel.cs" />
     <Compile Include="Models\PlayerBenchmarks.cs" />
+    <Compile Include="PlayerComparisonForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PlayerComparisonForm.Designer.cs">
+      <DependentUpon>PlayerComparisonForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Trainings\TrainingTask.cs" />
     <Compile Include="PlayerTeamsForm.cs">
       <SubType>Form</SubType>
@@ -184,6 +190,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="MatchDetailsForm.resx">
       <DependentUpon>MatchDetailsForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlayerComparisonForm.resx">
+      <DependentUpon>PlayerComparisonForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="PlayerTeamsForm.resx">
       <DependentUpon>PlayerTeamsForm.cs</DependentUpon>

@@ -225,13 +225,16 @@ namespace Dota_2_Training_Platform
             progressMetricComboBox.Items.AddRange(new object[]
             {
                 "Убийства",
-                "Помощи",
                 "Смерти",
-                "Сыграть матчей"
+                "Помощи",
+                "Сыграно матчей"
             });
             progressMetricComboBox.SelectedIndex = 0;
             progressPlayerComboBox.SelectedIndexChanged += ProgressPlayerComboBox_SelectedIndexChanged;
             progressMetricComboBox.SelectedIndexChanged += ProgressMetricComboBox_SelectedIndexChanged;
+
+            var comparePlayersButton = comparePlayersBtn;
+            comparePlayersButton.Click += ComparePlayersButton_Click;
 
             var rangeLabel = new Label
             {
@@ -1576,6 +1579,12 @@ namespace Dota_2_Training_Platform
             progressStatusLabel.Text = "Обновление графиков...";
             await RenderAllChartsAsync();
             progressStatusLabel.Text = $"Обновлено: {DateTime.Now:HH:mm:ss}";
+        }
+
+        private void ComparePlayersButton_Click(object sender, EventArgs e)
+        {
+            PlayerComparisonForm comparisonForm = new PlayerComparisonForm(currentTeam);
+            comparisonForm.ShowDialog();
         }
 
         private void RenderProgressDeadlines(List<TrainingTask> activeTasks)
