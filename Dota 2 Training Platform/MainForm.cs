@@ -1,7 +1,8 @@
-﻿using DataBaseManager;
+using DataBaseManager;
 using Dota_2_Training_Platform.Functions;
 using Dota_2_Training_Platform.Models;
 using Dota_2_Training_Platform.Models.Trainings;
+using Dota_2_Training_Platform.Services;
 using Dota_2_Training_Platform.Trainings;
 using Guna.UI2.WinForms;
 using System;
@@ -21,6 +22,7 @@ using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
 using TheArtOfDevHtmlRenderer.Adapters;
 using Microsoft.Web.WebView2.Core;
+using System.Runtime.InteropServices;
 
 namespace Dota_2_Training_Platform
 {
@@ -28,6 +30,22 @@ namespace Dota_2_Training_Platform
     {
 
         #region Initializings // все инициализации переменных
+
+        private const int WM_HOTKEY = 0x0312;
+        private const uint MOD_NONE = 0x0000;
+        private const uint MOD_ALT = 0x0001;
+        private const uint MOD_CONTROL = 0x0002;
+        private const uint MOD_SHIFT = 0x0004;
+        private const uint MOD_NOREPEAT = 0x4000;
+
+        [DllImport("user32.dll", SetLastError = true)]
+        private static extern bool RegisterHotKey(IntPtr hWnd, int id, uint fsModifiers, uint vk);
+
+        [DllImport("user32.dll", SetLastError = true)]
+        private static extern bool UnregisterHotKey(IntPtr hWnd, int id);
+
+
+
 
         UserModel currentUser;
         TeamModel currentTeam;
@@ -79,6 +97,26 @@ namespace Dota_2_Training_Platform
         private DotaMatchDetailsModel match;
 
         Color EditSwitchButtonColor;
+
+
+        private RecordSettingsModel _recordSettings;
+        private bool _recordHotKeyRegistered = false;
+        private bool _isRecording = false;
+        private int _recordHotKeyId = 1001;
+
+        private ScreenRecorderService _screenRecorder;
+        //private RecordingOverlayForm _recordingOverlay; шлак, мб потом можно что-нибудь сделать
+        private NotifyIcon _recordNotifyIcon;
+
+        private TabPage _recordsTabPage;
+        private Label _recordStatusLabel;
+        private ListView _recordingsListView;
+        private Guna2Button _recordStartButton;
+        private Guna2Button _recordStopButton;
+        private Guna2Button _recordSettingsButton;
+        private Guna2Button _recordRefreshButton;
+        private Guna2Button _recordPlayButton;
+        private Guna2Button _recordDeleteButton;
 
         #endregion
 
@@ -157,6 +195,7 @@ namespace Dota_2_Training_Platform
             InitializeProgressTab();
             InitializeTasksLoadingLabel();
             InitializeTwitchRestrictions();
+            InitializeRecordingFeature();
             _ = RefreshTasksAsync();
         }
         private async void Guna2TabControl1_SelectedIndexChanged(object sender, EventArgs e)
@@ -929,7 +968,18 @@ namespace Dota_2_Training_Platform
                         break;
                     }
 
-                    lastError = $"Ошибка Gemini API: {response.StatusCode}\n{body}";
+                    if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
+                    {
+                        string snippet = body;
+                        if (!string.IsNullOrWhiteSpace(snippet) && snippet.Length > 1200)
+                        {
+                            snippet = snippet.Substring(0, 1200) + "...";
+                        }
+                        lastError = $"Ошибка Gemini API: 400 BadRequest.\n\n{snippet}";
+                        break;
+                    }
+
+                    lastError = $"Ошибка Gemini API: {response.StatusCode}\n\n{body}";
                     break;
                 }
             }
@@ -2252,6 +2302,478 @@ namespace Dota_2_Training_Platform
                 tasksLoadingLabel.Visible = isLoading;
             }
         }
+
+        #region Match Recording
+
+        protected override void WndProc(ref Message m)
+        {
+            if (m.Msg == WM_HOTKEY && m.WParam.ToInt32() == _recordHotKeyId)
+            {
+                ToggleRecordingFromHotkey();
+            }
+
+            base.WndProc(ref m);
+        }
+
+        private void InitializeRecordingFeature()
+        {
+            _screenRecorder = new ScreenRecorderService();
+            _recordSettings = new RecordSettingsModel
+            {
+                Fps = 30,
+                Resolution = "1920x1080",
+                RecordAudio = false,
+                HotKey = Keys.F9,
+                UseSameHotkeyForStop = true
+            };
+
+            _recordNotifyIcon = new NotifyIcon
+            {
+                Visible = true,
+                Icon = SystemIcons.Information
+            };
+
+            InitializeRecordingTab();
+            RegisterRecordHotKey();
+            LoadRecordingsList();
+            UpdateRecordingUiState();
+        }
+
+        private void InitializeRecordingTab()
+        {
+            _recordsTabPage = tabPage6;
+            _recordsTabPage.BackColor = Color.White;
+            _recordsTabPage.Padding = new Padding(12);
+            _recordsTabPage.Controls.Clear();
+
+            var titleLabel = new Label
+            {
+                Text = "Записи матчей",
+                Left = 12,
+                Top = 12,
+                Width = 280,
+                Height = 28,
+                Font = new Font("Segoe UI", 12F, FontStyle.Bold)
+            };
+
+            _recordStatusLabel = new Label
+            {
+                Left = 300,
+                Top = 16,
+                Width = 600,
+                Height = 22,
+                ForeColor = Color.DimGray,
+                Text = ""
+            };
+
+            _recordStartButton = new Guna2Button
+            {
+                Text = "Начать запись",
+                Left = 12,
+                Top = 50,
+                Width = 180,
+                Height = 40,
+                FillColor = Color.FromArgb(33, 150, 83),
+                ForeColor = Color.White
+            };
+            _recordStartButton.Click += async (s, e) => await StartRecordingAsync(false);
+
+            _recordStopButton = new Guna2Button
+            {
+                Text = "Остановить запись",
+                Left = 202,
+                Top = 50,
+                Width = 180,
+                Height = 40,
+                FillColor = Color.FromArgb(220, 53, 69),
+                ForeColor = Color.White
+            };
+            _recordStopButton.Click += async (s, e) => await StopRecordingAsync(false);
+
+            _recordSettingsButton = new Guna2Button
+            {
+                Text = "Настройки",
+                Left = 392,
+                Top = 50,
+                Width = 140,
+                Height = 40,
+                FillColor = Color.FromArgb(33, 42, 57),
+                ForeColor = Color.White
+            };
+            _recordSettingsButton.Click += RecordSettingsButton_Click;
+
+            _recordRefreshButton = new Guna2Button
+            {
+                Text = "Обновить",
+                Left = 542,
+                Top = 50,
+                Width = 120,
+                Height = 40,
+                FillColor = Color.FromArgb(108, 117, 125),
+                ForeColor = Color.White
+            };
+            _recordRefreshButton.Click += (s, e) => LoadRecordingsList();
+
+            _recordPlayButton = new Guna2Button
+            {
+                Text = "Просмотреть",
+                Left = 672,
+                Top = 50,
+                Width = 140,
+                Height = 40,
+                FillColor = Color.FromArgb(25, 118, 210),
+                ForeColor = Color.White
+            };
+            _recordPlayButton.Click += RecordPlayButton_Click;
+
+            _recordDeleteButton = new Guna2Button
+            {
+                Text = "Удалить",
+                Left = 822,
+                Top = 50,
+                Width = 120,
+                Height = 40,
+                FillColor = Color.FromArgb(120, 120, 120),
+                ForeColor = Color.White
+            };
+            _recordDeleteButton.Click += RecordDeleteButton_Click;
+
+            _recordingsListView = new ListView
+            {
+                Left = 12,
+                Top = 102,
+                Width = 1360,
+                Height = 800,
+                FullRowSelect = true,
+                GridLines = true,
+                MultiSelect = false,
+                View = View.Details
+            };
+            _recordingsListView.Columns.Add("Файл", 420);
+            _recordingsListView.Columns.Add("Дата", 220);
+            _recordingsListView.Columns.Add("Размер", 140);
+            _recordingsListView.Columns.Add("FPS", 80);
+            _recordingsListView.Columns.Add("Разрешение", 130);
+            _recordingsListView.Columns.Add("Путь", 350);
+            _recordingsListView.DoubleClick += RecordingsListView_DoubleClick;
+
+            _recordsTabPage.Controls.Add(titleLabel);
+            _recordsTabPage.Controls.Add(_recordStatusLabel);
+            _recordsTabPage.Controls.Add(_recordStartButton);
+            _recordsTabPage.Controls.Add(_recordStopButton);
+            _recordsTabPage.Controls.Add(_recordSettingsButton);
+            _recordsTabPage.Controls.Add(_recordRefreshButton);
+            _recordsTabPage.Controls.Add(_recordPlayButton);
+            _recordsTabPage.Controls.Add(_recordDeleteButton);
+            _recordsTabPage.Controls.Add(_recordingsListView);
+        }
+
+        private void RecordSettingsButton_Click(object sender, EventArgs e)
+        {
+            using (var settingsForm = new RecordSettingsForm())
+            {
+                settingsForm.SetSettings(_recordSettings);
+                if (settingsForm.ShowDialog(this) != DialogResult.OK)
+                {
+                    return;
+                }
+
+                _recordSettings = settingsForm.GetSettings();
+                RegisterRecordHotKey();
+                UpdateRecordingUiState();
+            }
+        }
+
+        private async Task StartRecordingAsync(bool fromHotkey)
+        {
+            if (_screenRecorder == null || _isRecording)
+            {
+                return;
+            }
+
+            string teamFolderPath = GetTeamRecordsFolderPath();
+            var result = _screenRecorder.StartRecording(teamFolderPath, _recordSettings);
+            if (!result.Success)
+            {
+                MessageBox.Show(result.ErrorMessage, "Ошибка запуска записи", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            _isRecording = true;
+            //ShowRecordingOverlay();
+            UpdateRecordingUiState();
+            ShowRecordNotification("Запись начата");
+
+            if (!fromHotkey)
+            {
+                await Task.CompletedTask;
+            }
+        }
+
+        private async Task StopRecordingAsync(bool fromHotkey)
+        {
+            if (_screenRecorder == null || !_isRecording)
+            {
+                return;
+            }
+
+            bool stopped = await _screenRecorder.StopRecordingAsync();
+            _isRecording = false;
+            //HideRecordingOverlay();
+            UpdateRecordingUiState();
+            LoadRecordingsList();
+
+            ShowRecordNotification("Запись остановлена");
+            if (!stopped)
+            {
+                //MessageBox.Show("Не удалось корректно остановить запись.", "Запись", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            
+            if (!fromHotkey)
+            {
+                await Task.CompletedTask;
+            }
+        }
+
+        private async void ToggleRecordingFromHotkey()
+        {
+            if (_isRecording)
+            {
+                await StopRecordingAsync(true);
+            }
+            else
+            {
+                await StartRecordingAsync(true);
+            }
+        }
+
+        private void LoadRecordingsList()
+        {
+            if (_recordingsListView == null)
+            {
+                return;
+            }
+
+            _recordingsListView.Items.Clear();
+            string recordsPath = GetTeamRecordsFolderPath();
+            Directory.CreateDirectory(recordsPath);
+
+            var videoFiles = Directory
+                .GetFiles(recordsPath, "*.mp4", SearchOption.TopDirectoryOnly)
+                .OrderByDescending(File.GetCreationTime)
+                .ToList();
+
+            foreach (var videoPath in videoFiles)
+            {
+                string metadataPath = Path.ChangeExtension(videoPath, ".json");
+                MatchRecordInfo info = null;
+                if (File.Exists(metadataPath))
+                {
+                    try
+                    {
+                        var metadata = File.ReadAllText(metadataPath);
+                        info = JsonSerializer.Deserialize<MatchRecordInfo>(metadata);
+                    }
+                    catch
+                    {
+                        info = null;
+                    }
+                }
+
+                var fi = new FileInfo(videoPath);
+                var createdAt = info?.CreatedAt ?? fi.CreationTime;
+                var fps = info?.Fps ?? 30;
+                var resolution = info?.Resolution ?? "1920x1080";
+                var sizeBytes = info?.FileSizeBytes ?? fi.Length;
+
+                var item = new ListViewItem(Path.GetFileName(videoPath));
+                item.SubItems.Add(createdAt.ToString("yyyy-MM-dd HH:mm:ss"));
+                item.SubItems.Add(FormatBytes(sizeBytes));
+                item.SubItems.Add(fps.ToString());
+                item.SubItems.Add(resolution);
+                item.SubItems.Add(videoPath);
+                item.Tag = videoPath;
+                _recordingsListView.Items.Add(item);
+            }
+
+            _recordStatusLabel.Text = _isRecording
+                ? $"Идёт запись... Горячая клавиша: {_recordSettings.HotKey}"
+                : $"Файлов: {_recordingsListView.Items.Count}. Горячая клавиша: {_recordSettings.HotKey}";
+        }
+
+        private string GetTeamRecordsFolderPath()
+        {
+            string teamIdFolder = (currentTeam?.Id ?? 0).ToString();
+            return Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "records", teamIdFolder);
+        }
+
+        private void UpdateRecordingUiState()
+        {
+            if (_recordStartButton == null)
+            {
+                return;
+            }
+
+            _recordStartButton.Enabled = !_isRecording;
+            _recordStopButton.Enabled = _isRecording;
+            _recordSettingsButton.Enabled = !_isRecording;
+            _recordDeleteButton.Enabled = !_isRecording;
+            _recordPlayButton.Enabled = true;
+            _recordStatusLabel.Text = _isRecording
+                ? $"Идёт запись... Нажми {_recordSettings.HotKey} для остановки."
+                : $"Готово к записи. Горячая клавиша: {_recordSettings.HotKey}";
+        }
+
+        private void RecordingsListView_DoubleClick(object sender, EventArgs e)
+        {
+            OpenSelectedRecording();
+        }
+
+        private void RecordPlayButton_Click(object sender, EventArgs e)
+        {
+            OpenSelectedRecording();
+        }
+
+        private void OpenSelectedRecording()
+        {
+            if (_recordingsListView.SelectedItems.Count == 0)
+            {
+                MessageBox.Show("Выбери запись в списке.", "Просмотр", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            string videoPath = _recordingsListView.SelectedItems[0].Tag as string;
+            if (string.IsNullOrWhiteSpace(videoPath) || !File.Exists(videoPath))
+            {
+                MessageBox.Show("Файл записи не найден.", "Просмотр", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                LoadRecordingsList();
+                return;
+            }
+
+            var playerForm = new VideoPlayerForm(videoPath);
+            playerForm.Show(this);
+        }
+
+        private void RecordDeleteButton_Click(object sender, EventArgs e)
+        {
+            if (_recordingsListView.SelectedItems.Count == 0)
+            {
+                MessageBox.Show("Выбери запись для удаления.", "Удаление", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            string videoPath = _recordingsListView.SelectedItems[0].Tag as string;
+            if (string.IsNullOrWhiteSpace(videoPath))
+            {
+                return;
+            }
+
+            var result = MessageBox.Show(
+                "Удалить выбранную запись?",
+                "Подтверждение",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question);
+
+            if (result != DialogResult.Yes)
+            {
+                return;
+            }
+
+            try
+            {
+                if (File.Exists(videoPath))
+                {
+                    File.Delete(videoPath);
+                }
+
+                string previewPath = Path.ChangeExtension(videoPath, ".jpg");
+                if (File.Exists(previewPath))
+                {
+                    File.Delete(previewPath);
+                }
+
+                string metadataPath = Path.ChangeExtension(videoPath, ".json");
+                if (File.Exists(metadataPath))
+                {
+                    File.Delete(metadataPath);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка удаления: {ex.Message}", "Удаление", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+
+            LoadRecordingsList();
+        }
+
+        private string FormatBytes(long bytes)
+        {
+            string[] sizes = { "B", "KB", "MB", "GB" };
+            double len = bytes;
+            int order = 0;
+            while (len >= 1024 && order < sizes.Length - 1)
+            {
+                order++;
+                len /= 1024;
+            }
+
+            return $"{len:0.##} {sizes[order]}";
+        }
+
+        private void RegisterRecordHotKey()
+        {
+            if (_recordHotKeyRegistered)
+            {
+                UnregisterHotKey(Handle, _recordHotKeyId);
+                _recordHotKeyRegistered = false;
+            }
+
+            if (!RegisterHotKey(Handle, _recordHotKeyId, MOD_NOREPEAT, (uint)_recordSettings.HotKey))
+            {
+                MessageBox.Show($"Не удалось зарегистрировать горячую клавишу {_recordSettings.HotKey}.", "Горячая клавиша", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            _recordHotKeyRegistered = true;
+        }
+
+        //private void ShowRecordingOverlay()
+        //{
+        //    if (_recordingOverlay == null || _recordingOverlay.IsDisposed)
+        //    {
+        //        _recordingOverlay = new RecordingOverlayForm();
+        //    }
+
+        //    _recordingOverlay.Show();
+        //    _recordingOverlay.BringToFront();
+        //}
+
+        //private void HideRecordingOverlay()
+        //{
+        //    if (_recordingOverlay == null || _recordingOverlay.IsDisposed)
+        //    {
+        //        return;
+        //    }
+
+        //    _recordingOverlay.Hide();
+        //}
+
+        private void ShowRecordNotification(string message)
+        {
+            try
+            {
+                _recordNotifyIcon.BalloonTipTitle = "Запись матча";
+                _recordNotifyIcon.BalloonTipText = message;
+                _recordNotifyIcon.ShowBalloonTip(1500);
+            }
+            catch
+            {
+            }
+        }
+
+        #endregion
 
     }
 }
