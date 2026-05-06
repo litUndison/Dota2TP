@@ -108,8 +108,7 @@ namespace Dota_2_Training_Platform
         private DateTime _recordingStartedAtUtc = DateTime.MinValue;
 
         private ScreenRecorderService _screenRecorder;
-        //private RecordingOverlayForm _recordingOverlay; шлак, мб потом можно что-нибудь сделать
-        private NotifyIcon _recordNotifyIcon;
+        private RecordingOverlayForm _recordToastForm;
 
         private TabPage _recordsTabPage;
         private Label _recordStatusLabel;
@@ -120,16 +119,27 @@ namespace Dota_2_Training_Platform
         private Guna2Button _recordRefreshButton;
         private Guna2Button _recordPlayButton;
         private Guna2Button _recordDeleteButton;
+        private readonly UserRole _userRole;
+        private bool IsTrainer => _userRole == UserRole.Trainer;
+        private readonly UserModel _trainerUser;
 
         #endregion
 
-        public MainForm(TeamModel currentTeam, UserModel currentUser, Form StartForm, Form TeamsForm)
+        public MainForm(
+            TeamModel currentTeam,
+            UserModel currentUser,
+            Form StartForm,
+            Form TeamsForm,
+            UserRole userRole = UserRole.Trainer,
+            UserModel trainerUser = null)
         {
             InitializeComponent();
             this.currentTeam = currentTeam;
             this.currentUser = currentUser;
             this.TeamsForm = TeamsForm;
             this.StartForm = StartForm;
+            _userRole = userRole;
+            _trainerUser = trainerUser;
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -145,6 +155,18 @@ namespace Dota_2_Training_Platform
                 {
                     UnregisterHotKey(Handle, _markerHotKeyId);
                     _markerHotKeyRegistered = false;
+                }
+            }
+            catch
+            {
+            }
+
+            try
+            {
+                if (_recordToastForm != null && !_recordToastForm.IsDisposed)
+                {
+                    _recordToastForm.Close();
+                    _recordToastForm.Dispose();
                 }
             }
             catch
@@ -191,9 +213,15 @@ namespace Dota_2_Training_Platform
             LoadTeam();
      
 
-            TrainerPicture.LoadAsync(currentUser.Avatarfull);
-            TrainerName.Text = currentUser.Name;
-            TrainerID.Text = currentUser.AccountID;
+            var trainerToShow = _trainerUser ?? currentUser;
+            if (!string.IsNullOrWhiteSpace(trainerToShow.Avatarfull))
+            {
+                TrainerPicture.LoadAsync(trainerToShow.Avatarfull);
+            }
+            TrainerName.Text = string.IsNullOrWhiteSpace(trainerToShow.Name) ? "Тренер команды" : trainerToShow.Name;
+            TrainerID.Text = string.IsNullOrWhiteSpace(trainerToShow.AccountID)
+                ? currentTeam.TrainerSteamId
+                : trainerToShow.AccountID;
 
 
             EditSwitchButtonColor = EditSwitcher.FillColor;
@@ -215,6 +243,7 @@ namespace Dota_2_Training_Platform
             InitializeTasksLoadingLabel();
             InitializeTwitchRestrictions();
             InitializeRecordingFeature();
+            ApplyRolePermissions();
             _ = RefreshTasksAsync();
         }
         private async void Guna2TabControl1_SelectedIndexChanged(object sender, EventArgs e)
@@ -2350,16 +2379,39 @@ namespace Dota_2_Training_Platform
                 MarkerHotKey = Keys.F8
             };
 
-            _recordNotifyIcon = new NotifyIcon
-            {
-                Visible = true,
-                Icon = SystemIcons.Information
-            };
-
             InitializeRecordingTab();
-            RegisterRecordingHotkeys();
+            if (IsTrainer)
+            {
+                RegisterRecordingHotkeys();
+            }
             LoadRecordingsList();
             UpdateRecordingUiState();
+        }
+
+        private void ApplyRolePermissions()
+        {
+            if (IsTrainer)
+            {
+                return;
+            }
+
+            // Игрок: только просмотр команды/записей.
+            EditSwitcher.Visible = false;
+            EditConfirm.Visible = false;
+            ChangeTeamButton.Visible = false;
+
+            // Игрок не управляет тренировками.
+            guna2Button1.Visible = false;
+            DeleteTaskButton.Visible = false;
+            ClearArchiveButton.Visible = false;
+
+            // Игрок не управляет записью, только просмотр списка и открытие записи.
+            if (_recordStartButton != null) _recordStartButton.Visible = false;
+            if (_recordStopButton != null) _recordStopButton.Visible = false;
+            if (_recordSettingsButton != null) _recordSettingsButton.Visible = false;
+            if (_recordDeleteButton != null) _recordDeleteButton.Visible = false;
+            if (_recordRefreshButton != null) _recordRefreshButton.Visible = true;
+            if (_recordPlayButton != null) _recordPlayButton.Visible = true;
         }
 
         private void InitializeRecordingTab()
@@ -2493,6 +2545,10 @@ namespace Dota_2_Training_Platform
 
         private void RecordSettingsButton_Click(object sender, EventArgs e)
         {
+            if (!IsTrainer)
+            {
+                return;
+            }
             using (var settingsForm = new RecordSettingsForm())
             {
                 settingsForm.SetSettings(_recordSettings);
@@ -2509,6 +2565,10 @@ namespace Dota_2_Training_Platform
 
         private async Task StartRecordingAsync(bool fromHotkey)
         {
+            if (!IsTrainer)
+            {
+                return;
+            }
             if (_screenRecorder == null || _isRecording)
             {
                 return;
@@ -2536,6 +2596,10 @@ namespace Dota_2_Training_Platform
 
         private async Task StopRecordingAsync(bool fromHotkey)
         {
+            if (!IsTrainer)
+            {
+                return;
+            }
             if (_screenRecorder == null || !_isRecording)
             {
                 return;
@@ -2564,6 +2628,10 @@ namespace Dota_2_Training_Platform
 
         private async void ToggleRecordingFromHotkey()
         {
+            if (!IsTrainer)
+            {
+                return;
+            }
             if (_isRecording)
             {
                 await StopRecordingAsync(true);
@@ -2624,8 +2692,12 @@ namespace Dota_2_Training_Platform
             }
 
             _recordStatusLabel.Text = _isRecording
-                ? $"Идёт запись... Запись: {_recordSettings.HotKey}, маркер: {_recordSettings.MarkerHotKey}"
-                : $"Файлов: {_recordingsListView.Items.Count}. Запись: {_recordSettings.HotKey}, маркер: {_recordSettings.MarkerHotKey}";
+                ? (IsTrainer
+                    ? $"Идёт запись... Запись: {_recordSettings.HotKey}, маркер: {_recordSettings.MarkerHotKey}"
+                    : "Идёт запись...")
+                : (IsTrainer
+                    ? $"Файлов: {_recordingsListView.Items.Count}. Запись: {_recordSettings.HotKey}, маркер: {_recordSettings.MarkerHotKey}"
+                    : $"Файлов: {_recordingsListView.Items.Count}");
         }
 
         private string GetTeamRecordsFolderPath()
@@ -2647,8 +2719,12 @@ namespace Dota_2_Training_Platform
             _recordDeleteButton.Enabled = !_isRecording;
             _recordPlayButton.Enabled = true;
             _recordStatusLabel.Text = _isRecording
-                ? $"Идёт запись... {_recordSettings.HotKey} старт/стоп, {_recordSettings.MarkerHotKey} добавить маркер."
-                : $"Готово к записи. {_recordSettings.HotKey} старт/стоп, {_recordSettings.MarkerHotKey} добавить маркер.";
+                ? (IsTrainer
+                    ? $"Идёт запись... {_recordSettings.HotKey} старт/стоп, {_recordSettings.MarkerHotKey} добавить маркер."
+                    : "Идёт запись...")
+                : (IsTrainer
+                    ? $"Готово к записи. {_recordSettings.HotKey} старт/стоп, {_recordSettings.MarkerHotKey} добавить маркер."
+                    : "Готово");
         }
 
         private void RecordingsListView_DoubleClick(object sender, EventArgs e)
@@ -2683,6 +2759,10 @@ namespace Dota_2_Training_Platform
 
         private void RecordDeleteButton_Click(object sender, EventArgs e)
         {
+            if (!IsTrainer)
+            {
+                return;
+            }
             if (_recordingsListView.SelectedItems.Count == 0)
             {
                 MessageBox.Show("Выбери запись для удаления.", "Удаление", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -2749,6 +2829,10 @@ namespace Dota_2_Training_Platform
 
         private void RegisterRecordingHotkeys()
         {
+            if (!IsTrainer)
+            {
+                return;
+            }
             if (_recordHotKeyRegistered)
             {
                 UnregisterHotKey(Handle, _recordHotKeyId);
@@ -2785,6 +2869,10 @@ namespace Dota_2_Training_Platform
 
         private void CreateMarkerFromHotkey()
         {
+            if (!IsTrainer)
+            {
+                return;
+            }
             if (!_isRecording || _screenRecorder == null || string.IsNullOrWhiteSpace(_screenRecorder.CurrentVideoPath))
             {
                 return;
@@ -2854,9 +2942,14 @@ namespace Dota_2_Training_Platform
         {
             try
             {
-                _recordNotifyIcon.BalloonTipTitle = "Запись матча";
-                _recordNotifyIcon.BalloonTipText = message;
-                _recordNotifyIcon.ShowBalloonTip(1500);
+                if (_recordToastForm != null && !_recordToastForm.IsDisposed)
+                {
+                    _recordToastForm.Close();
+                    _recordToastForm.Dispose();
+                }
+
+                _recordToastForm = new RecordingOverlayForm();
+                _recordToastForm.ShowToast(message);
             }
             catch
             {

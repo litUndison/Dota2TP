@@ -137,10 +137,36 @@ namespace Dota_2_Training_Platform
             }
         }
 
-        private void ContinueButton_Click(object sender, EventArgs e)
+        private async void ContinueButton_Click(object sender, EventArgs e)
         {
+            if (currentTeam == null)
+            {
+                return;
+            }
+
             selfExit = true;
-            // создать новую форму в которую буду передавать currentTeam и currentUser
+            UserModel trainerUser = null;
+            var trainerInfo = await ApiCourier.TryGetUserInfo(currentTeam.TrainerSteamId);
+            if (trainerInfo.IsSuccess && trainerInfo.Data?.profile != null)
+            {
+                var profile = trainerInfo.Data.profile;
+                trainerUser = new UserModel(
+                    profile.personaname.ToString(),
+                    profile.account_id.ToString(),
+                    profile.steamid.ToString(),
+                    string.Empty,
+                    profile.avatarfull.ToString());
+            }
+
+            Form form2 = new MainForm(currentTeam, currentUser, StartForm, this, UserRole.Player, trainerUser);
+            form2.StartPosition = FormStartPosition.Manual;
+
+            int x = this.DesktopLocation.X + (this.Width - form2.Width) / 2;
+            int y = this.DesktopLocation.Y + (this.Height - form2.Height) / 2;
+
+            form2.Location = new Point(x, y);
+            form2.Show();
+            this.Hide();
         }
 
 

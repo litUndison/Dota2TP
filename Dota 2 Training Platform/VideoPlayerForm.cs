@@ -295,9 +295,33 @@ namespace Dota_2_Training_Platform
                 marker.Click += async (s, e) =>
                 {
                     var m = ((Button)s).Tag as VideoMoment;
-                    if (m != null) await SeekToSecondAsync(m.Second);
+                    if (m != null)
+                    {
+                        SelectMomentInList(m);
+                        await SeekToSecondAsync(m.Second);
+                    }
                 };
                 _markersPanel.Controls.Add(marker);
+            }
+        }
+
+        private void SelectMomentInList(VideoMoment moment)
+        {
+            if (moment == null || _momentsList == null)
+            {
+                return;
+            }
+
+            foreach (ListViewItem item in _momentsList.Items)
+            {
+                if (ReferenceEquals(item.Tag, moment))
+                {
+                    _momentsList.SelectedItems.Clear();
+                    item.Selected = true;
+                    item.Focused = true;
+                    item.EnsureVisible();
+                    break;
+                }
             }
         }
 

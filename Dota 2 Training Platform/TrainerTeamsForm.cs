@@ -256,7 +256,7 @@ namespace Dota_2_Training_Platform
 
         private void guna2GradientButton1_Click(object sender, EventArgs e) // ContinueButton
         {
-            Form form2 = new MainForm(currentTeam, currentUser, StartForm, this);
+            Form form2 = new MainForm(currentTeam, currentUser, StartForm, this, UserRole.Trainer, currentUser);
             selfExit = true;
             form2.StartPosition = FormStartPosition.Manual;
 

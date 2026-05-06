@@ -34,7 +34,7 @@
             this.lblTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold);
             this.lblTitle.Location = new System.Drawing.Point(22, 20);
             this.lblTitle.Name = "lblTitle";
-            this.lblTitle.Size = new System.Drawing.Size(201, 25);
+            this.lblTitle.Size = new System.Drawing.Size(163, 20);
             this.lblTitle.TabIndex = 0;
             this.lblTitle.Text = "Настройки записи";
             // 
@@ -43,7 +43,7 @@
             this.lblFps.AutoSize = true;
             this.lblFps.Location = new System.Drawing.Point(24, 65);
             this.lblFps.Name = "lblFps";
-            this.lblFps.Size = new System.Drawing.Size(36, 16);
+            this.lblFps.Size = new System.Drawing.Size(27, 13);
             this.lblFps.TabIndex = 1;
             this.lblFps.Text = "FPS";
             // 
@@ -56,7 +56,7 @@
             "60"});
             this.cmbFps.Location = new System.Drawing.Point(27, 84);
             this.cmbFps.Name = "cmbFps";
-            this.cmbFps.Size = new System.Drawing.Size(382, 24);
+            this.cmbFps.Size = new System.Drawing.Size(382, 21);
             this.cmbFps.TabIndex = 2;
             // 
             // lblResolution
@@ -64,7 +64,7 @@
             this.lblResolution.AutoSize = true;
             this.lblResolution.Location = new System.Drawing.Point(24, 122);
             this.lblResolution.Name = "lblResolution";
-            this.lblResolution.Size = new System.Drawing.Size(91, 16);
+            this.lblResolution.Size = new System.Drawing.Size(70, 13);
             this.lblResolution.TabIndex = 3;
             this.lblResolution.Text = "Разрешение";
             // 
@@ -78,7 +78,7 @@
             "1280x720"});
             this.cmbResolution.Location = new System.Drawing.Point(27, 141);
             this.cmbResolution.Name = "cmbResolution";
-            this.cmbResolution.Size = new System.Drawing.Size(382, 24);
+            this.cmbResolution.Size = new System.Drawing.Size(382, 21);
             this.cmbResolution.TabIndex = 4;
             // 
             // chkRecordAudio
@@ -87,17 +87,18 @@
             this.chkRecordAudio.Enabled = false;
             this.chkRecordAudio.Location = new System.Drawing.Point(27, 181);
             this.chkRecordAudio.Name = "chkRecordAudio";
-            this.chkRecordAudio.Size = new System.Drawing.Size(210, 20);
+            this.chkRecordAudio.Size = new System.Drawing.Size(213, 17);
             this.chkRecordAudio.TabIndex = 5;
             this.chkRecordAudio.Text = "Записывать системный звук (скоро)";
             this.chkRecordAudio.UseVisualStyleBackColor = true;
+            this.chkRecordAudio.Visible = false;
             // 
             // lblHotKey
             // 
             this.lblHotKey.AutoSize = true;
             this.lblHotKey.Location = new System.Drawing.Point(24, 212);
             this.lblHotKey.Name = "lblHotKey";
-            this.lblHotKey.Size = new System.Drawing.Size(186, 16);
+            this.lblHotKey.Size = new System.Drawing.Size(134, 13);
             this.lblHotKey.TabIndex = 6;
             this.lblHotKey.Text = "Горячая клавиша записи";
             // 
@@ -107,7 +108,7 @@
             this.cmbHotKey.FormattingEnabled = true;
             this.cmbHotKey.Location = new System.Drawing.Point(27, 231);
             this.cmbHotKey.Name = "cmbHotKey";
-            this.cmbHotKey.Size = new System.Drawing.Size(182, 24);
+            this.cmbHotKey.Size = new System.Drawing.Size(182, 21);
             this.cmbHotKey.TabIndex = 7;
             // 
             // lblMarkerHotKey
@@ -115,7 +116,7 @@
             this.lblMarkerHotKey.AutoSize = true;
             this.lblMarkerHotKey.Location = new System.Drawing.Point(227, 212);
             this.lblMarkerHotKey.Name = "lblMarkerHotKey";
-            this.lblMarkerHotKey.Size = new System.Drawing.Size(178, 16);
+            this.lblMarkerHotKey.Size = new System.Drawing.Size(142, 13);
             this.lblMarkerHotKey.TabIndex = 8;
             this.lblMarkerHotKey.Text = "Горячая клавиша маркера";
             // 
@@ -125,7 +126,7 @@
             this.cmbMarkerHotKey.FormattingEnabled = true;
             this.cmbMarkerHotKey.Location = new System.Drawing.Point(230, 231);
             this.cmbMarkerHotKey.Name = "cmbMarkerHotKey";
-            this.cmbMarkerHotKey.Size = new System.Drawing.Size(179, 24);
+            this.cmbMarkerHotKey.Size = new System.Drawing.Size(179, 21);
             this.cmbMarkerHotKey.TabIndex = 9;
             // 
             // btnSave
@@ -150,6 +151,7 @@
             // 
             // RecordSettingsForm
             // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(434, 329);
             this.Controls.Add(this.btnCancel);
@@ -172,6 +174,7 @@
             this.Text = "Настройки записи";
             this.ResumeLayout(false);
             this.PerformLayout();
+
         }
         private System.Windows.Forms.Label lblTitle;
         private System.Windows.Forms.Label lblFps;

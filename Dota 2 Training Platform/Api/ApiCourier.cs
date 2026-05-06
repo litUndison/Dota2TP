@@ -41,7 +41,17 @@ namespace Dota_2_Training_Platform
 
         public static async Task<ApiResult<DotaPlayerProfileModel>> TryGetUserInfo(string steamId)
         {
-            string url = $"https://api.opendota.com/api/players/{steamId}";
+            string accountId = NormalizeToOpenDotaAccountId(steamId);
+            if (string.IsNullOrWhiteSpace(accountId))
+            {
+                return new ApiResult<DotaPlayerProfileModel>
+                {
+                    Status = ApiResultStatus.InvalidResponse,
+                    ErrorMessage = "Некорректный SteamID/AccountID"
+                };
+            }
+
+            string url = $"https://api.opendota.com/api/players/{accountId}";
 
             try
             {
@@ -98,6 +108,31 @@ namespace Dota_2_Training_Platform
                     ErrorMessage = ex.Message
                 };
             }
+        }
+
+        private static string NormalizeToOpenDotaAccountId(string steamOrAccountId)
+        {
+            if (string.IsNullOrWhiteSpace(steamOrAccountId))
+            {
+                return null;
+            }
+
+            string value = steamOrAccountId.Trim();
+            if (!long.TryParse(value, out long parsed))
+            {
+                return null;
+            }
+
+            // SteamID64 -> AccountID32
+            // 76561197960265728 is base offset for SteamID64.
+            if (parsed >= 76561197960265728L)
+            {
+                long accountId = parsed - 76561197960265728L;
+                return accountId >= 0 ? accountId.ToString() : null;
+            }
+
+            // Уже AccountID32.
+            return parsed.ToString();
         }
 
         public static async Task<ApiResult<List<DotaMatchModel>>> TryGetPlayerMatches(string steamId, int limit = 10)

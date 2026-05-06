@@ -1,48 +1,56 @@
-using System.Drawing;
+using System;
 using System.Windows.Forms;
 
 namespace Dota_2_Training_Platform
 {
-    public class RecordingOverlayForm : Form
+    public partial class RecordingOverlayForm : Form
     {
+        private readonly Timer _closeTimer;
+
         public RecordingOverlayForm()
         {
-            FormBorderStyle = FormBorderStyle.None;
-            StartPosition = FormStartPosition.Manual;
-            TopMost = true;
-            ShowInTaskbar = false;
-            BackColor = Color.Black;
-            Opacity = 0.72;
-            Width = 220;
-            Height = 56;
-
-            var screen = Screen.PrimaryScreen?.WorkingArea ?? new Rectangle(0, 0, 1920, 1080);
-            Location = new Point(screen.Right - Width - 16, 16);
-
-            var dot = new Label
+            InitializeComponent();
+            _closeTimer = new Timer { Interval = 1400 };
+            _closeTimer.Tick += (s, e) =>
             {
-                Left = 12,
-                Top = 16,
-                Width = 24,
-                Height = 24,
-                ForeColor = Color.Red,
-                Font = new Font("Segoe UI", 14F, FontStyle.Bold),
-                Text = "●"
+                _closeTimer.Stop();
+                Close();
             };
+        }
 
-            var text = new Label
+        public void ShowToast(string message)
+        {
+            toastMessageLabel.Text = message ?? "";
+            PositionInCorner();
+            Show();
+            BringToFront();
+            _closeTimer.Stop();
+            _closeTimer.Start();
+        }
+
+        private void PositionInCorner()
+        {
+            var screen = Screen.PrimaryScreen?.WorkingArea;
+            if (screen == null)
             {
-                Left = 42,
-                Top = 18,
-                Width = 166,
-                Height = 22,
-                ForeColor = Color.White,
-                Font = new Font("Segoe UI", 10F, FontStyle.Bold),
-                Text = "Идёт запись"
-            };
+                return;
+            }
 
-            Controls.Add(dot);
-            Controls.Add(text);
+            Left = screen.Value.Right - Width - 14;
+            Top = screen.Value.Top + 14;
+        }
+
+        protected override bool ShowWithoutActivation => true;
+
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                const int WS_EX_NOACTIVATE = 0x08000000;
+                var cp = base.CreateParams;
+                cp.ExStyle |= WS_EX_NOACTIVATE;
+                return cp;
+            }
         }
     }
 }
