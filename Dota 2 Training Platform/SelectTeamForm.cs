@@ -17,9 +17,11 @@ using System.Web.WebSockets;
 
 namespace Dota_2_Training_Platform
 {
-    public partial class TrainerTeamsForm : Form
+    public partial class SelectTeamForm : Form
     {
         UserModel currentUser;
+        UserRole userRole;
+        bool IsTrainer => userRole == UserRole.Trainer;
         TeamModel currentTeam;
         List<TeamModel> currentTeams = new List<TeamModel>();
         Color color;
@@ -28,16 +30,18 @@ namespace Dota_2_Training_Platform
 
 
         bool selfExit = false; //если самовыход = true, то закрывается только текущее окно. Без закрытия всей программы. Немного криво, ну лан))
-        public TrainerTeamsForm(UserModel currentUser, Form StartForm)
+        public SelectTeamForm(UserModel currentUser, Form StartForm, UserRole userRole = UserRole.Trainer)
         {
             this.StartForm = StartForm;
             this.currentUser = currentUser;
+            this.userRole = userRole;
             InitializeComponent();
         }
 
         private void Form2_Load(object sender, EventArgs e)
         {
             color = PlayerBox1.FocusedState.BorderColor;
+            ApplyRolePermissions();
             PrintAllTeams();
         }
 
@@ -151,7 +155,9 @@ namespace Dota_2_Training_Platform
         {
             guna2Panel1.Controls.Clear();
 
-            currentTeams = dbManager.GetTrainerTeams(currentUser.SteamID);
+            currentTeams = IsTrainer
+                ? dbManager.GetTrainerTeams(currentUser.SteamID)
+                : dbManager.GetPlayerTeams(currentUser.SteamID);
 
             foreach (TeamModel team in currentTeams)
             {
@@ -256,16 +262,7 @@ namespace Dota_2_Training_Platform
 
         private void guna2GradientButton1_Click(object sender, EventArgs e) // ContinueButton
         {
-            Form form2 = new MainForm(currentTeam, currentUser, StartForm, this, UserRole.Trainer, currentUser);
-            selfExit = true;
-            form2.StartPosition = FormStartPosition.Manual;
-
-            int x = this.DesktopLocation.X + (this.Width - form2.Width) / 2;
-            int y = this.DesktopLocation.Y + (this.Height - form2.Height) / 2;
-
-            form2.Location = new Point(x, y);
-            form2.Show();
-            this.Hide();
+            _ = OpenMainFormAsync();
         }
 
         private void guna2HtmlLabel4_Click(object sender, EventArgs e)
@@ -279,5 +276,49 @@ namespace Dota_2_Training_Platform
         //{
         //    MessageBox.Show($"1223 {guna2Panel1.Controls.GetChildIndex((Button)sender)}"); // чтобы узнать на какой позиции стоит кнопка 
         //}
+
+        private async Task OpenMainFormAsync()
+        {
+            if (currentTeam == null)
+            {
+                return;
+            }
+
+            UserModel trainerUser = currentUser;
+            if (!IsTrainer)
+            {
+                trainerUser = null;
+                var trainerInfo = await ApiCourier.TryGetUserInfo(currentTeam.TrainerSteamId);
+                if (trainerInfo.IsSuccess && trainerInfo.Data?.profile != null)
+                {
+                    var profile = trainerInfo.Data.profile;
+                    trainerUser = new UserModel(
+                        profile.personaname.ToString(),
+                        profile.account_id.ToString(),
+                        profile.steamid.ToString(),
+                        string.Empty,
+                        profile.avatarfull.ToString());
+                }
+            }
+
+            Form form2 = new MainForm(currentTeam, currentUser, StartForm, this, userRole, trainerUser);
+            selfExit = true;
+            form2.StartPosition = FormStartPosition.Manual;
+
+            int x = this.DesktopLocation.X + (this.Width - form2.Width) / 2;
+            int y = this.DesktopLocation.Y + (this.Height - form2.Height) / 2;
+            form2.Location = new Point(x, y);
+            form2.Show();
+            this.Hide();
+        }
+
+        private void ApplyRolePermissions()
+        {
+            CreateTeamButton.Visible = IsTrainer;
+            TeamConfirm.Visible = false;
+            TeamInfoPanel.Visible = false;
+            ContinueButton.Visible = false;
+        }
+
     }
 }

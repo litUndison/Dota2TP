@@ -1,6 +1,6 @@
 ﻿namespace Dota_2_Training_Platform
 {
-    partial class TrainerTeamsForm
+    partial class SelectTeamForm
     {
         /// <summary>
         /// Required designer variable.

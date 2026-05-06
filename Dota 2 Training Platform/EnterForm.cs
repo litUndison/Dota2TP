@@ -56,21 +56,8 @@ namespace Dota_2_Training_Platform
 
         private void OpenForm(TypeOfEntering typeOfEntering)
         {
-            switch (typeOfEntering)
-            {
-                case TypeOfEntering.Player: // у игрока будет другая форма, и интерфейс тоже вроде
-                    {
-                        form2 = new PlayerTeamsForm(currentUser, this);
-
-                        break;
-                    }
-                case TypeOfEntering.Trainer:
-                    {
-                        form2 = new TrainerTeamsForm(currentUser, this);
-
-                        break;
-                    }
-            }
+            var role = typeOfEntering == TypeOfEntering.Trainer ? UserRole.Trainer : UserRole.Player;
+            form2 = new SelectTeamForm(currentUser, this, role);
             form2.StartPosition = FormStartPosition.Manual;
 
             int x = this.DesktopLocation.X + (this.Width - form2.Width) / 2;

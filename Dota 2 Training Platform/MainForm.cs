@@ -630,7 +630,7 @@ namespace Dota_2_Training_Platform
         private void ChangeTeamButton_Click(object sender, EventArgs e)
         {
             selfclose = true;
-            TrainerTeamsForm form = TeamsForm as TrainerTeamsForm;
+            SelectTeamForm form = TeamsForm as SelectTeamForm;
 
             form.StartPosition = FormStartPosition.Manual;
 
@@ -2398,7 +2398,7 @@ namespace Dota_2_Training_Platform
             // Игрок: только просмотр команды/записей.
             EditSwitcher.Visible = false;
             EditConfirm.Visible = false;
-            ChangeTeamButton.Visible = false;
+            ChangeTeamButton.Visible = true;
 
             // Игрок не управляет тренировками.
             guna2Button1.Visible = false;

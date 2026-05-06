@@ -147,10 +147,10 @@
     <Compile Include="MatchDetailsForm.Designer.cs">
       <DependentUpon>MatchDetailsForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="MarkerEditorForm.cs">
+    <Compile Include="RecordingForms\MarkerEditorForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MarkerEditorForm.Designer.cs">
+    <Compile Include="RecordingForms\MarkerEditorForm.Designer.cs">
       <DependentUpon>MarkerEditorForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\DotaHeroModel.cs" />
@@ -166,17 +166,11 @@
       <DependentUpon>PlayerComparisonForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Trainings\TrainingTask.cs" />
-    <Compile Include="PlayerTeamsForm.cs">
+    <Compile Include="SelectTeamForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="PlayerTeamsForm.Designer.cs">
-      <DependentUpon>PlayerTeamsForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="TrainerTeamsForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="TrainerTeamsForm.Designer.cs">
-      <DependentUpon>TrainerTeamsForm.cs</DependentUpon>
+    <Compile Include="SelectTeamForm.Designer.cs">
+      <DependentUpon>SelectTeamForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\DotaPlayerProfileModel.cs" />
     <Compile Include="Models\MatchRecordInfo.cs" />
@@ -186,26 +180,26 @@
     <Compile Include="Models\UserRole.cs" />
     <Compile Include="Models\UserModel.cs" />
     <Compile Include="Program.cs" />
-    <Compile Include="RecordSettingsForm.cs">
+    <Compile Include="RecordingForms\RecordSettingsForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="RecordSettingsForm.Designer.cs">
+    <Compile Include="RecordingForms\RecordSettingsForm.Designer.cs">
       <DependentUpon>RecordSettingsForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="RecordingOverlayForm.cs">
+    <Compile Include="RecordingForms\RecordingOverlayForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="RecordingOverlayForm.Designer.cs">
+    <Compile Include="RecordingForms\RecordingOverlayForm.Designer.cs">
       <DependentUpon>RecordingOverlayForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DB\DataBaseManager.cs" />
     <Compile Include="Service\ScreenRecorderService.cs" />
     <Compile Include="Trainings\TrainingTasksAnalyzer.cs" />
-    <Compile Include="VideoPlayerForm.cs">
+    <Compile Include="RecordingForms\VideoPlayerForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="VideoPlayerForm.Designer.cs">
+    <Compile Include="RecordingForms\VideoPlayerForm.Designer.cs">
       <DependentUpon>VideoPlayerForm.cs</DependentUpon>
     </Compile>
     <EmbeddedResource Include="CreateTrainingTask.resx">
@@ -217,7 +211,7 @@
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="MarkerEditorForm.resx">
+    <EmbeddedResource Include="RecordingForms\MarkerEditorForm.resx">
       <DependentUpon>MarkerEditorForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MatchDetailsForm.resx">
@@ -226,17 +220,14 @@
     <EmbeddedResource Include="PlayerComparisonForm.resx">
       <DependentUpon>PlayerComparisonForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="PlayerTeamsForm.resx">
-      <DependentUpon>PlayerTeamsForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="RecordingOverlayForm.resx">
+    <EmbeddedResource Include="RecordingForms\RecordingOverlayForm.resx">
       <DependentUpon>RecordingOverlayForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="RecordSettingsForm.resx">
+    <EmbeddedResource Include="RecordingForms\RecordSettingsForm.resx">
       <DependentUpon>RecordSettingsForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="TrainerTeamsForm.resx">
-      <DependentUpon>TrainerTeamsForm.cs</DependentUpon>
+    <EmbeddedResource Include="SelectTeamForm.resx">
+      <DependentUpon>SelectTeamForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -248,7 +239,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="VideoPlayerForm.resx">
+    <EmbeddedResource Include="RecordingForms\VideoPlayerForm.resx">
       <DependentUpon>VideoPlayerForm.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
