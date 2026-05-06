@@ -6,6 +6,7 @@ using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using Dota_2_Training_Platform.Models;
+using System.Windows.Forms;
 
 namespace Dota_2_Training_Platform.Services
 {
@@ -20,6 +21,7 @@ namespace Dota_2_Training_Platform.Services
         private readonly StringBuilder _stderrBuffer = new StringBuilder();
 
         public bool IsRecording => _ffmpegProcess != null && !_ffmpegProcess.HasExited;
+        public string CurrentVideoPath => _currentVideoPath;
 
         public string FfmpegPath => Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "ffmpeg", "ffmpeg.exe");
 
@@ -62,9 +64,9 @@ namespace Dota_2_Training_Platform.Services
                 _currentPreviewPath = Path.Combine(teamFolderPath, fileNameWithoutExtension + ".jpg");
                 _currentMetadataPath = Path.Combine(teamFolderPath, fileNameWithoutExtension + ".json");
 
-                // По требованиям: без звука, фиксированное разрешение 1920x1080.
+                // Пробуем ddagrab, а если сборка ffmpeg без него — автоматически откатываемся на gdigrab.
                 int fps = settings != null && settings.Fps == 60 ? 60 : 30;
-                string inputArgs = $"-video_size 1920x1080 -f gdigrab -framerate {fps} -i desktop";
+                string inputArgs = $"-f ddagrab -framerate {fps} -draw_mouse 1 -i desktop";
 
                 string outputArgs =
                     "-c:v libx264 " +
@@ -74,6 +76,7 @@ namespace Dota_2_Training_Platform.Services
                     "-an ";
 
                 string fullArguments = $"{inputArgs} {outputArgs} -y \"{_currentVideoPath}\"";
+                string captureResolution = $"{Screen.PrimaryScreen.Bounds.Width}x{Screen.PrimaryScreen.Bounds.Height}";
 
                 _currentInfo = new MatchRecordInfo
                 {
@@ -82,7 +85,7 @@ namespace Dota_2_Training_Platform.Services
                     PreviewPath = _currentPreviewPath,
                     CreatedAt = DateTime.Now,
                     Fps = fps,
-                    Resolution = "1920x1080",
+                    Resolution = captureResolution,
                     RecordAudio = false,
                     Hotkey = settings?.HotKey.ToString() ?? "",
                     FileSizeBytes = 0
@@ -131,11 +134,73 @@ namespace Dota_2_Training_Platform.Services
                     string log = GetLastFfmpegLog();
                     _ffmpegProcess.Dispose();
                     _ffmpegProcess = null;
-                    return new RecordingStartResult
+
+                    if (log.IndexOf("unknown input format", StringComparison.OrdinalIgnoreCase) >= 0 &&
+                        log.IndexOf("ddagrab", StringComparison.OrdinalIgnoreCase) >= 0)
                     {
-                        Success = false,
-                        ErrorMessage = "FFmpeg завершился сразу после старта.\n\n" + log
-                    };
+                        // Fallback для старых/минимальных сборок ffmpeg.
+                        inputArgs = $"-video_size 1920x1080 -f gdigrab -framerate {fps} -i desktop";
+                        fullArguments = $"{inputArgs} {outputArgs} -y \"{_currentVideoPath}\"";
+
+                        lock (_lock)
+                        {
+                            _stderrBuffer.Clear();
+                        }
+
+                        _ffmpegProcess = new Process
+                        {
+                            StartInfo = new ProcessStartInfo
+                            {
+                                FileName = FfmpegPath,
+                                Arguments = fullArguments,
+                                UseShellExecute = false,
+                                RedirectStandardInput = true,
+                                RedirectStandardError = true,
+                                RedirectStandardOutput = false,
+                                CreateNoWindow = true,
+                                WindowStyle = ProcessWindowStyle.Hidden
+                            },
+                            EnableRaisingEvents = true
+                        };
+
+                        _ffmpegProcess.Start();
+                        _ffmpegProcess.ErrorDataReceived += (s, e) =>
+                        {
+                            if (e.Data == null) return;
+                            lock (_lock)
+                            {
+                                _stderrBuffer.AppendLine(e.Data);
+                                if (_stderrBuffer.Length > 200_000)
+                                {
+                                    _stderrBuffer.Remove(0, 50_000);
+                                }
+                            }
+                        };
+                        _ffmpegProcess.BeginErrorReadLine();
+                        Thread.Sleep(500);
+
+                        if (_ffmpegProcess.HasExited)
+                        {
+                            string fallbackLog = GetLastFfmpegLog();
+                            _ffmpegProcess.Dispose();
+                            _ffmpegProcess = null;
+                            return new RecordingStartResult
+                            {
+                                Success = false,
+                                ErrorMessage = "FFmpeg завершился сразу после старта (fallback gdigrab).\n\n" + fallbackLog
+                            };
+                        }
+
+                        _currentInfo.Resolution = "1920x1080";
+                    }
+                    else
+                    {
+                        return new RecordingStartResult
+                        {
+                            Success = false,
+                            ErrorMessage = "FFmpeg завершился сразу после старта.\n\n" + log
+                        };
+                    }
                 }
 
                 return new RecordingStartResult

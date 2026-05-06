@@ -147,6 +147,12 @@
     <Compile Include="MatchDetailsForm.Designer.cs">
       <DependentUpon>MatchDetailsForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="MarkerEditorForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MarkerEditorForm.Designer.cs">
+      <DependentUpon>MarkerEditorForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\DotaHeroModel.cs" />
     <Compile Include="Models\DotaItemModel.cs" />
     <Compile Include="Models\DotaMatchDetailsModel.cs" />
@@ -182,6 +188,9 @@
     <Compile Include="RecordSettingsForm.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="RecordSettingsForm.Designer.cs">
+      <DependentUpon>RecordSettingsForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="RecordingOverlayForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -192,6 +201,9 @@
     <Compile Include="VideoPlayerForm.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="VideoPlayerForm.Designer.cs">
+      <DependentUpon>VideoPlayerForm.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="CreateTrainingTask.resx">
       <DependentUpon>CreateTrainingTask.cs</DependentUpon>
     </EmbeddedResource>
@@ -200,6 +212,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MarkerEditorForm.resx">
+      <DependentUpon>MarkerEditorForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MatchDetailsForm.resx">
       <DependentUpon>MatchDetailsForm.cs</DependentUpon>
@@ -223,6 +238,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="VideoPlayerForm.resx">
+      <DependentUpon>VideoPlayerForm.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

@@ -101,8 +101,11 @@ namespace Dota_2_Training_Platform
 
         private RecordSettingsModel _recordSettings;
         private bool _recordHotKeyRegistered = false;
+        private bool _markerHotKeyRegistered = false;
         private bool _isRecording = false;
         private int _recordHotKeyId = 1001;
+        private int _markerHotKeyId = 1002;
+        private DateTime _recordingStartedAtUtc = DateTime.MinValue;
 
         private ScreenRecorderService _screenRecorder;
         //private RecordingOverlayForm _recordingOverlay; шлак, мб потом можно что-нибудь сделать
@@ -131,6 +134,22 @@ namespace Dota_2_Training_Platform
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
+            try
+            {
+                if (_recordHotKeyRegistered)
+                {
+                    UnregisterHotKey(Handle, _recordHotKeyId);
+                    _recordHotKeyRegistered = false;
+                }
+                if (_markerHotKeyRegistered)
+                {
+                    UnregisterHotKey(Handle, _markerHotKeyId);
+                    _markerHotKeyRegistered = false;
+                }
+            }
+            catch
+            {
+            }
 
             //DialogResult result = MessageBox.Show("Вы хотите вернутся в меню входа?", "Подтверждение", 
             //    MessageBoxButtons.YesNo,
@@ -2311,6 +2330,10 @@ namespace Dota_2_Training_Platform
             {
                 ToggleRecordingFromHotkey();
             }
+            else if (m.Msg == WM_HOTKEY && m.WParam.ToInt32() == _markerHotKeyId)
+            {
+                CreateMarkerFromHotkey();
+            }
 
             base.WndProc(ref m);
         }
@@ -2324,7 +2347,7 @@ namespace Dota_2_Training_Platform
                 Resolution = "1920x1080",
                 RecordAudio = false,
                 HotKey = Keys.F9,
-                UseSameHotkeyForStop = true
+                MarkerHotKey = Keys.F8
             };
 
             _recordNotifyIcon = new NotifyIcon
@@ -2334,7 +2357,7 @@ namespace Dota_2_Training_Platform
             };
 
             InitializeRecordingTab();
-            RegisterRecordHotKey();
+            RegisterRecordingHotkeys();
             LoadRecordingsList();
             UpdateRecordingUiState();
         }
@@ -2479,7 +2502,7 @@ namespace Dota_2_Training_Platform
                 }
 
                 _recordSettings = settingsForm.GetSettings();
-                RegisterRecordHotKey();
+                RegisterRecordingHotkeys();
                 UpdateRecordingUiState();
             }
         }
@@ -2500,6 +2523,7 @@ namespace Dota_2_Training_Platform
             }
 
             _isRecording = true;
+            _recordingStartedAtUtc = DateTime.UtcNow;
             //ShowRecordingOverlay();
             UpdateRecordingUiState();
             ShowRecordNotification("Запись начата");
@@ -2519,6 +2543,7 @@ namespace Dota_2_Training_Platform
 
             bool stopped = await _screenRecorder.StopRecordingAsync();
             _isRecording = false;
+            _recordingStartedAtUtc = DateTime.MinValue;
             //HideRecordingOverlay();
             UpdateRecordingUiState();
             LoadRecordingsList();
@@ -2599,8 +2624,8 @@ namespace Dota_2_Training_Platform
             }
 
             _recordStatusLabel.Text = _isRecording
-                ? $"Идёт запись... Горячая клавиша: {_recordSettings.HotKey}"
-                : $"Файлов: {_recordingsListView.Items.Count}. Горячая клавиша: {_recordSettings.HotKey}";
+                ? $"Идёт запись... Запись: {_recordSettings.HotKey}, маркер: {_recordSettings.MarkerHotKey}"
+                : $"Файлов: {_recordingsListView.Items.Count}. Запись: {_recordSettings.HotKey}, маркер: {_recordSettings.MarkerHotKey}";
         }
 
         private string GetTeamRecordsFolderPath()
@@ -2622,8 +2647,8 @@ namespace Dota_2_Training_Platform
             _recordDeleteButton.Enabled = !_isRecording;
             _recordPlayButton.Enabled = true;
             _recordStatusLabel.Text = _isRecording
-                ? $"Идёт запись... Нажми {_recordSettings.HotKey} для остановки."
-                : $"Готово к записи. Горячая клавиша: {_recordSettings.HotKey}";
+                ? $"Идёт запись... {_recordSettings.HotKey} старт/стоп, {_recordSettings.MarkerHotKey} добавить маркер."
+                : $"Готово к записи. {_recordSettings.HotKey} старт/стоп, {_recordSettings.MarkerHotKey} добавить маркер.";
         }
 
         private void RecordingsListView_DoubleClick(object sender, EventArgs e)
@@ -2722,12 +2747,23 @@ namespace Dota_2_Training_Platform
             return $"{len:0.##} {sizes[order]}";
         }
 
-        private void RegisterRecordHotKey()
+        private void RegisterRecordingHotkeys()
         {
             if (_recordHotKeyRegistered)
             {
                 UnregisterHotKey(Handle, _recordHotKeyId);
                 _recordHotKeyRegistered = false;
+            }
+            if (_markerHotKeyRegistered)
+            {
+                UnregisterHotKey(Handle, _markerHotKeyId);
+                _markerHotKeyRegistered = false;
+            }
+
+            if (_recordSettings.HotKey == _recordSettings.MarkerHotKey)
+            {
+                MessageBox.Show("Горячая клавиша записи и маркера не должны совпадать.", "Горячая клавиша", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
             }
 
             if (!RegisterHotKey(Handle, _recordHotKeyId, MOD_NOREPEAT, (uint)_recordSettings.HotKey))
@@ -2735,8 +2771,62 @@ namespace Dota_2_Training_Platform
                 MessageBox.Show($"Не удалось зарегистрировать горячую клавишу {_recordSettings.HotKey}.", "Горячая клавиша", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
+            if (!RegisterHotKey(Handle, _markerHotKeyId, MOD_NOREPEAT, (uint)_recordSettings.MarkerHotKey))
+            {
+                UnregisterHotKey(Handle, _recordHotKeyId);
+                _recordHotKeyRegistered = false;
+                MessageBox.Show($"Не удалось зарегистрировать горячую клавишу маркера {_recordSettings.MarkerHotKey}.", "Горячая клавиша", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
 
             _recordHotKeyRegistered = true;
+            _markerHotKeyRegistered = true;
+        }
+
+        private void CreateMarkerFromHotkey()
+        {
+            if (!_isRecording || _screenRecorder == null || string.IsNullOrWhiteSpace(_screenRecorder.CurrentVideoPath))
+            {
+                return;
+            }
+
+            try
+            {
+                string momentsPath = Path.ChangeExtension(_screenRecorder.CurrentVideoPath, ".moments.json");
+                var markers = new List<RecordMomentDto>();
+                if (File.Exists(momentsPath))
+                {
+                    var json = File.ReadAllText(momentsPath);
+                    markers = JsonSerializer.Deserialize<List<RecordMomentDto>>(json) ?? new List<RecordMomentDto>();
+                }
+
+                int index = markers.Count + 1;
+                double second = Math.Max(0, (DateTime.UtcNow - _recordingStartedAtUtc).TotalSeconds);
+                markers.Add(new RecordMomentDto
+                {
+                    Id = Guid.NewGuid().ToString("N"),
+                    Title = $"Момент {index}",
+                    Description = "",
+                    ColorHex = "#FFFFFF",
+                    Second = second
+                });
+
+                var outJson = JsonSerializer.Serialize(markers, new JsonSerializerOptions { WriteIndented = true });
+                File.WriteAllText(momentsPath, outJson, Encoding.UTF8);
+                ShowRecordNotification($"Добавлен маркер: Момент {index}");
+            }
+            catch
+            {
+            }
+        }
+
+        private class RecordMomentDto
+        {
+            public string Id { get; set; }
+            public string Title { get; set; }
+            public string Description { get; set; }
+            public string ColorHex { get; set; }
+            public double Second { get; set; }
         }
 
         //private void ShowRecordingOverlay()
