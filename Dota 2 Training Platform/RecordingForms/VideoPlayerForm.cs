@@ -19,6 +19,7 @@ namespace Dota_2_Training_Platform
         private Timer _stateTimer;
         private bool _isSeeking;
         private bool _isPlaying = true;
+        private bool _startPlayState = true;
         private double _durationSec;
         private double _currentSec;
         private double _lastRenderedDurationSec = -1;
@@ -48,10 +49,33 @@ namespace Dota_2_Training_Platform
             _addMomentButton.Click += AddMomentButton_Click;
             _editMomentButton.Click += EditMomentButton_Click;
             _deleteMomentButton.Click += DeleteMomentButton_Click;
-            _timeline.MouseDown += (s, e) => _isSeeking = true;
+            _timeline.MouseDown += async (s, e) => 
+            { 
+                _isSeeking = true;
+                _startPlayState = _isPlaying;
+                await _webView.ExecuteScriptAsync(
+                    "(function(){var v=document.querySelector('video'); if(!v){return false;} if(!v.paused){v.pause();} return !v.paused;})()");
+
+            };
+            _timeline.MouseMove += async (s, e) =>
+            {
+                if (!_isSeeking) return;
+                
+                await SeekToTrackbarAsync();
+            };
             _timeline.MouseUp += async (s, e) =>
             {
                 await SeekToTrackbarAsync();
+                if(_startPlayState == false)
+                {
+                    await _webView.ExecuteScriptAsync(
+                    "(function(){var v=document.querySelector('video'); if(!v){return false;} v.pause(); return !v.paused;})()");
+                }
+                else
+                {
+                    await _webView.ExecuteScriptAsync(
+                    "(function(){var v=document.querySelector('video'); if(!v){return false;} v.play(); return !v.paused;})()");
+                }
                 _isSeeking = false;
             };
             _momentsList.DoubleClick += async (s, e) => await SeekToSelectedMomentAsync();

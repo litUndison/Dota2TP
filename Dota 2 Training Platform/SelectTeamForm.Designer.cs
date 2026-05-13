@@ -72,18 +72,17 @@
             // 
             this.guna2GradientButton3.Animated = true;
             this.guna2GradientButton3.BackColor = System.Drawing.Color.Transparent;
-            this.guna2GradientButton3.BorderRadius = 5;
             this.guna2GradientButton3.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
             this.guna2GradientButton3.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
             this.guna2GradientButton3.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
             this.guna2GradientButton3.DisabledState.FillColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
             this.guna2GradientButton3.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
-            this.guna2GradientButton3.FillColor = System.Drawing.SystemColors.ActiveBorder;
+            this.guna2GradientButton3.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(80)))), ((int)(((byte)(80)))), ((int)(((byte)(80)))));
             this.guna2GradientButton3.FillColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.guna2GradientButton3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.guna2GradientButton3.ForeColor = System.Drawing.Color.White;
             this.guna2GradientButton3.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.ForwardDiagonal;
-            this.guna2GradientButton3.Location = new System.Drawing.Point(289, 535);
+            this.guna2GradientButton3.Location = new System.Drawing.Point(286, 534);
             this.guna2GradientButton3.Name = "guna2GradientButton3";
             this.guna2GradientButton3.Size = new System.Drawing.Size(160, 29);
             this.guna2GradientButton3.TabIndex = 12;
@@ -95,18 +94,17 @@
             // 
             this.CreateTeamButton.Animated = true;
             this.CreateTeamButton.BackColor = System.Drawing.Color.Transparent;
-            this.CreateTeamButton.BorderRadius = 5;
             this.CreateTeamButton.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
             this.CreateTeamButton.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
             this.CreateTeamButton.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
             this.CreateTeamButton.DisabledState.FillColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
             this.CreateTeamButton.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
-            this.CreateTeamButton.FillColor = System.Drawing.SystemColors.ActiveBorder;
+            this.CreateTeamButton.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(80)))), ((int)(((byte)(80)))), ((int)(((byte)(80)))));
             this.CreateTeamButton.FillColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.CreateTeamButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.CreateTeamButton.ForeColor = System.Drawing.Color.White;
             this.CreateTeamButton.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.ForwardDiagonal;
-            this.CreateTeamButton.Location = new System.Drawing.Point(0, 535);
+            this.CreateTeamButton.Location = new System.Drawing.Point(12, 534);
             this.CreateTeamButton.Name = "CreateTeamButton";
             this.CreateTeamButton.Size = new System.Drawing.Size(254, 29);
             this.CreateTeamButton.TabIndex = 14;
@@ -117,14 +115,14 @@
             // guna2Panel1
             // 
             this.guna2Panel1.AutoScroll = true;
-            this.guna2Panel1.Location = new System.Drawing.Point(0, 0);
+            this.guna2Panel1.Location = new System.Drawing.Point(12, 13);
             this.guna2Panel1.Name = "guna2Panel1";
-            this.guna2Panel1.Size = new System.Drawing.Size(254, 529);
+            this.guna2Panel1.Size = new System.Drawing.Size(254, 515);
             this.guna2Panel1.TabIndex = 15;
             // 
             // PlayerBox1
             // 
-            this.PlayerBox1.BorderRadius = 5;
+            this.PlayerBox1.BorderRadius = 1;
             this.PlayerBox1.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.PlayerBox1.DefaultText = "";
             this.PlayerBox1.DisabledState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(208)))), ((int)(((byte)(208)))));
@@ -169,7 +167,7 @@
             // 
             // PlayerPicture1
             // 
-            this.PlayerPicture1.BorderRadius = 2;
+            this.PlayerPicture1.BorderRadius = 1;
             this.PlayerPicture1.ImageRotate = 0F;
             this.PlayerPicture1.InitialImage = null;
             this.PlayerPicture1.Location = new System.Drawing.Point(488, 4);
@@ -181,7 +179,7 @@
             // 
             // PlayerPicture2
             // 
-            this.PlayerPicture2.BorderRadius = 2;
+            this.PlayerPicture2.BorderRadius = 1;
             this.PlayerPicture2.ImageRotate = 0F;
             this.PlayerPicture2.InitialImage = null;
             this.PlayerPicture2.Location = new System.Drawing.Point(488, 4);
@@ -205,7 +203,7 @@
             // 
             // PlayerBox2
             // 
-            this.PlayerBox2.BorderRadius = 5;
+            this.PlayerBox2.BorderRadius = 1;
             this.PlayerBox2.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.PlayerBox2.DefaultText = "";
             this.PlayerBox2.DisabledState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(208)))), ((int)(((byte)(208)))));
@@ -227,7 +225,7 @@
             // 
             // PlayerPicture3
             // 
-            this.PlayerPicture3.BorderRadius = 2;
+            this.PlayerPicture3.BorderRadius = 1;
             this.PlayerPicture3.ImageRotate = 0F;
             this.PlayerPicture3.InitialImage = null;
             this.PlayerPicture3.Location = new System.Drawing.Point(488, 4);
@@ -251,7 +249,7 @@
             // 
             // PlayerBox3
             // 
-            this.PlayerBox3.BorderRadius = 5;
+            this.PlayerBox3.BorderRadius = 1;
             this.PlayerBox3.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.PlayerBox3.DefaultText = "";
             this.PlayerBox3.DisabledState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(208)))), ((int)(((byte)(208)))));
@@ -273,7 +271,7 @@
             // 
             // PlayerPicture5
             // 
-            this.PlayerPicture5.BorderRadius = 2;
+            this.PlayerPicture5.BorderRadius = 1;
             this.PlayerPicture5.ImageRotate = 0F;
             this.PlayerPicture5.InitialImage = null;
             this.PlayerPicture5.Location = new System.Drawing.Point(488, 4);
@@ -298,7 +296,7 @@
             // 
             // PlayerBox5
             // 
-            this.PlayerBox5.BorderRadius = 5;
+            this.PlayerBox5.BorderRadius = 1;
             this.PlayerBox5.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.PlayerBox5.DefaultText = "";
             this.PlayerBox5.DisabledState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(208)))), ((int)(((byte)(208)))));
@@ -320,7 +318,7 @@
             // 
             // PlayerPicture4
             // 
-            this.PlayerPicture4.BorderRadius = 2;
+            this.PlayerPicture4.BorderRadius = 1;
             this.PlayerPicture4.ImageRotate = 0F;
             this.PlayerPicture4.InitialImage = null;
             this.PlayerPicture4.Location = new System.Drawing.Point(488, 4);
@@ -344,7 +342,7 @@
             // 
             // PlayerBox4
             // 
-            this.PlayerBox4.BorderRadius = 5;
+            this.PlayerBox4.BorderRadius = 1;
             this.PlayerBox4.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.PlayerBox4.DefaultText = "";
             this.PlayerBox4.DisabledState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(208)))), ((int)(((byte)(208)))));
@@ -366,7 +364,7 @@
             // 
             // TeamNameBox
             // 
-            this.TeamNameBox.BorderRadius = 5;
+            this.TeamNameBox.BorderRadius = 1;
             this.TeamNameBox.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.TeamNameBox.DefaultText = "";
             this.TeamNameBox.DisabledState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(208)))), ((int)(((byte)(208)))));
@@ -374,15 +372,15 @@
             this.TeamNameBox.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
             this.TeamNameBox.DisabledState.PlaceholderForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
             this.TeamNameBox.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
-            this.TeamNameBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.TeamNameBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.TeamNameBox.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
-            this.TeamNameBox.Location = new System.Drawing.Point(470, 13);
+            this.TeamNameBox.Location = new System.Drawing.Point(479, 13);
             this.TeamNameBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.TeamNameBox.Name = "TeamNameBox";
             this.TeamNameBox.PlaceholderText = "Название команды";
             this.TeamNameBox.ReadOnly = true;
             this.TeamNameBox.SelectedText = "";
-            this.TeamNameBox.Size = new System.Drawing.Size(286, 46);
+            this.TeamNameBox.Size = new System.Drawing.Size(286, 34);
             this.TeamNameBox.TabIndex = 17;
             this.TeamNameBox.TextChanged += new System.EventHandler(this.TeamNameBox_TextChanged);
             // 
@@ -390,18 +388,17 @@
             // 
             this.TeamConfirm.Animated = true;
             this.TeamConfirm.BackColor = System.Drawing.Color.Transparent;
-            this.TeamConfirm.BorderRadius = 5;
             this.TeamConfirm.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
             this.TeamConfirm.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
             this.TeamConfirm.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
             this.TeamConfirm.DisabledState.FillColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
             this.TeamConfirm.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
-            this.TeamConfirm.FillColor = System.Drawing.SystemColors.ActiveBorder;
+            this.TeamConfirm.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(80)))), ((int)(((byte)(80)))), ((int)(((byte)(80)))));
             this.TeamConfirm.FillColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.TeamConfirm.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.TeamConfirm.ForeColor = System.Drawing.Color.White;
             this.TeamConfirm.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.ForwardDiagonal;
-            this.TeamConfirm.Location = new System.Drawing.Point(454, 535);
+            this.TeamConfirm.Location = new System.Drawing.Point(452, 534);
             this.TeamConfirm.Name = "TeamConfirm";
             this.TeamConfirm.Size = new System.Drawing.Size(254, 29);
             this.TeamConfirm.TabIndex = 23;
@@ -458,14 +455,14 @@
             // 
             this.TeamInfoPanel.BackColor = System.Drawing.Color.Transparent;
             this.TeamInfoPanel.BorderColor = System.Drawing.Color.Transparent;
-            this.TeamInfoPanel.BorderRadius = 15;
+            this.TeamInfoPanel.BorderRadius = 1;
             this.TeamInfoPanel.Controls.Add(this.guna2Panel2);
             this.TeamInfoPanel.Controls.Add(this.guna2Panel3);
             this.TeamInfoPanel.Controls.Add(this.guna2Panel6);
             this.TeamInfoPanel.Controls.Add(this.guna2Panel4);
             this.TeamInfoPanel.Controls.Add(this.guna2Panel5);
             this.TeamInfoPanel.FillColor = System.Drawing.SystemColors.AppWorkspace;
-            this.TeamInfoPanel.Location = new System.Drawing.Point(289, 67);
+            this.TeamInfoPanel.Location = new System.Drawing.Point(286, 66);
             this.TeamInfoPanel.Name = "TeamInfoPanel";
             this.TeamInfoPanel.Size = new System.Drawing.Size(608, 462);
             this.TeamInfoPanel.TabIndex = 24;
@@ -475,18 +472,17 @@
             // 
             this.ContinueButton.Animated = true;
             this.ContinueButton.BackColor = System.Drawing.Color.Transparent;
-            this.ContinueButton.BorderRadius = 5;
             this.ContinueButton.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
             this.ContinueButton.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
             this.ContinueButton.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
             this.ContinueButton.DisabledState.FillColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
             this.ContinueButton.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
-            this.ContinueButton.FillColor = System.Drawing.SystemColors.ActiveBorder;
+            this.ContinueButton.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(80)))), ((int)(((byte)(80)))), ((int)(((byte)(80)))));
             this.ContinueButton.FillColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.ContinueButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.ContinueButton.ForeColor = System.Drawing.Color.White;
             this.ContinueButton.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.ForwardDiagonal;
-            this.ContinueButton.Location = new System.Drawing.Point(715, 535);
+            this.ContinueButton.Location = new System.Drawing.Point(712, 534);
             this.ContinueButton.Name = "ContinueButton";
             this.ContinueButton.Size = new System.Drawing.Size(182, 29);
             this.ContinueButton.TabIndex = 25;
@@ -495,11 +491,11 @@
             this.ContinueButton.Visible = false;
             this.ContinueButton.Click += new System.EventHandler(this.guna2GradientButton1_Click);
             // 
-            // TrainerTeamsForm
+            // SelectTeamForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(937, 594);
+            this.ClientSize = new System.Drawing.Size(906, 572);
             this.Controls.Add(this.ContinueButton);
             this.Controls.Add(this.TeamInfoPanel);
             this.Controls.Add(this.TeamConfirm);
@@ -509,7 +505,7 @@
             this.Controls.Add(this.guna2GradientButton3);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
-            this.Name = "TrainerTeamsForm";
+            this.Name = "SelectTeamForm";
             this.Text = "Dota 2 Training Polygon";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form2_FormClosing);
             this.Load += new System.EventHandler(this.Form2_Load);

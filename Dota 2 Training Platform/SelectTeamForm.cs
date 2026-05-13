@@ -169,6 +169,7 @@ namespace Dota_2_Training_Platform
                 button.Text = team.Name;
                 button.Width = 250;
                 button.Height = 35;
+                button.FillColor = Color.FromArgb(50, 10, 10);
 
                 button.Top = guna2Panel1.Controls.Count == 0
                     ? 10

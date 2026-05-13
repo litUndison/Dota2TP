@@ -24,8 +24,8 @@ namespace Dota_2_Training_Platform
             this._timeLabel = new System.Windows.Forms.Label();
             this._playPauseButton = new System.Windows.Forms.Button();
             this._timelineHost = new System.Windows.Forms.Panel();
-            this._timeline = new System.Windows.Forms.TrackBar();
             this._markersPanel = new System.Windows.Forms.Panel();
+            this._timeline = new System.Windows.Forms.TrackBar();
             this._momentsList = new System.Windows.Forms.ListView();
             this._colTime = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this._colColor = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -148,21 +148,6 @@ namespace Dota_2_Training_Platform
             this._timelineHost.Size = new System.Drawing.Size(896, 32);
             this._timelineHost.TabIndex = 2;
             // 
-            // _timeline
-            // 
-            this._timeline.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this._timeline.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(24)))), ((int)(((byte)(24)))));
-            this._timeline.Location = new System.Drawing.Point(-2, 2);
-            this._timeline.Margin = new System.Windows.Forms.Padding(2);
-            this._timeline.LargeChange = 50;
-            this._timeline.Maximum = 10000;
-            this._timeline.Name = "_timeline";
-            this._timeline.SmallChange = 5;
-            this._timeline.Size = new System.Drawing.Size(900, 45);
-            this._timeline.TabIndex = 0;
-            this._timeline.TickStyle = System.Windows.Forms.TickStyle.None;
-            // 
             // _markersPanel
             // 
             this._markersPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -174,6 +159,22 @@ namespace Dota_2_Training_Platform
             this._markersPanel.Name = "_markersPanel";
             this._markersPanel.Size = new System.Drawing.Size(881, 10);
             this._markersPanel.TabIndex = 1;
+            // 
+            // _timeline
+            // 
+            this._timeline.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this._timeline.AutoSize = false;
+            this._timeline.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(24)))), ((int)(((byte)(24)))));
+            this._timeline.LargeChange = 500;
+            this._timeline.Location = new System.Drawing.Point(-2, 2);
+            this._timeline.Margin = new System.Windows.Forms.Padding(2);
+            this._timeline.Maximum = 10000;
+            this._timeline.Name = "_timeline";
+            this._timeline.Size = new System.Drawing.Size(900, 46);
+            this._timeline.SmallChange = 5;
+            this._timeline.TabIndex = 0;
+            this._timeline.TickStyle = System.Windows.Forms.TickStyle.None;
             // 
             // _momentsList
             // 
@@ -230,7 +231,6 @@ namespace Dota_2_Training_Platform
             this._controlsPanel.ResumeLayout(false);
             this._controlsPanel.PerformLayout();
             this._timelineHost.ResumeLayout(false);
-            this._timelineHost.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this._timeline)).EndInit();
             this.ResumeLayout(false);
 

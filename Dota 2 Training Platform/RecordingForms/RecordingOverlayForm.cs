@@ -5,27 +5,41 @@ namespace Dota_2_Training_Platform
 {
     public partial class RecordingOverlayForm : Form
     {
-        private readonly Timer _closeTimer;
+        private readonly Timer _messageTimer;
+        private const double IdleOpacity = 0;
+        private const double ActiveOpacity = 0.60;
 
         public RecordingOverlayForm()
         {
             InitializeComponent();
-            _closeTimer = new Timer { Interval = 1400 };
-            _closeTimer.Tick += (s, e) =>
+            _messageTimer = new Timer { Interval = 1400 };
+            _messageTimer.Tick += (s, e) =>
             {
-                _closeTimer.Stop();
-                Close();
+                _messageTimer.Stop();
+                toastMessageLabel.Text = string.Empty;
+                Opacity = IdleOpacity;
             };
+
+            Opacity = IdleOpacity;
+        }
+
+        public void EnsureVisible()
+        {
+            PositionInCorner();
+            if (!Visible)
+            {
+                Show();
+            }
+            BringToFront();
         }
 
         public void ShowToast(string message)
         {
             toastMessageLabel.Text = message ?? "";
-            PositionInCorner();
-            Show();
-            BringToFront();
-            _closeTimer.Stop();
-            _closeTimer.Start();
+            EnsureVisible();
+            Opacity = ActiveOpacity;
+            _messageTimer.Stop();
+            _messageTimer.Start();
         }
 
         private void PositionInCorner()
@@ -47,8 +61,11 @@ namespace Dota_2_Training_Platform
             get
             {
                 const int WS_EX_NOACTIVATE = 0x08000000;
+                const int WS_EX_LAYERED = 0x00080000;
+                const int WS_EX_TRANSPARENT = 0x00000020;
                 var cp = base.CreateParams;
-                cp.ExStyle |= WS_EX_NOACTIVATE;
+                // Клики проходят сквозь окно (видно уведомление, но не перекрываются кнопки под ним).
+                cp.ExStyle |= WS_EX_NOACTIVATE | WS_EX_LAYERED | WS_EX_TRANSPARENT;
                 return cp;
             }
         }

@@ -35,6 +35,74 @@ namespace Dota_2_Training_Platform.Services
             }
         }
 
+        private static string ComposeVideoOnlyArguments(string videoInputArgs, string outputPath)
+        {
+            return videoInputArgs +
+                   " -c:v libx264 -preset ultrafast -pix_fmt yuv420p -movflags +faststart -an -y \"" +
+                   outputPath + "\"";
+        }
+
+        private void WireFfmpegStderr(Process process)
+        {
+            process.ErrorDataReceived += (s, e) =>
+            {
+                if (e.Data == null) return;
+                lock (_lock)
+                {
+                    _stderrBuffer.AppendLine(e.Data);
+                    if (_stderrBuffer.Length > 200_000)
+                    {
+                        _stderrBuffer.Remove(0, 50_000);
+                    }
+                }
+            };
+        }
+
+        /// <returns>true если процесс жив после короткой паузы.</returns>
+        private bool TryLaunchFfmpeg(string arguments)
+        {
+            lock (_lock)
+            {
+                _stderrBuffer.Clear();
+            }
+
+            _ffmpegProcess = new Process
+            {
+                StartInfo = new ProcessStartInfo
+                {
+                    FileName = FfmpegPath,
+                    Arguments = arguments,
+                    UseShellExecute = false,
+                    RedirectStandardInput = true,
+                    RedirectStandardError = true,
+                    RedirectStandardOutput = false,
+                    CreateNoWindow = true,
+                    WindowStyle = ProcessWindowStyle.Hidden
+                },
+                EnableRaisingEvents = true
+            };
+
+            WireFfmpegStderr(_ffmpegProcess);
+            _ffmpegProcess.Start();
+            _ffmpegProcess.BeginErrorReadLine();
+            Thread.Sleep(500);
+            if (_ffmpegProcess.HasExited)
+            {
+                try
+                {
+                    _ffmpegProcess.Dispose();
+                }
+                catch
+                {
+                }
+
+                _ffmpegProcess = null;
+                return false;
+            }
+
+            return true;
+        }
+
         public RecordingStartResult StartRecording(string teamFolderPath, RecordSettingsModel settings)
         {
             try
@@ -64,18 +132,9 @@ namespace Dota_2_Training_Platform.Services
                 _currentPreviewPath = Path.Combine(teamFolderPath, fileNameWithoutExtension + ".jpg");
                 _currentMetadataPath = Path.Combine(teamFolderPath, fileNameWithoutExtension + ".json");
 
-                // Пробуем ddagrab, а если сборка ffmpeg без него — автоматически откатываемся на gdigrab.
                 int fps = settings != null && settings.Fps == 60 ? 60 : 30;
-                string inputArgs = $"-f ddagrab -framerate {fps} -draw_mouse 1 -i desktop";
-
-                string outputArgs =
-                    "-c:v libx264 " +
-                    "-preset ultrafast " +
-                    "-pix_fmt yuv420p " +
-                    "-movflags +faststart " +
-                    "-an ";
-
-                string fullArguments = $"{inputArgs} {outputArgs} -y \"{_currentVideoPath}\"";
+                string ddagrabIn = $"-f ddagrab -framerate {fps} -draw_mouse 1 -i desktop";
+                string gdigrabIn = $"-video_size 1920x1080 -f gdigrab -framerate {fps} -i desktop";
                 string captureResolution = $"{Screen.PrimaryScreen.Bounds.Width}x{Screen.PrimaryScreen.Bounds.Height}";
 
                 _currentInfo = new MatchRecordInfo
@@ -91,125 +150,49 @@ namespace Dota_2_Training_Platform.Services
                     FileSizeBytes = 0
                 };
 
-                lock (_lock)
+                string argsDd = ComposeVideoOnlyArguments(ddagrabIn, _currentVideoPath);
+                if (TryLaunchFfmpeg(argsDd))
                 {
-                    _stderrBuffer.Clear();
+                    return new RecordingStartResult
+                    {
+                        Success = true,
+                        VideoPath = _currentVideoPath,
+                        PreviewPath = _currentPreviewPath,
+                        MetadataPath = _currentMetadataPath,
+                        FileNameWithoutExtension = fileNameWithoutExtension
+                    };
                 }
 
-                _ffmpegProcess = new Process
+                string log = GetLastFfmpegLog();
+                if (log.IndexOf("unknown input format", StringComparison.OrdinalIgnoreCase) >= 0 &&
+                    log.IndexOf("ddagrab", StringComparison.OrdinalIgnoreCase) >= 0)
                 {
-                    StartInfo = new ProcessStartInfo
-                    {
-                        FileName = FfmpegPath,
-                        Arguments = fullArguments,
-                        UseShellExecute = false,
-                        RedirectStandardInput = true,
-                        RedirectStandardError = true,
-                        RedirectStandardOutput = false,
-                        CreateNoWindow = true,
-                        WindowStyle = ProcessWindowStyle.Hidden
-                    },
-                    EnableRaisingEvents = true
-                };
-
-                _ffmpegProcess.Start();
-                _ffmpegProcess.ErrorDataReceived += (s, e) =>
-                {
-                    if (e.Data == null) return;
-                    lock (_lock)
-                    {
-                        _stderrBuffer.AppendLine(e.Data);
-                        if (_stderrBuffer.Length > 200_000)
-                        {
-                            _stderrBuffer.Remove(0, 50_000);
-                        }
-                    }
-                };
-                _ffmpegProcess.BeginErrorReadLine();
-
-                // Быстрая проверка: если ffmpeg упал сразу, вернём лог.
-                Thread.Sleep(500);
-                if (_ffmpegProcess.HasExited)
-                {
-                    string log = GetLastFfmpegLog();
-                    _ffmpegProcess.Dispose();
-                    _ffmpegProcess = null;
-
-                    if (log.IndexOf("unknown input format", StringComparison.OrdinalIgnoreCase) >= 0 &&
-                        log.IndexOf("ddagrab", StringComparison.OrdinalIgnoreCase) >= 0)
-                    {
-                        // Fallback для старых/минимальных сборок ffmpeg.
-                        inputArgs = $"-video_size 1920x1080 -f gdigrab -framerate {fps} -i desktop";
-                        fullArguments = $"{inputArgs} {outputArgs} -y \"{_currentVideoPath}\"";
-
-                        lock (_lock)
-                        {
-                            _stderrBuffer.Clear();
-                        }
-
-                        _ffmpegProcess = new Process
-                        {
-                            StartInfo = new ProcessStartInfo
-                            {
-                                FileName = FfmpegPath,
-                                Arguments = fullArguments,
-                                UseShellExecute = false,
-                                RedirectStandardInput = true,
-                                RedirectStandardError = true,
-                                RedirectStandardOutput = false,
-                                CreateNoWindow = true,
-                                WindowStyle = ProcessWindowStyle.Hidden
-                            },
-                            EnableRaisingEvents = true
-                        };
-
-                        _ffmpegProcess.Start();
-                        _ffmpegProcess.ErrorDataReceived += (s, e) =>
-                        {
-                            if (e.Data == null) return;
-                            lock (_lock)
-                            {
-                                _stderrBuffer.AppendLine(e.Data);
-                                if (_stderrBuffer.Length > 200_000)
-                                {
-                                    _stderrBuffer.Remove(0, 50_000);
-                                }
-                            }
-                        };
-                        _ffmpegProcess.BeginErrorReadLine();
-                        Thread.Sleep(500);
-
-                        if (_ffmpegProcess.HasExited)
-                        {
-                            string fallbackLog = GetLastFfmpegLog();
-                            _ffmpegProcess.Dispose();
-                            _ffmpegProcess = null;
-                            return new RecordingStartResult
-                            {
-                                Success = false,
-                                ErrorMessage = "FFmpeg завершился сразу после старта (fallback gdigrab).\n\n" + fallbackLog
-                            };
-                        }
-
-                        _currentInfo.Resolution = "1920x1080";
-                    }
-                    else
+                    _currentInfo.Resolution = "1920x1080";
+                    string argsGd = ComposeVideoOnlyArguments(gdigrabIn, _currentVideoPath);
+                    if (TryLaunchFfmpeg(argsGd))
                     {
                         return new RecordingStartResult
                         {
-                            Success = false,
-                            ErrorMessage = "FFmpeg завершился сразу после старта.\n\n" + log
+                            Success = true,
+                            VideoPath = _currentVideoPath,
+                            PreviewPath = _currentPreviewPath,
+                            MetadataPath = _currentMetadataPath,
+                            FileNameWithoutExtension = fileNameWithoutExtension
                         };
                     }
+
+                    string fallbackLog = GetLastFfmpegLog();
+                    return new RecordingStartResult
+                    {
+                        Success = false,
+                        ErrorMessage = "FFmpeg завершился сразу после старта (fallback gdigrab).\n\n" + fallbackLog
+                    };
                 }
 
                 return new RecordingStartResult
                 {
-                    Success = true,
-                    VideoPath = _currentVideoPath,
-                    PreviewPath = _currentPreviewPath,
-                    MetadataPath = _currentMetadataPath,
-                    FileNameWithoutExtension = fileNameWithoutExtension
+                    Success = false,
+                    ErrorMessage = "FFmpeg завершился сразу после старта.\n\n" + log
                 };
             }
             catch (Exception ex)

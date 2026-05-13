@@ -1,4 +1,7 @@
-﻿namespace Dota_2_Training_Platform
+﻿using System.Drawing;
+using System.Web.UI.WebControls;
+
+namespace Dota_2_Training_Platform
 {
     partial class MainForm
     {
@@ -121,6 +124,16 @@
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.webView21 = new Microsoft.Web.WebView2.WinForms.WebView2();
             this.tabPage6 = new System.Windows.Forms.TabPage();
+            this.recordingsListView = new System.Windows.Forms.ListView();
+            this.recordDeleteButton = new Guna.UI2.WinForms.Guna2Button();
+            this.recordRenameButton = new Guna.UI2.WinForms.Guna2Button();
+            this.recordPlayButton = new Guna.UI2.WinForms.Guna2Button();
+            this.recordRefreshButton = new Guna.UI2.WinForms.Guna2Button();
+            this.recordSettingsButton = new Guna.UI2.WinForms.Guna2Button();
+            this.recordStopButton = new Guna.UI2.WinForms.Guna2Button();
+            this.recordStatusLabel = new System.Windows.Forms.Label();
+            this.TitleLabel = new System.Windows.Forms.Label();
+            this.RecordStartButton = new Guna.UI2.WinForms.Guna2Button();
             this.guna2TabControl1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.PanelWithButtons.SuspendLayout();
@@ -145,6 +158,7 @@
             this.tabPage4.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.webView21)).BeginInit();
+            this.tabPage6.SuspendLayout();
             this.SuspendLayout();
             // 
             // guna2TabControl1
@@ -199,7 +213,7 @@
             this.tabPage2.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tabPage2.Location = new System.Drawing.Point(184, 4);
             this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage2.Size = new System.Drawing.Size(997, 757);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Команда";
@@ -221,7 +235,7 @@
             // 
             this.TeamPageTasksPanel.AutoScroll = true;
             this.TeamPageTasksPanel.BackColor = System.Drawing.Color.Gainsboro;
-            this.TeamPageTasksPanel.Location = new System.Drawing.Point(307, 204);
+            this.TeamPageTasksPanel.Location = new System.Drawing.Point(373, 204);
             this.TeamPageTasksPanel.Name = "TeamPageTasksPanel";
             this.TeamPageTasksPanel.Size = new System.Drawing.Size(419, 526);
             this.TeamPageTasksPanel.TabIndex = 32;
@@ -231,7 +245,7 @@
             this.TeamPageTasksLabel.AutoSize = false;
             this.TeamPageTasksLabel.BackColor = System.Drawing.Color.Transparent;
             this.TeamPageTasksLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.TeamPageTasksLabel.Location = new System.Drawing.Point(307, 175);
+            this.TeamPageTasksLabel.Location = new System.Drawing.Point(373, 175);
             this.TeamPageTasksLabel.Name = "TeamPageTasksLabel";
             this.TeamPageTasksLabel.Size = new System.Drawing.Size(419, 31);
             this.TeamPageTasksLabel.TabIndex = 31;
@@ -240,7 +254,7 @@
             // 
             // TeamName
             // 
-            this.TeamName.BorderRadius = 2;
+            this.TeamName.BorderRadius = 1;
             this.TeamName.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.TeamName.DefaultText = "";
             this.TeamName.DisabledState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(208)))), ((int)(((byte)(208)))));
@@ -250,13 +264,13 @@
             this.TeamName.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
             this.TeamName.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.TeamName.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
-            this.TeamName.Location = new System.Drawing.Point(726, 13);
+            this.TeamName.Location = new System.Drawing.Point(726, 6);
             this.TeamName.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.TeamName.Name = "TeamName";
             this.TeamName.PlaceholderText = "Название команды";
             this.TeamName.ReadOnly = true;
             this.TeamName.SelectedText = "";
-            this.TeamName.Size = new System.Drawing.Size(262, 42);
+            this.TeamName.Size = new System.Drawing.Size(265, 42);
             this.TeamName.TabIndex = 24;
             this.TeamName.TextChanged += new System.EventHandler(this.TeamName_TextChanged);
             // 
@@ -331,7 +345,7 @@
             // 
             // TrainerID
             // 
-            this.TrainerID.BorderRadius = 5;
+            this.TrainerID.BorderRadius = 1;
             this.TrainerID.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.TrainerID.DefaultText = "";
             this.TrainerID.DisabledState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(208)))), ((int)(((byte)(208)))));
@@ -364,7 +378,7 @@
             // 
             // TrainerPicture
             // 
-            this.TrainerPicture.BorderRadius = 2;
+            this.TrainerPicture.BorderRadius = 1;
             this.TrainerPicture.ErrorImage = ((System.Drawing.Image)(resources.GetObject("TrainerPicture.ErrorImage")));
             this.TrainerPicture.FillColor = System.Drawing.Color.Gray;
             this.TrainerPicture.ImageRotate = 0F;
@@ -379,7 +393,6 @@
             // EditConfirm
             // 
             this.EditConfirm.Animated = true;
-            this.EditConfirm.BorderRadius = 2;
             this.EditConfirm.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
             this.EditConfirm.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
             this.EditConfirm.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
@@ -387,7 +400,7 @@
             this.EditConfirm.FillColor = System.Drawing.Color.Gray;
             this.EditConfirm.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.EditConfirm.ForeColor = System.Drawing.Color.White;
-            this.EditConfirm.Location = new System.Drawing.Point(726, 119);
+            this.EditConfirm.Location = new System.Drawing.Point(726, 127);
             this.EditConfirm.Name = "EditConfirm";
             this.EditConfirm.Size = new System.Drawing.Size(265, 42);
             this.EditConfirm.TabIndex = 28;
@@ -398,7 +411,6 @@
             // EditSwitcher
             // 
             this.EditSwitcher.Animated = true;
-            this.EditSwitcher.BorderRadius = 2;
             this.EditSwitcher.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
             this.EditSwitcher.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
             this.EditSwitcher.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
@@ -406,7 +418,7 @@
             this.EditSwitcher.FillColor = System.Drawing.Color.Gray;
             this.EditSwitcher.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.EditSwitcher.ForeColor = System.Drawing.Color.White;
-            this.EditSwitcher.Location = new System.Drawing.Point(726, 70);
+            this.EditSwitcher.Location = new System.Drawing.Point(726, 79);
             this.EditSwitcher.Name = "EditSwitcher";
             this.EditSwitcher.Size = new System.Drawing.Size(265, 42);
             this.EditSwitcher.TabIndex = 27;
@@ -426,7 +438,7 @@
             // 
             // PlayerID5
             // 
-            this.PlayerID5.BorderRadius = 5;
+            this.PlayerID5.BorderRadius = 1;
             this.PlayerID5.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.PlayerID5.DefaultText = "";
             this.PlayerID5.DisabledState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(208)))), ((int)(((byte)(208)))));
@@ -459,7 +471,7 @@
             // 
             // PlayerPicture5
             // 
-            this.PlayerPicture5.BorderRadius = 2;
+            this.PlayerPicture5.BorderRadius = 1;
             this.PlayerPicture5.ErrorImage = ((System.Drawing.Image)(resources.GetObject("PlayerPicture5.ErrorImage")));
             this.PlayerPicture5.FillColor = System.Drawing.Color.Gray;
             this.PlayerPicture5.ImageRotate = 0F;
@@ -484,7 +496,7 @@
             // 
             // PlayerID4
             // 
-            this.PlayerID4.BorderRadius = 5;
+            this.PlayerID4.BorderRadius = 1;
             this.PlayerID4.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.PlayerID4.DefaultText = "";
             this.PlayerID4.DisabledState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(208)))), ((int)(((byte)(208)))));
@@ -517,7 +529,7 @@
             // 
             // PlayerPicture4
             // 
-            this.PlayerPicture4.BorderRadius = 2;
+            this.PlayerPicture4.BorderRadius = 1;
             this.PlayerPicture4.ErrorImage = ((System.Drawing.Image)(resources.GetObject("PlayerPicture4.ErrorImage")));
             this.PlayerPicture4.FillColor = System.Drawing.Color.Gray;
             this.PlayerPicture4.ImageRotate = 0F;
@@ -542,7 +554,7 @@
             // 
             // PlayerID3
             // 
-            this.PlayerID3.BorderRadius = 5;
+            this.PlayerID3.BorderRadius = 1;
             this.PlayerID3.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.PlayerID3.DefaultText = "";
             this.PlayerID3.DisabledState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(208)))), ((int)(((byte)(208)))));
@@ -575,7 +587,7 @@
             // 
             // PlayerPicture3
             // 
-            this.PlayerPicture3.BorderRadius = 2;
+            this.PlayerPicture3.BorderRadius = 1;
             this.PlayerPicture3.ErrorImage = ((System.Drawing.Image)(resources.GetObject("PlayerPicture3.ErrorImage")));
             this.PlayerPicture3.FillColor = System.Drawing.Color.Gray;
             this.PlayerPicture3.ImageRotate = 0F;
@@ -600,7 +612,7 @@
             // 
             // PlayerID2
             // 
-            this.PlayerID2.BorderRadius = 5;
+            this.PlayerID2.BorderRadius = 1;
             this.PlayerID2.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.PlayerID2.DefaultText = "";
             this.PlayerID2.DisabledState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(208)))), ((int)(((byte)(208)))));
@@ -633,7 +645,7 @@
             // 
             // PlayerPicture2
             // 
-            this.PlayerPicture2.BorderRadius = 2;
+            this.PlayerPicture2.BorderRadius = 1;
             this.PlayerPicture2.ErrorImage = ((System.Drawing.Image)(resources.GetObject("PlayerPicture2.ErrorImage")));
             this.PlayerPicture2.FillColor = System.Drawing.Color.Gray;
             this.PlayerPicture2.ImageRotate = 0F;
@@ -658,7 +670,7 @@
             // 
             // PlayerID1
             // 
-            this.PlayerID1.BorderRadius = 5;
+            this.PlayerID1.BorderRadius = 1;
             this.PlayerID1.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.PlayerID1.DefaultText = "";
             this.PlayerID1.DisabledState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(208)))), ((int)(((byte)(208)))));
@@ -691,7 +703,7 @@
             // 
             // PlayerPicture1
             // 
-            this.PlayerPicture1.BorderRadius = 2;
+            this.PlayerPicture1.BorderRadius = 1;
             this.PlayerPicture1.ErrorImage = ((System.Drawing.Image)(resources.GetObject("PlayerPicture1.ErrorImage")));
             this.PlayerPicture1.FillColor = System.Drawing.Color.Gray;
             this.PlayerPicture1.ImageRotate = 0F;
@@ -716,7 +728,7 @@
             this.tabPage3.Controls.Add(this.SelectedPlayerPicture);
             this.tabPage3.Location = new System.Drawing.Point(184, 4);
             this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage3.Size = new System.Drawing.Size(997, 757);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Анализ статистики";
@@ -728,10 +740,11 @@
             this.comparePlayersBtn.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
             this.comparePlayersBtn.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
             this.comparePlayersBtn.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.comparePlayersBtn.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(53)))), ((int)(((byte)(42)))), ((int)(((byte)(57)))));
             this.comparePlayersBtn.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.comparePlayersBtn.ForeColor = System.Drawing.Color.White;
             this.comparePlayersBtn.Location = new System.Drawing.Point(91, 11);
-            this.comparePlayersBtn.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.comparePlayersBtn.Margin = new System.Windows.Forms.Padding(2);
             this.comparePlayersBtn.Name = "comparePlayersBtn";
             this.comparePlayersBtn.Size = new System.Drawing.Size(193, 37);
             this.comparePlayersBtn.TabIndex = 54;
@@ -743,9 +756,10 @@
             this.AiAdviceButton.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
             this.AiAdviceButton.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
             this.AiAdviceButton.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.AiAdviceButton.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(42)))), ((int)(((byte)(57)))));
             this.AiAdviceButton.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.AiAdviceButton.ForeColor = System.Drawing.Color.White;
-            this.AiAdviceButton.Location = new System.Drawing.Point(747, 695);
+            this.AiAdviceButton.Location = new System.Drawing.Point(681, 695);
             this.AiAdviceButton.Name = "AiAdviceButton";
             this.AiAdviceButton.Size = new System.Drawing.Size(240, 45);
             this.AiAdviceButton.TabIndex = 53;
@@ -914,11 +928,12 @@
             this.OpenInMatchDetailsForm.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
             this.OpenInMatchDetailsForm.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
             this.OpenInMatchDetailsForm.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.OpenInMatchDetailsForm.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(42)))), ((int)(((byte)(57)))));
             this.OpenInMatchDetailsForm.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.OpenInMatchDetailsForm.ForeColor = System.Drawing.Color.White;
-            this.OpenInMatchDetailsForm.Location = new System.Drawing.Point(550, 695);
+            this.OpenInMatchDetailsForm.Location = new System.Drawing.Point(359, 695);
             this.OpenInMatchDetailsForm.Name = "OpenInMatchDetailsForm";
-            this.OpenInMatchDetailsForm.Size = new System.Drawing.Size(180, 45);
+            this.OpenInMatchDetailsForm.Size = new System.Drawing.Size(240, 45);
             this.OpenInMatchDetailsForm.TabIndex = 51;
             this.OpenInMatchDetailsForm.Text = "Открыть в отдельном окне";
             this.OpenInMatchDetailsForm.Click += new System.EventHandler(this.guna2Button1_Click);
@@ -1279,7 +1294,7 @@
             this.tabPage4.Controls.Add(this.TrainingTasksPanel);
             this.tabPage4.Location = new System.Drawing.Point(184, 4);
             this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage4.Size = new System.Drawing.Size(997, 757);
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "Тренировки";
@@ -1374,7 +1389,7 @@
             // 
             this.tabPage5.Location = new System.Drawing.Point(184, 4);
             this.tabPage5.Name = "tabPage5";
-            this.tabPage5.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabPage5.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage5.Size = new System.Drawing.Size(997, 757);
             this.tabPage5.TabIndex = 5;
             this.tabPage5.Text = "Прогресс";
@@ -1385,7 +1400,7 @@
             this.tabPage1.Controls.Add(this.webView21);
             this.tabPage1.Location = new System.Drawing.Point(184, 4);
             this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage1.Size = new System.Drawing.Size(997, 757);
             this.tabPage1.TabIndex = 4;
             this.tabPage1.Text = "Twitch";
@@ -1405,14 +1420,159 @@
             // 
             // tabPage6
             // 
+            this.tabPage6.Controls.Add(this.recordingsListView);
+            this.tabPage6.Controls.Add(this.recordDeleteButton);
+            this.tabPage6.Controls.Add(this.recordRenameButton);
+            this.tabPage6.Controls.Add(this.recordPlayButton);
+            this.tabPage6.Controls.Add(this.recordRefreshButton);
+            this.tabPage6.Controls.Add(this.recordSettingsButton);
+            this.tabPage6.Controls.Add(this.recordStopButton);
+            this.tabPage6.Controls.Add(this.recordStatusLabel);
+            this.tabPage6.Controls.Add(this.TitleLabel);
+            this.tabPage6.Controls.Add(this.RecordStartButton);
             this.tabPage6.Location = new System.Drawing.Point(184, 4);
-            this.tabPage6.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tabPage6.Margin = new System.Windows.Forms.Padding(2);
             this.tabPage6.Name = "tabPage6";
-            this.tabPage6.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tabPage6.Padding = new System.Windows.Forms.Padding(2);
             this.tabPage6.Size = new System.Drawing.Size(997, 757);
             this.tabPage6.TabIndex = 6;
             this.tabPage6.Text = "Записи матчей";
             this.tabPage6.UseVisualStyleBackColor = true;
+            // 
+            // recordingsListView
+            // 
+            this.recordingsListView.FullRowSelect = true;
+            this.recordingsListView.GridLines = true;
+            this.recordingsListView.HideSelection = false;
+            this.recordingsListView.Location = new System.Drawing.Point(12, 102);
+            this.recordingsListView.Name = "recordingsListView";
+            this.recordingsListView.Size = new System.Drawing.Size(1360, 800);
+            this.recordingsListView.TabIndex = 9;
+            this.recordingsListView.UseCompatibleStateImageBehavior = false;
+            // 
+            // recordDeleteButton
+            // 
+            this.recordDeleteButton.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
+            this.recordDeleteButton.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
+            this.recordDeleteButton.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.recordDeleteButton.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.recordDeleteButton.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(120)))), ((int)(((byte)(120)))));
+            this.recordDeleteButton.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.recordDeleteButton.ForeColor = System.Drawing.Color.White;
+            this.recordDeleteButton.Location = new System.Drawing.Point(877, 50);
+            this.recordDeleteButton.Name = "recordDeleteButton";
+            this.recordDeleteButton.Size = new System.Drawing.Size(115, 40);
+            this.recordDeleteButton.TabIndex = 8;
+            this.recordDeleteButton.Text = "Удалить";
+            // 
+            // recordRenameButton
+            // 
+            this.recordRenameButton.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
+            this.recordRenameButton.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
+            this.recordRenameButton.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.recordRenameButton.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.recordRenameButton.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(125)))), ((int)(((byte)(139)))));
+            this.recordRenameButton.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.recordRenameButton.ForeColor = System.Drawing.Color.White;
+            this.recordRenameButton.Location = new System.Drawing.Point(751, 50);
+            this.recordRenameButton.Name = "recordRenameButton";
+            this.recordRenameButton.Size = new System.Drawing.Size(120, 40);
+            this.recordRenameButton.TabIndex = 7;
+            this.recordRenameButton.Text = "Переименовать";
+            // 
+            // recordPlayButton
+            // 
+            this.recordPlayButton.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
+            this.recordPlayButton.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
+            this.recordPlayButton.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.recordPlayButton.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.recordPlayButton.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(118)))), ((int)(((byte)(210)))));
+            this.recordPlayButton.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.recordPlayButton.ForeColor = System.Drawing.Color.White;
+            this.recordPlayButton.Location = new System.Drawing.Point(605, 50);
+            this.recordPlayButton.Name = "recordPlayButton";
+            this.recordPlayButton.Size = new System.Drawing.Size(140, 40);
+            this.recordPlayButton.TabIndex = 6;
+            this.recordPlayButton.Text = "Просмотреть";
+            // 
+            // recordRefreshButton
+            // 
+            this.recordRefreshButton.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
+            this.recordRefreshButton.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
+            this.recordRefreshButton.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.recordRefreshButton.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.recordRefreshButton.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(108)))), ((int)(((byte)(117)))), ((int)(((byte)(125)))));
+            this.recordRefreshButton.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.recordRefreshButton.ForeColor = System.Drawing.Color.White;
+            this.recordRefreshButton.Location = new System.Drawing.Point(479, 50);
+            this.recordRefreshButton.Name = "recordRefreshButton";
+            this.recordRefreshButton.Size = new System.Drawing.Size(120, 40);
+            this.recordRefreshButton.TabIndex = 5;
+            this.recordRefreshButton.Text = "Обновить";
+            // 
+            // recordSettingsButton
+            // 
+            this.recordSettingsButton.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
+            this.recordSettingsButton.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
+            this.recordSettingsButton.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.recordSettingsButton.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.recordSettingsButton.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(42)))), ((int)(((byte)(57)))));
+            this.recordSettingsButton.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.recordSettingsButton.ForeColor = System.Drawing.Color.White;
+            this.recordSettingsButton.Location = new System.Drawing.Point(333, 50);
+            this.recordSettingsButton.Name = "recordSettingsButton";
+            this.recordSettingsButton.Size = new System.Drawing.Size(140, 40);
+            this.recordSettingsButton.TabIndex = 4;
+            this.recordSettingsButton.Text = "Настройки";
+            // 
+            // recordStopButton
+            // 
+            this.recordStopButton.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
+            this.recordStopButton.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
+            this.recordStopButton.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.recordStopButton.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.recordStopButton.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(53)))), ((int)(((byte)(69)))));
+            this.recordStopButton.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.recordStopButton.ForeColor = System.Drawing.Color.White;
+            this.recordStopButton.Location = new System.Drawing.Point(180, 50);
+            this.recordStopButton.Name = "recordStopButton";
+            this.recordStopButton.Size = new System.Drawing.Size(147, 40);
+            this.recordStopButton.TabIndex = 3;
+            this.recordStopButton.Text = "Остановить запись";
+            // 
+            // recordStatusLabel
+            // 
+            this.recordStatusLabel.AutoSize = true;
+            this.recordStatusLabel.ForeColor = System.Drawing.Color.DimGray;
+            this.recordStatusLabel.Location = new System.Drawing.Point(300, 16);
+            this.recordStatusLabel.Name = "recordStatusLabel";
+            this.recordStatusLabel.Size = new System.Drawing.Size(0, 13);
+            this.recordStatusLabel.TabIndex = 2;
+            // 
+            // TitleLabel
+            // 
+            this.TitleLabel.AutoSize = true;
+            this.TitleLabel.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
+            this.TitleLabel.Location = new System.Drawing.Point(12, 12);
+            this.TitleLabel.Name = "TitleLabel";
+            this.TitleLabel.Size = new System.Drawing.Size(127, 21);
+            this.TitleLabel.TabIndex = 1;
+            this.TitleLabel.Text = "Записи матчей";
+            // 
+            // RecordStartButton
+            // 
+            this.RecordStartButton.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
+            this.RecordStartButton.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
+            this.RecordStartButton.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.RecordStartButton.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.RecordStartButton.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(150)))), ((int)(((byte)(83)))));
+            this.RecordStartButton.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.RecordStartButton.ForeColor = System.Drawing.Color.White;
+            this.RecordStartButton.Location = new System.Drawing.Point(12, 50);
+            this.RecordStartButton.Name = "RecordStartButton";
+            this.RecordStartButton.Size = new System.Drawing.Size(162, 40);
+            this.RecordStartButton.TabIndex = 0;
+            this.RecordStartButton.Text = "Начать запись";
             // 
             // MainForm
             // 
@@ -1450,6 +1610,8 @@
             this.tabPage4.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.webView21)).EndInit();
+            this.tabPage6.ResumeLayout(false);
+            this.tabPage6.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -1548,5 +1710,15 @@
         private System.Windows.Forms.TabPage tabPage5;
         private Guna.UI2.WinForms.Guna2Button comparePlayersBtn;
         private System.Windows.Forms.TabPage tabPage6;
+        private Guna.UI2.WinForms.Guna2Button RecordStartButton;
+        private System.Windows.Forms.Label TitleLabel;
+        private System.Windows.Forms.Label recordStatusLabel;
+        private Guna.UI2.WinForms.Guna2Button recordStopButton;
+        private Guna.UI2.WinForms.Guna2Button recordSettingsButton;
+        private Guna.UI2.WinForms.Guna2Button recordRefreshButton;
+        private Guna.UI2.WinForms.Guna2Button recordPlayButton;
+        private Guna.UI2.WinForms.Guna2Button recordRenameButton;
+        private Guna.UI2.WinForms.Guna2Button recordDeleteButton;
+        private System.Windows.Forms.ListView recordingsListView;
     }
 }

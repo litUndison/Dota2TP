@@ -109,6 +109,7 @@ namespace Dota_2_Training_Platform
 
         private ScreenRecorderService _screenRecorder;
         private RecordingOverlayForm _recordToastForm;
+        private bool _isClosingAfterRecordingStop = false;
 
         private TabPage _recordsTabPage;
         private Label _recordStatusLabel;
@@ -118,6 +119,7 @@ namespace Dota_2_Training_Platform
         private Guna2Button _recordSettingsButton;
         private Guna2Button _recordRefreshButton;
         private Guna2Button _recordPlayButton;
+        private Guna2Button _recordRenameButton;
         private Guna2Button _recordDeleteButton;
         private readonly UserRole _userRole;
         private bool IsTrainer => _userRole == UserRole.Trainer;
@@ -144,6 +146,38 @@ namespace Dota_2_Training_Platform
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
+            if (_isRecording && !_isClosingAfterRecordingStop)
+            {
+                var confirm = MessageBox.Show(
+                    "Вы хотите остановить запись и выйти?",
+                    "Запись активна",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Question);
+                if (confirm != DialogResult.Yes)
+                {
+                    e.Cancel = true;
+                    return;
+                }
+
+                e.Cancel = true;
+                BeginInvoke(new Action(async () =>
+                {
+                    try
+                    {
+                        await StopRecordingAsync(false);
+                    }
+                    catch
+                    {
+                    }
+                    finally
+                    {
+                        _isClosingAfterRecordingStop = true;
+                        Close();
+                    }
+                }));
+                return;
+            }
+
             try
             {
                 if (_recordHotKeyRegistered)
@@ -161,17 +195,7 @@ namespace Dota_2_Training_Platform
             {
             }
 
-            try
-            {
-                if (_recordToastForm != null && !_recordToastForm.IsDisposed)
-                {
-                    _recordToastForm.Close();
-                    _recordToastForm.Dispose();
-                }
-            }
-            catch
-            {
-            }
+            DisposeRecordingOverlay();
 
             //DialogResult result = MessageBox.Show("Вы хотите вернутся в меню входа?", "Подтверждение", 
             //    MessageBoxButtons.YesNo,
@@ -607,8 +631,13 @@ namespace Dota_2_Training_Platform
             FieldChecker.FieldCheck(PlayerID5, FieldChecker.CheckType.Numbers);
         }
 
-        private void ToEnterFormButton_Click(object sender, EventArgs e)
+        private async void ToEnterFormButton_Click(object sender, EventArgs e)
         {
+            if (!await TryStopRecordingIfActiveForExitAsync())
+            {
+                return;
+            }
+
             selfclose = true;
             EnterForm form = StartForm as EnterForm;
 
@@ -624,11 +653,16 @@ namespace Dota_2_Training_Platform
 
         private void ExitButton_Click(object sender, EventArgs e)
         {
-            Application.Exit();
+            Close();
         }
 
-        private void ChangeTeamButton_Click(object sender, EventArgs e)
+        private async void ChangeTeamButton_Click(object sender, EventArgs e)
         {
+            if (!await TryStopRecordingIfActiveForExitAsync())
+            {
+                return;
+            }
+
             selfclose = true;
             SelectTeamForm form = TeamsForm as SelectTeamForm;
 
@@ -2383,7 +2417,13 @@ namespace Dota_2_Training_Platform
             if (IsTrainer)
             {
                 RegisterRecordingHotkeys();
+                if (_recordToastForm == null || _recordToastForm.IsDisposed)
+                {
+                    _recordToastForm = new RecordingOverlayForm();
+                }
+                _recordToastForm.EnsureVisible();
             }
+
             LoadRecordingsList();
             UpdateRecordingUiState();
         }
@@ -2412,6 +2452,7 @@ namespace Dota_2_Training_Platform
             if (_recordDeleteButton != null) _recordDeleteButton.Visible = false;
             if (_recordRefreshButton != null) _recordRefreshButton.Visible = true;
             if (_recordPlayButton != null) _recordPlayButton.Visible = true;
+            if (_recordRenameButton != null) _recordRenameButton.Visible = false;
         }
 
         private void InitializeRecordingTab()
@@ -2421,109 +2462,33 @@ namespace Dota_2_Training_Platform
             _recordsTabPage.Padding = new Padding(12);
             _recordsTabPage.Controls.Clear();
 
-            var titleLabel = new Label
-            {
-                Text = "Записи матчей",
-                Left = 12,
-                Top = 12,
-                Width = 280,
-                Height = 28,
-                Font = new Font("Segoe UI", 12F, FontStyle.Bold)
-            };
+            var _titleLabel = TitleLabel;
 
-            _recordStatusLabel = new Label
-            {
-                Left = 300,
-                Top = 16,
-                Width = 600,
-                Height = 22,
-                ForeColor = Color.DimGray,
-                Text = ""
-            };
+            _recordStatusLabel = recordStatusLabel;
 
-            _recordStartButton = new Guna2Button
-            {
-                Text = "Начать запись",
-                Left = 12,
-                Top = 50,
-                Width = 180,
-                Height = 40,
-                FillColor = Color.FromArgb(33, 150, 83),
-                ForeColor = Color.White
-            };
+            _recordStartButton = RecordStartButton;
             _recordStartButton.Click += async (s, e) => await StartRecordingAsync(false);
 
-            _recordStopButton = new Guna2Button
-            {
-                Text = "Остановить запись",
-                Left = 202,
-                Top = 50,
-                Width = 180,
-                Height = 40,
-                FillColor = Color.FromArgb(220, 53, 69),
-                ForeColor = Color.White
-            };
+            _recordStopButton = recordStopButton;
             _recordStopButton.Click += async (s, e) => await StopRecordingAsync(false);
 
-            _recordSettingsButton = new Guna2Button
-            {
-                Text = "Настройки",
-                Left = 392,
-                Top = 50,
-                Width = 140,
-                Height = 40,
-                FillColor = Color.FromArgb(33, 42, 57),
-                ForeColor = Color.White
-            };
+            _recordSettingsButton = recordSettingsButton;
             _recordSettingsButton.Click += RecordSettingsButton_Click;
 
-            _recordRefreshButton = new Guna2Button
-            {
-                Text = "Обновить",
-                Left = 542,
-                Top = 50,
-                Width = 120,
-                Height = 40,
-                FillColor = Color.FromArgb(108, 117, 125),
-                ForeColor = Color.White
-            };
+            _recordRefreshButton = recordRefreshButton;
             _recordRefreshButton.Click += (s, e) => LoadRecordingsList();
 
-            _recordPlayButton = new Guna2Button
-            {
-                Text = "Просмотреть",
-                Left = 672,
-                Top = 50,
-                Width = 140,
-                Height = 40,
-                FillColor = Color.FromArgb(25, 118, 210),
-                ForeColor = Color.White
-            };
+            _recordPlayButton = recordPlayButton;
             _recordPlayButton.Click += RecordPlayButton_Click;
 
-            _recordDeleteButton = new Guna2Button
-            {
-                Text = "Удалить",
-                Left = 822,
-                Top = 50,
-                Width = 120,
-                Height = 40,
-                FillColor = Color.FromArgb(120, 120, 120),
-                ForeColor = Color.White
-            };
+            _recordRenameButton = recordRenameButton;
+            _recordRenameButton.Click += RecordRenameButton_Click;
+
+            _recordDeleteButton = recordDeleteButton;
             _recordDeleteButton.Click += RecordDeleteButton_Click;
 
-            _recordingsListView = new ListView
-            {
-                Left = 12,
-                Top = 102,
-                Width = 1360,
-                Height = 800,
-                FullRowSelect = true,
-                GridLines = true,
-                MultiSelect = false,
-                View = View.Details
-            };
+            _recordingsListView = recordingsListView;
+            _recordingsListView.View = View.Details;
             _recordingsListView.Columns.Add("Файл", 420);
             _recordingsListView.Columns.Add("Дата", 220);
             _recordingsListView.Columns.Add("Размер", 140);
@@ -2532,13 +2497,14 @@ namespace Dota_2_Training_Platform
             _recordingsListView.Columns.Add("Путь", 350);
             _recordingsListView.DoubleClick += RecordingsListView_DoubleClick;
 
-            _recordsTabPage.Controls.Add(titleLabel);
+            _recordsTabPage.Controls.Add(_titleLabel);
             _recordsTabPage.Controls.Add(_recordStatusLabel);
             _recordsTabPage.Controls.Add(_recordStartButton);
             _recordsTabPage.Controls.Add(_recordStopButton);
             _recordsTabPage.Controls.Add(_recordSettingsButton);
             _recordsTabPage.Controls.Add(_recordRefreshButton);
             _recordsTabPage.Controls.Add(_recordPlayButton);
+            _recordsTabPage.Controls.Add(_recordRenameButton);
             _recordsTabPage.Controls.Add(_recordDeleteButton);
             _recordsTabPage.Controls.Add(_recordingsListView);
         }
@@ -2716,6 +2682,7 @@ namespace Dota_2_Training_Platform
             _recordStartButton.Enabled = !_isRecording;
             _recordStopButton.Enabled = _isRecording;
             _recordSettingsButton.Enabled = !_isRecording;
+            if (_recordRenameButton != null) _recordRenameButton.Enabled = !_isRecording;
             _recordDeleteButton.Enabled = !_isRecording;
             _recordPlayButton.Enabled = true;
             _recordStatusLabel.Text = _isRecording
@@ -2757,52 +2724,295 @@ namespace Dota_2_Training_Platform
             playerForm.Show(this);
         }
 
+        private void RecordRenameButton_Click(object sender, EventArgs e)
+        {
+            if (!IsTrainer)
+            {
+                return;
+            }
+
+            if (_recordingsListView == null || _recordingsListView.SelectedItems.Count != 1)
+            {
+                MessageBox.Show("Выберите одну запись для переименования.", "Переименование", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            string oldVideoPath = _recordingsListView.SelectedItems[0].Tag as string;
+            if (string.IsNullOrWhiteSpace(oldVideoPath) || !File.Exists(oldVideoPath))
+            {
+                MessageBox.Show("Файл записи не найден.", "Переименование", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                LoadRecordingsList();
+                return;
+            }
+
+            string oldBase = Path.GetFileNameWithoutExtension(oldVideoPath);
+            if (!TryPromptRecordingNewBaseName(oldBase, out string newBase))
+            {
+                return;
+            }
+
+            if (string.Equals(oldBase, newBase, StringComparison.Ordinal))
+            {
+                MessageBox.Show("Имя совпадает с текущим.", "Переименование", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            string dir = Path.GetDirectoryName(oldVideoPath);
+            string newVideoPath = Path.Combine(dir, newBase + ".mp4");
+            string oldFull = Path.GetFullPath(oldVideoPath);
+            string newFull = Path.GetFullPath(newVideoPath);
+            bool sameLogicalTarget = string.Equals(oldFull, newFull, StringComparison.OrdinalIgnoreCase);
+
+            if (File.Exists(newVideoPath) && !sameLogicalTarget)
+            {
+                MessageBox.Show("Запись с таким именем уже существует.", "Переименование", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            try
+            {
+                if (!TryRenameRecordingBundle(oldVideoPath, newVideoPath))
+                {
+                    return;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Не удалось переименовать: {ex.Message}", "Переименование", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+
+            LoadRecordingsList();
+        }
+
+        private bool TryPromptRecordingNewBaseName(string initialBase, out string newBase)
+        {
+            newBase = null;
+            using (var dlg = new Form())
+            {
+                dlg.Text = "Переименование записи";
+                dlg.FormBorderStyle = FormBorderStyle.FixedDialog;
+                dlg.MinimizeBox = false;
+                dlg.MaximizeBox = false;
+                dlg.StartPosition = FormStartPosition.CenterParent;
+                dlg.ClientSize = new Size(420, 130);
+
+                var lbl = new Label
+                {
+                    Left = 12,
+                    Top = 12,
+                    Width = 396,
+                    Height = 32,
+                    Text = "Имя без пути и без расширения (.mp4 добавится автоматически)."
+                };
+                var tb = new TextBox { Left = 12, Top = 46, Width = 396, Text = initialBase };
+                var btnOk = new Button { Text = "OK", Left = 230, Top = 82, Width = 88, DialogResult = DialogResult.OK };
+                var btnCancel = new Button { Text = "Отмена", Left = 324, Top = 82, Width = 88, DialogResult = DialogResult.Cancel };
+                dlg.Controls.Add(lbl);
+                dlg.Controls.Add(tb);
+                dlg.Controls.Add(btnOk);
+                dlg.Controls.Add(btnCancel);
+                dlg.AcceptButton = btnOk;
+                dlg.CancelButton = btnCancel;
+
+                if (dlg.ShowDialog(this) != DialogResult.OK)
+                {
+                    return false;
+                }
+
+                if (!TrySanitizeRecordingBaseName(tb.Text, out newBase, out string err))
+                {
+                    MessageBox.Show(err, "Переименование", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return false;
+                }
+
+                return true;
+            }
+        }
+
+        private static bool TrySanitizeRecordingBaseName(string raw, out string baseName, out string errorMessage)
+        {
+            baseName = null;
+            errorMessage = null;
+            if (string.IsNullOrWhiteSpace(raw))
+            {
+                errorMessage = "Имя не может быть пустым.";
+                return false;
+            }
+
+            string s = raw.Trim();
+            if (s.EndsWith(".mp4", StringComparison.OrdinalIgnoreCase))
+            {
+                s = s.Substring(0, s.Length - 4).Trim();
+            }
+
+            foreach (char c in Path.GetInvalidFileNameChars())
+            {
+                s = s.Replace(c.ToString(), string.Empty);
+            }
+
+            s = s.Trim();
+            if (string.IsNullOrEmpty(s))
+            {
+                errorMessage = "Имя содержит только недопустимые символы.";
+                return false;
+            }
+
+            baseName = s;
+            return true;
+        }
+
+        private bool TryRenameRecordingBundle(string oldVideoPath, string newVideoPath)
+        {
+            string dir = Path.GetDirectoryName(oldVideoPath);
+            string tmpPrefix = Path.Combine(dir, "_tmp_rename_" + Guid.NewGuid().ToString("N"));
+            string tmpVideo = tmpPrefix + ".mp4";
+            string tmpJpg = tmpPrefix + ".jpg";
+            string tmpJson = tmpPrefix + ".json";
+            string tmpMoments = tmpPrefix + ".moments.json";
+
+            string oldJpg = Path.ChangeExtension(oldVideoPath, ".jpg");
+            string oldJson = Path.ChangeExtension(oldVideoPath, ".json");
+            string oldMoments = Path.ChangeExtension(oldVideoPath, ".moments.json");
+
+            File.Move(oldVideoPath, tmpVideo);
+            if (File.Exists(oldJpg))
+            {
+                File.Move(oldJpg, tmpJpg);
+            }
+
+            if (File.Exists(oldJson))
+            {
+                File.Move(oldJson, tmpJson);
+            }
+
+            if (File.Exists(oldMoments))
+            {
+                File.Move(oldMoments, tmpMoments);
+            }
+
+            File.Move(tmpVideo, newVideoPath);
+
+            string newJpg = Path.ChangeExtension(newVideoPath, ".jpg");
+            string newJson = Path.ChangeExtension(newVideoPath, ".json");
+            string newMoments = Path.ChangeExtension(newVideoPath, ".moments.json");
+
+            if (File.Exists(tmpJpg))
+            {
+                if (File.Exists(newJpg))
+                {
+                    File.Delete(newJpg);
+                }
+
+                File.Move(tmpJpg, newJpg);
+            }
+
+            if (File.Exists(tmpJson))
+            {
+                if (File.Exists(newJson))
+                {
+                    File.Delete(newJson);
+                }
+
+                File.Move(tmpJson, newJson);
+            }
+
+            if (File.Exists(tmpMoments))
+            {
+                if (File.Exists(newMoments))
+                {
+                    File.Delete(newMoments);
+                }
+
+                File.Move(tmpMoments, newMoments);
+            }
+
+            if (File.Exists(newJson))
+            {
+                try
+                {
+                    string text = File.ReadAllText(newJson);
+                    var info = JsonSerializer.Deserialize<MatchRecordInfo>(text);
+                    if (info != null)
+                    {
+                        info.FileName = Path.GetFileName(newVideoPath);
+                        info.VideoPath = newVideoPath;
+                        info.PreviewPath = Path.ChangeExtension(newVideoPath, ".jpg");
+                        File.WriteAllText(newJson, JsonSerializer.Serialize(info, new JsonSerializerOptions { WriteIndented = true }));
+                    }
+                }
+                catch
+                {
+                }
+            }
+
+            return true;
+        }
+
+        private static void DeleteRecordingArtifacts(string videoPath)
+        {
+            if (File.Exists(videoPath))
+            {
+                File.Delete(videoPath);
+            }
+
+            string previewPath = Path.ChangeExtension(videoPath, ".jpg");
+            if (File.Exists(previewPath))
+            {
+                File.Delete(previewPath);
+            }
+
+            string metadataPath = Path.ChangeExtension(videoPath, ".json");
+            if (File.Exists(metadataPath))
+            {
+                File.Delete(metadataPath);
+            }
+
+            string momentsPath = Path.ChangeExtension(videoPath, ".moments.json");
+            if (File.Exists(momentsPath))
+            {
+                File.Delete(momentsPath);
+            }
+        }
+
         private void RecordDeleteButton_Click(object sender, EventArgs e)
         {
             if (!IsTrainer)
             {
                 return;
             }
-            if (_recordingsListView.SelectedItems.Count == 0)
+
+            if (_recordingsListView == null || _recordingsListView.SelectedItems.Count == 0)
             {
-                MessageBox.Show("Выбери запись для удаления.", "Удаление", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Выберите одну или несколько записей для удаления.", "Удаление", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
 
-            string videoPath = _recordingsListView.SelectedItems[0].Tag as string;
-            if (string.IsNullOrWhiteSpace(videoPath))
+            var paths = _recordingsListView.SelectedItems
+                .Cast<ListViewItem>()
+                .Select(i => i.Tag as string)
+                .Where(p => !string.IsNullOrWhiteSpace(p))
+                .Distinct(StringComparer.OrdinalIgnoreCase)
+                .ToList();
+
+            if (paths.Count == 0)
             {
                 return;
             }
 
-            var result = MessageBox.Show(
-                "Удалить выбранную запись?",
-                "Подтверждение",
-                MessageBoxButtons.YesNo,
-                MessageBoxIcon.Question);
+            string confirmText = paths.Count == 1
+                ? "Удалить выбранную запись?"
+                : $"Удалить выбранные записи ({paths.Count} шт.)?";
 
-            if (result != DialogResult.Yes)
+            if (MessageBox.Show(confirmText, "Подтверждение", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
             {
                 return;
             }
 
             try
             {
-                if (File.Exists(videoPath))
+                foreach (string videoPath in paths)
                 {
-                    File.Delete(videoPath);
-                }
-
-                string previewPath = Path.ChangeExtension(videoPath, ".jpg");
-                if (File.Exists(previewPath))
-                {
-                    File.Delete(previewPath);
-                }
-
-                string metadataPath = Path.ChangeExtension(videoPath, ".json");
-                if (File.Exists(metadataPath))
-                {
-                    File.Delete(metadataPath);
+                    DeleteRecordingArtifacts(videoPath);
                 }
             }
             catch (Exception ex)
@@ -2938,22 +3148,64 @@ namespace Dota_2_Training_Platform
         //    _recordingOverlay.Hide();
         //}
 
+        private void DisposeRecordingOverlay()
+        {
+            try
+            {
+                if (_recordToastForm == null || _recordToastForm.IsDisposed)
+                {
+                    return;
+                }
+
+                _recordToastForm.Close();
+                _recordToastForm.Dispose();
+                _recordToastForm = null;
+            }
+            catch
+            {
+            }
+        }
+
         private void ShowRecordNotification(string message)
         {
             try
             {
-                if (_recordToastForm != null && !_recordToastForm.IsDisposed)
+                if (!IsTrainer || string.IsNullOrWhiteSpace(message))
                 {
-                    _recordToastForm.Close();
-                    _recordToastForm.Dispose();
+                    return;
                 }
 
-                _recordToastForm = new RecordingOverlayForm();
+                if (_recordToastForm == null || _recordToastForm.IsDisposed)
+                {
+                    _recordToastForm = new RecordingOverlayForm();
+                }
+
                 _recordToastForm.ShowToast(message);
             }
             catch
             {
             }
+        }
+
+        private async Task<bool> TryStopRecordingIfActiveForExitAsync()
+        {
+            if (!_isRecording)
+            {
+                return true;
+            }
+
+            var confirm = MessageBox.Show(
+                "Вы хотите остановить запись и выйти?",
+                "Запись активна",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question);
+            if (confirm != DialogResult.Yes)
+            {
+                return false;
+            }
+
+            await StopRecordingAsync(false);
+            return true;
         }
 
         #endregion
