@@ -1,165 +1,53 @@
 ﻿using Dota_2_Training_Platform;
+using Dota_2_Training_Platform.DB;
 using Dota_2_Training_Platform.Models;
+using Dota_2_Training_Platform.Models.Entity;
 using Dota_2_Training_Platform.Models.Trainings;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Data.SQLite;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace DataBaseManager
 {
-    static public class dbManager
+    public static class dbManager
     {
-        static public List<UserModel> Players { get; private set; } = new List<UserModel>();
-        static public List<UserModel> Trainers { get; private set; } = new List<UserModel>();
-        private static readonly string dbPath = "TrainingPolygon.db"; //TrainingPolygon.db
-        private static string connectionString;
-        static dbManager()
-        {
-            //connectionString = $"Data Source={dbPath};Version=3;";
-            //InitializeDatabase();
-            //ReadAllPlayers();
-            //ReadAllTrainers();
-        }
+        public static List<UserModel> Players { get; private set; } = new List<UserModel>();
+        public static List<UserModel> Trainers { get; private set; } = new List<UserModel>();
+
+        private static AppDbContext CreateContext() => new AppDbContext();
 
         public static void InitializeDatabase()
         {
-            connectionString = $"Data Source={dbPath};Version=3;";
-            if (!File.Exists(dbPath))
+            using (var context = CreateContext())
             {
-                File.Create(dbPath).Dispose();
-            }
-
-            using (var connection = new SQLiteConnection(connectionString))
-            {
-                connection.Open();
-
-                using (var command = connection.CreateCommand())
-                {
-                    command.CommandText = "PRAGMA foreign_keys = ON;";
-                    command.ExecuteNonQuery();
-
-                    command.CommandText =
-                    @"
-            CREATE TABLE IF NOT EXISTS Players (
-                Id INTEGER PRIMARY KEY AUTOINCREMENT,
-                Name TEXT,
-                AccountId TEXT,
-                SteamId TEXT UNIQUE,
-                Password TEXT,
-                Avatar TEXT
-            );";
-                    command.ExecuteNonQuery();
-
-                    command.CommandText =
-                    @"
-            CREATE TABLE IF NOT EXISTS Trainers (
-                Id INTEGER PRIMARY KEY AUTOINCREMENT,
-                Name TEXT,
-                AccountId TEXT,
-                SteamId TEXT UNIQUE,
-                Password TEXT,
-                Avatar TEXT
-            );";
-                    command.ExecuteNonQuery();
-
-                    command.CommandText =
-                    @"
-            CREATE TABLE IF NOT EXISTS Teams (
-                Id INTEGER PRIMARY KEY AUTOINCREMENT,
-                Name TEXT NOT NULL,
-                TrainerSteamId TEXT NOT NULL
-            );";
-                    command.ExecuteNonQuery();
-
-                    command.CommandText =
-                    @"
-            CREATE TABLE IF NOT EXISTS TeamPlayers (
-                Id INTEGER PRIMARY KEY AUTOINCREMENT,
-                TeamId INTEGER NOT NULL,
-                Name TEXT,
-                AccountId TEXT,
-                PlayerSteamId TEXT NOT NULL,
-                Avatar TEXT,
-                UNIQUE(TeamId, PlayerSteamId)
-            );";
-                    command.ExecuteNonQuery();
-
-                    command.CommandText =
-                    @" 
-            CREATE TABLE IF NOT EXISTS TrainingTasks (
-            Id INTEGER PRIMARY KEY AUTOINCREMENT,
-            TeamId INTEGER,
-            Title TEXT,
-            Type INTEGER,
-            Metric INTEGER,
-            TargetValue INTEGER,
-            Comparison INTEGER,
-            Period INTEGER,
-            PeriodValue INTEGER,
-            StartDate TEXT,
-            Deadline TEXT,
-            IsCompleted INTEGER,
-            FOREIGN KEY (TeamId) REFERENCES Teams(Id) ON DELETE CASCADE
-            );";
-                    command.ExecuteNonQuery();
-
-                    command.CommandText =
-                    @"
-                    CREATE TABLE IF NOT EXISTS TrainingTaskPlayers (
-                        Id INTEGER PRIMARY KEY AUTOINCREMENT,
-                        TaskId INTEGER,
-                        PlayerId TEXT,
-
-                        FOREIGN KEY (TaskId) REFERENCES TrainingTasks(Id) ON DELETE CASCADE,
-                        FOREIGN KEY (PlayerId) REFERENCES TeamPlayers(AccountId) ON DELETE CASCADE
-                    );";
-                    command.ExecuteNonQuery();
-
-                    command.CommandText =
-                    @"
-                    CREATE TABLE IF NOT EXISTS TrainingTaskProgress (
-                        Id INTEGER PRIMARY KEY AUTOINCREMENT,
-                        TaskId INTEGER, 
-                        PlayerId TEXT,
-                        IsCompleted INTEGER DEFAULT 0,
-
-                        FOREIGN KEY (TaskId) REFERENCES TrainingTasks(Id) ON DELETE CASCADE,
-                        FOREIGN KEY (PlayerId) REFERENCES TeamPlayers(AccountId) ON DELETE CASCADE
-                    );";
-                    command.ExecuteNonQuery();
-
-
-                }
+                context.Database.Migrate();
             }
         }
 
         #region PlayerMethods
-        static public async Task<DotaPlayerProfileModel> AddPlayer(string steamOrAccountId, string password)
+
+        public static async Task<DotaPlayerProfileModel> AddPlayer(string steamOrAccountId, string password)
         {
             try
             {
-                // Определяем, что ввёл пользователь
                 long accountId;
                 string steamId64;
 
-                if (steamOrAccountId.Length > 10) // SteamID64
+                if (steamOrAccountId.Length > 10)
                 {
                     steamId64 = steamOrAccountId;
                     accountId = SteamId64ToAccountId(steamId64);
                 }
-                else // AccountID
+                else
                 {
                     accountId = long.Parse(steamOrAccountId);
                     steamId64 = AccountIdToSteamId64(accountId);
                 }
 
-                // API всегда получает AccountID
                 var apiResult = await ApiCourier.TryGetUserInfo(accountId.ToString());
-
                 if (!apiResult.IsSuccess)
                 {
                     MessageBox.Show(apiResult.ErrorMessage);
@@ -168,48 +56,25 @@ namespace DataBaseManager
 
                 var profileInfo = apiResult.Data;
 
-                using (var connection = new SQLiteConnection(connectionString))
+                using (var context = CreateContext())
                 {
-                    connection.Open();
-
-                    // Проверяем по SteamID64
-                    using (var checkCmd = connection.CreateCommand())
+                    if (await context.Players.AnyAsync(p => p.SteamId == steamId64))
                     {
-                        checkCmd.CommandText =
-                            "SELECT COUNT(1) FROM Players WHERE SteamId = @steamId";
-
-                        checkCmd.Parameters.AddWithValue("@steamId", steamId64);
-
-                        if (Convert.ToInt32(checkCmd.ExecuteScalar()) > 0)
-                        {
-                            MessageBox.Show("Пользователь с таким SteamID уже существует!");
-                            return null;
-                        }
+                        MessageBox.Show("Пользователь с таким SteamID уже существует!");
+                        return null;
                     }
 
-                    using (var command = connection.CreateCommand())
+                    context.Players.Add(new PlayerEntity
                     {
-                        command.CommandText =
-                        @"
-                INSERT INTO Players
-                (Name, AccountId, SteamId, Password, Avatar)
-                VALUES
-                (@name, @accountId, @steamId, @password, @avatar);
-                ";
+                        Name = profileInfo.profile.personaname.ToString() ?? "Unknown",
+                        AccountId = accountId.ToString(),
+                        SteamId = steamId64,
+                        Password = password,
+                        Avatar = profileInfo.profile.avatarfull.ToString() ?? string.Empty
+                    });
 
-                        command.Parameters.AddWithValue("@name",
-                            profileInfo.profile.personaname.ToString() ?? "Unknown");
-
-                        command.Parameters.AddWithValue("@accountId", accountId);
-                        command.Parameters.AddWithValue("@steamId", steamId64);
-                        command.Parameters.AddWithValue("@password", password);
-                        command.Parameters.AddWithValue("@avatar",
-                            profileInfo.profile.avatarfull.ToString() ?? string.Empty);
-
-                        command.ExecuteNonQuery();
-
-                        return profileInfo;
-                    }
+                    await context.SaveChangesAsync();
+                    return profileInfo;
                 }
             }
             catch (Exception ex)
@@ -222,12 +87,12 @@ namespace DataBaseManager
         #endregion
 
         #region TrainerMethods
-        static public async Task<DotaPlayerProfileModel> AddTrainer(string SteamID, string Password)
+
+        public static async Task<DotaPlayerProfileModel> AddTrainer(string steamId, string password)
         {
             try
             {
-                var apiResult = await ApiCourier.TryGetUserInfo(SteamID);
-
+                var apiResult = await ApiCourier.TryGetUserInfo(steamId);
                 if (!apiResult.IsSuccess)
                 {
                     MessageBox.Show(apiResult.ErrorMessage);
@@ -235,56 +100,36 @@ namespace DataBaseManager
                 }
 
                 var profileInfo = apiResult.Data;
+                var profile = profileInfo.profile;
 
-                using (var connection = new SQLiteConnection(connectionString))
+                using (var context = CreateContext())
                 {
-                    connection.Open();
-
-                    // Проверяем, есть ли пользователь с таким SteamId
-                    using (var checkCmd = connection.CreateCommand())
+                    if (await context.Trainers.AnyAsync(t => t.SteamId == profile.steamid.ToString()))
                     {
-                        checkCmd.CommandText = "SELECT COUNT(1) FROM Trainers WHERE SteamId = @steamId";
-                        checkCmd.Parameters.AddWithValue("@steamId", profileInfo.profile.steamid);
-
-                        var exists = Convert.ToInt32(checkCmd.ExecuteScalar()) > 0;
-                        if (exists)
-                        {
-                            MessageBox.Show("Тренер с таким SteamID уже существует!");
-                            return null; // пользователь уже есть, выходим
-                        }
+                        MessageBox.Show("Тренер с таким SteamID уже существует!");
+                        return null;
                     }
 
-                    // Если пользователя нет, вставляем нового
-                    using (var command = connection.CreateCommand())
+                    context.Trainers.Add(new TrainerEntity
                     {
-                        command.CommandText =
-                        @"
-                        INSERT INTO Trainers
-                        (Name, AccountId, SteamId, Password, Avatar)
-                        VALUES
-                        (@name, @accountId, @steamId, @password, @avatar);
-                        ";
+                        Name = profile.personaname.ToString(),
+                        AccountId = profile.account_id.ToString(),
+                        SteamId = profile.steamid.ToString(),
+                        Password = password,
+                        Avatar = profile.avatarfull.ToString()
+                    });
 
-                        command.Parameters.AddWithValue("@name", profileInfo.profile.personaname);
-                        command.Parameters.AddWithValue("@accountId", profileInfo.profile.account_id);
-                        command.Parameters.AddWithValue("@steamId", profileInfo.profile.steamid);
-                        command.Parameters.AddWithValue("@password", Password);
-                        command.Parameters.AddWithValue("@avatar", profileInfo.profile.avatarfull);
+                    await context.SaveChangesAsync();
 
-                        command.ExecuteNonQuery();
+                    Trainers.Add(new UserModel(
+                        profile.personaname.ToString(),
+                        profile.account_id.ToString(),
+                        profile.steamid.ToString(),
+                        password,
+                        profile.avatarfull.ToString()));
 
-                        // Добавляем пользователя в локальный список
-                        Trainers.Add(new UserModel(
-                            profileInfo.profile.personaname.ToString(),
-                            profileInfo.profile.account_id.ToString(),
-                            profileInfo.profile.steamid.ToString(),
-                            Password,
-                            profileInfo.profile.avatarfull.ToString()
-                        ));
-
-                        MessageBox.Show("Trainer saved to database");
-                        return profileInfo;
-                    }
+                    MessageBox.Show("Trainer saved to database");
+                    return profileInfo;
                 }
             }
             catch (Exception ex)
@@ -293,9 +138,11 @@ namespace DataBaseManager
                 return null;
             }
         }
+
         #endregion
 
         #region SteamIDConverter
+
         private const long SteamIdOffset = 76561197960265728;
 
         public static long SteamId64ToAccountId(string steamId64)
@@ -307,68 +154,38 @@ namespace DataBaseManager
         {
             return (accountId + SteamIdOffset).ToString();
         }
-        #endregion
 
+        #endregion
 
         #region ReadAllUsers
 
-        static public List<UserModel> ReadAllPlayers()
+        public static List<UserModel> ReadAllPlayers()
         {
             Players.Clear();
 
-            using (var connection = new SQLiteConnection(connectionString))
+            using (var context = CreateContext())
             {
-                connection.Open();
-
-                using (var command = connection.CreateCommand())
-                {
-                    command.CommandText = "SELECT Name, AccountId, SteamId, Password, Avatar FROM Players";
-
-                    using (var reader = command.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            Players.Add(new UserModel(
-                                reader.GetString(0),
-                                reader.GetString(1),
-                                reader.GetString(2),
-                                reader.GetString(3),
-                                reader.GetString(4)
-                            ));
-                        }
-                    }
-                }
-
+                Players.AddRange(
+                    context.Players
+                        .AsNoTracking()
+                        .Select(ToUserModel)
+                        .ToList());
             }
 
             return Players;
         }
-        static public List<UserModel> ReadAllTrainers()
+
+        public static List<UserModel> ReadAllTrainers()
         {
             Trainers.Clear();
 
-            using (var connection = new SQLiteConnection(connectionString))
+            using (var context = CreateContext())
             {
-                connection.Open();
-
-                using (var command = connection.CreateCommand())
-                {
-                    command.CommandText = "SELECT Name, AccountId, SteamId, Password, Avatar FROM Trainers";
-
-                    using (var reader = command.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            Trainers.Add(new UserModel(
-                                reader.GetString(0),
-                                reader.GetString(1),
-                                reader.GetString(2),
-                                reader.GetString(3),
-                                reader.GetString(4)
-                            ));
-                        }
-                    }
-                }
+                Trainers.AddRange(
+                    context.Trainers
+                        .AsNoTracking()
+                        .Select(ToUserModel)
+                        .ToList());
             }
 
             return Trainers;
@@ -376,90 +193,37 @@ namespace DataBaseManager
 
         #endregion
 
-
-
         #region GetCurrentUser
 
         public static UserModel GetPlayer(string steamOrAccountId, string password)
         {
-            using (var connection = new SQLiteConnection(connectionString))
+            using (var context = CreateContext())
             {
-                connection.Open();
+                var entity = context.Players
+                    .AsNoTracking()
+                    .FirstOrDefault(p =>
+                        (p.SteamId == steamOrAccountId || p.AccountId == steamOrAccountId) &&
+                        p.Password == password);
 
-                using (var command = connection.CreateCommand())
-                {
-                    command.CommandText =
-                    @"
-            SELECT Name, AccountId, SteamId, Password, Avatar
-            FROM Players
-            WHERE (SteamId = @id OR AccountId = @id)
-              AND Password = @password
-            LIMIT 1;
-            ";
-
-                    command.Parameters.AddWithValue("@id", steamOrAccountId);
-                    command.Parameters.AddWithValue("@password", password);
-
-                    using (var reader = command.ExecuteReader())
-                    {
-                        if (reader.Read())
-                        {
-                            return new UserModel(
-                                reader.GetString(0), // Name
-                                reader.GetString(1), // AccountId
-                                reader.GetString(2), // SteamId
-                                reader.GetString(3), // Password
-                                reader.GetString(4)  // Avatar
-                            );
-                        }
-                    }
-                }
+                return entity == null ? null : ToUserModel(entity);
             }
-
-            return null;
         }
+
         public static UserModel GetTrainer(string steamOrAccountId, string password)
         {
-            using (var connection = new SQLiteConnection(connectionString))
+            using (var context = CreateContext())
             {
-                connection.Open();
+                var entity = context.Trainers
+                    .AsNoTracking()
+                    .FirstOrDefault(t =>
+                        (t.SteamId == steamOrAccountId || t.AccountId == steamOrAccountId) &&
+                        t.Password == password);
 
-                using (var command = connection.CreateCommand())
-                {
-                    command.CommandText =
-                    @"
-            SELECT Name, AccountId, SteamId, Password, Avatar
-            FROM Trainers
-            WHERE (SteamId = @id OR AccountId = @id)
-              AND Password = @password
-            LIMIT 1;
-            ";
-
-                    command.Parameters.AddWithValue("@id", steamOrAccountId);
-                    command.Parameters.AddWithValue("@password", password);
-
-                    using (var reader = command.ExecuteReader())
-                    {
-                        if (reader.Read())
-                        {
-                            return new UserModel(
-                                reader.GetString(0),
-                                reader.GetString(1),
-                                reader.GetString(2),
-                                reader.GetString(3),
-                                reader.GetString(4)
-                            );
-                        }
-                    }
-                }
+                return entity == null ? null : ToUserModel(entity);
             }
-
-            return null;
         }
 
         #endregion
-
-
 
         #region TeamsFunctions
 
@@ -468,53 +232,32 @@ namespace DataBaseManager
             if (string.IsNullOrWhiteSpace(newName))
                 return false;
 
-            using (var connection = new SQLiteConnection(connectionString))
+            using (var context = CreateContext())
             {
-                connection.Open();
+                var team = context.Teams.Find(teamId);
+                if (team == null)
+                    return false;
 
-                using (var cmd = connection.CreateCommand())
-                {
-                    cmd.CommandText = @"
-                        UPDATE Teams
-                        SET Name = @name
-                        WHERE Id = @teamId
-                    ";
-
-                    cmd.Parameters.AddWithValue("@name", newName);
-                    cmd.Parameters.AddWithValue("@teamId", teamId);
-
-                    return cmd.ExecuteNonQuery() > 0;
-                }
+                team.Name = newName;
+                return context.SaveChanges() > 0;
             }
         }
 
         public static async Task<bool> ReplacePlayerInTeam(int teamId, string oldPlayerSteamId, string newSteamOrAccountId)
         {
-            using (var connection = new SQLiteConnection(connectionString))
+            using (var context = CreateContext())
             {
-                connection.Open();
+                var oldPlayer = await context.TeamPlayers
+                    .FirstOrDefaultAsync(tp =>
+                        tp.TeamId == teamId && tp.PlayerSteamId == oldPlayerSteamId);
 
-                // Проверяем, есть ли старый игрок в команде
-                using (var checkCmd = connection.CreateCommand())
+                if (oldPlayer == null)
                 {
-                    checkCmd.CommandText = @"
-                SELECT COUNT(*) FROM TeamPlayers
-                WHERE TeamId = @teamId AND PlayerSteamId = @steamId
-            ";
-
-                    checkCmd.Parameters.AddWithValue("@teamId", teamId);
-                    checkCmd.Parameters.AddWithValue("@steamId", oldPlayerSteamId);
-
-                    if (Convert.ToInt32(checkCmd.ExecuteScalar()) == 0)
-                    {
-                        MessageBox.Show("Старый игрок не найден в команде");
-                        return false;
-                    }
+                    MessageBox.Show("Старый игрок не найден в команде");
+                    return false;
                 }
 
-                // Получаем данные нового игрока через API
                 var apiResult = await ApiCourier.TryGetUserInfo(newSteamOrAccountId);
-
                 if (!apiResult.IsSuccess)
                 {
                     MessageBox.Show("Новый игрок не найден в API");
@@ -524,66 +267,34 @@ namespace DataBaseManager
                 var newPlayer = apiResult.Data.profile;
                 string newSteamId = newPlayer.steamid.ToString();
 
-                // Проверяем, не состоит ли уже в команде
-                using (var checkCmd = connection.CreateCommand())
+                if (await context.TeamPlayers.AnyAsync(tp =>
+                        tp.TeamId == teamId && tp.PlayerSteamId == newSteamId))
                 {
-                    checkCmd.CommandText = @"
-                SELECT COUNT(*) FROM TeamPlayers
-                WHERE TeamId = @teamId AND PlayerSteamId = @steamId
-            ";
-
-                    checkCmd.Parameters.AddWithValue("@teamId", teamId);
-                    checkCmd.Parameters.AddWithValue("@steamId", newSteamId);
-
-                    if (Convert.ToInt32(checkCmd.ExecuteScalar()) > 0)
-                    {
-                        MessageBox.Show("Новый игрок уже состоит в команде");
-                        return false;
-                    }
+                    MessageBox.Show("Новый игрок уже состоит в команде");
+                    return false;
                 }
 
-                using (var transaction = connection.BeginTransaction())
+                using (var transaction = await context.Database.BeginTransactionAsync())
                 {
                     try
                     {
-                        // Удаляем старого игрока
-                        using (var deleteCmd = connection.CreateCommand())
+                        context.TeamPlayers.Remove(oldPlayer);
+                        context.TeamPlayers.Add(new TeamPlayerEntity
                         {
-                            deleteCmd.CommandText = @"
-                        DELETE FROM TeamPlayers
-                        WHERE TeamId = @teamId AND PlayerSteamId = @steamId
-                    ";
+                            TeamId = teamId,
+                            Name = newPlayer.personaname.ToString(),
+                            AccountId = newPlayer.account_id.ToString(),
+                            PlayerSteamId = newSteamId,
+                            Avatar = newPlayer.avatarfull.ToString()
+                        });
 
-                            deleteCmd.Parameters.AddWithValue("@teamId", teamId);
-                            deleteCmd.Parameters.AddWithValue("@steamId", oldPlayerSteamId);
-                            deleteCmd.ExecuteNonQuery();
-                        }
-
-                        // Добавляем нового
-                        using (var insertCmd = connection.CreateCommand())
-                        {
-                            insertCmd.CommandText = @"
-                        INSERT INTO TeamPlayers
-                        (TeamId, Name, AccountId, PlayerSteamId, Avatar)
-                        VALUES
-                        (@teamId, @name, @accountId, @steamId, @avatar)
-                    ";
-
-                            insertCmd.Parameters.AddWithValue("@teamId", teamId);
-                            insertCmd.Parameters.AddWithValue("@name", newPlayer.personaname);
-                            insertCmd.Parameters.AddWithValue("@accountId", newPlayer.account_id);
-                            insertCmd.Parameters.AddWithValue("@steamId", newSteamId);
-                            insertCmd.Parameters.AddWithValue("@avatar", newPlayer.avatarfull);
-
-                            insertCmd.ExecuteNonQuery();
-                        }
-
-                        transaction.Commit();
+                        await context.SaveChangesAsync();
+                        await transaction.CommitAsync();
                         return true;
                     }
                     catch (Exception ex)
                     {
-                        transaction.Rollback();
+                        await transaction.RollbackAsync();
                         MessageBox.Show(ex.Message);
                         return false;
                     }
@@ -599,831 +310,495 @@ namespace DataBaseManager
             if (players.Count > 5)
                 return false;
 
-            using (var connection = new SQLiteConnection(connectionString))
+            using (var context = CreateContext())
+            using (var transaction = context.Database.BeginTransaction())
             {
-                connection.Open();
-
-                using (var transaction = connection.BeginTransaction())
+                try
                 {
-                    try
+                    var team = new TeamEntity
                     {
-                        long teamId;
+                        Name = teamName,
+                        TrainerSteamId = trainerSteamId
+                    };
 
-                        // 1️⃣ Создаем команду
-                        using (var cmd = connection.CreateCommand())
-                        {
-                            cmd.CommandText = @"
-                    INSERT INTO Teams (Name, TrainerSteamId)
-                    VALUES (@name, @trainer);
-                    SELECT last_insert_rowid();";
-
-                            cmd.Parameters.AddWithValue("@name", teamName);
-                            cmd.Parameters.AddWithValue("@trainer", trainerSteamId);
-
-                            teamId = (long)cmd.ExecuteScalar();
-                        }
-
-                        // 2️⃣ Добавляем игроков
-                        foreach (var player in players)
-                        {
-                            using (var cmd = connection.CreateCommand())
-                            {
-                                cmd.CommandText = @"
-                        INSERT INTO TeamPlayers
-                        (TeamId, Name, AccountId, PlayerSteamId, Avatar)
-                        VALUES
-                        (@teamId, @name, @accountId, @steamId, @avatar);";
-
-                                cmd.Parameters.AddWithValue("@teamId", teamId);
-                                cmd.Parameters.AddWithValue("@name", player.profile.personaname);
-                                cmd.Parameters.AddWithValue("@accountId", player.profile.account_id);
-                                cmd.Parameters.AddWithValue("@steamId", player.profile.steamid);
-                                cmd.Parameters.AddWithValue("@avatar", player.profile.avatarfull);
-
-                                cmd.ExecuteNonQuery();
-                            }
-                        }
-
-                        transaction.Commit();
-                        return true;
-                    }
-                    catch
+                    foreach (var player in players)
                     {
-                        transaction.Rollback();
-                        return false;
+                        team.Players.Add(new TeamPlayerEntity
+                        {
+                            Name = player.profile.personaname.ToString(),
+                            AccountId = player.profile.account_id.ToString(),
+                            PlayerSteamId = player.profile.steamid.ToString(),
+                            Avatar = player.profile.avatarfull.ToString()
+                        });
                     }
+
+                    context.Teams.Add(team);
+                    context.SaveChanges();
+                    transaction.Commit();
+                    return true;
+                }
+                catch
+                {
+                    transaction.Rollback();
+                    return false;
                 }
             }
         }
 
-
         public static TeamModel GetTeam(int teamId)
         {
-            TeamModel team = null;
-
-            using (var connection = new SQLiteConnection(connectionString))
+            using (var context = CreateContext())
             {
-                connection.Open();
-
-                // 1. Получаем команду
-                using (var cmd = connection.CreateCommand())
-                {
-                    cmd.CommandText =
-                    @"
-            SELECT Id, Name, TrainerSteamId
-            FROM Teams
-            WHERE Id = @teamId
-            ";
-
-                    cmd.Parameters.AddWithValue("@teamId", teamId);
-
-                    using (var reader = cmd.ExecuteReader())
-                    {
-                        if (reader.Read())
-                        {
-                            team = new TeamModel(
-                                reader.GetInt32(0),
-                                reader.GetString(1),
-                                reader.GetString(2)
-                            );
-                        }
-                    }
-                }
+                var team = context.Teams
+                    .AsNoTracking()
+                    .Include(t => t.Players)
+                    .FirstOrDefault(t => t.Id == teamId);
 
                 if (team == null)
                     return null;
 
-                // 2. Получаем игроков команды
-                using (var cmd = connection.CreateCommand())
+                var result = new TeamModel(team.Id, team.Name, team.TrainerSteamId);
+
+                foreach (var tp in team.Players)
                 {
-                    cmd.CommandText =
-                    @"
-            SELECT p.Name, p.AccountId, p.SteamId, p.Password, p.Avatar
-            FROM TeamPlayers tp
-            JOIN Players p ON p.SteamId = tp.PlayerSteamId
-            WHERE tp.TeamId = @teamId
-            ";
+                    var player = context.Players
+                        .AsNoTracking()
+                        .FirstOrDefault(p => p.SteamId == tp.PlayerSteamId);
 
-                    cmd.Parameters.AddWithValue("@teamId", teamId);
-
-                    using (var reader = cmd.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            team.Players.Add(new UserModel(
-                                reader.GetString(0),
-                                reader.GetString(1),
-                                reader.GetString(2),
-                                reader.GetString(3),
-                                reader.GetString(4)
-                            ));
-                        }
-                    }
+                    if (player != null)
+                        result.Players.Add(ToUserModel(player));
+                    else
+                        result.Players.Add(ToUserModel(tp));
                 }
-            }
 
-            return team;
+                return result;
+            }
         }
 
         public static List<TeamModel> GetTrainerTeams(string trainerSteamId)
         {
-            List<TeamModel> teams = new List<TeamModel>();
-
-            using (var connection = new SQLiteConnection(connectionString))
+            using (var context = CreateContext())
             {
-                connection.Open();
+                var teams = context.Teams
+                    .AsNoTracking()
+                    .Include(t => t.Players)
+                    .Where(t => t.TrainerSteamId == trainerSteamId)
+                    .ToList();
 
-                // 1️⃣ Получаем команды тренера
-                using (var cmd = connection.CreateCommand())
-                {
-                    cmd.CommandText =
-                    @"
-            SELECT Id, Name, TrainerSteamId
-            FROM Teams
-            WHERE TrainerSteamId = @steamId
-            ";
-
-                    cmd.Parameters.AddWithValue("@steamId", trainerSteamId);
-
-                    using (var reader = cmd.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            TeamModel team = new TeamModel(
-                                reader.GetInt32(0),
-                                reader.GetString(1),
-                                reader.GetString(2)
-                            );
-
-                            teams.Add(team);
-                        }
-                    }
-                }
-
-                // 2️⃣ Подгружаем игроков ДЛЯ КАЖДОЙ команды
-                foreach (var team in teams)
-                {
-                    using (var cmd = connection.CreateCommand())
-                    {
-                        cmd.CommandText =
-                        @"
-                SELECT Name, AccountId, PlayerSteamId, Avatar
-                FROM TeamPlayers
-                WHERE TeamId = @teamId
-                ";
-
-                        cmd.Parameters.AddWithValue("@teamId", team.Id);
-
-                        using (var reader = cmd.ExecuteReader())
-                        {
-                            while (reader.Read())
-                            {
-                                team.Players.Add(new UserModel(
-                                    reader.GetString(0), // Name
-                                    reader.GetString(1), // AccountId
-                                    reader.GetString(2), // SteamId
-                                    "",                  // Password нет
-                                    reader.GetString(3)  // Avatar
-                                ));
-                            }
-                        }
-                    }
-                }
+                return teams.Select(MapTeam).ToList();
             }
-
-            return teams;
         }
-
 
         public static List<TeamModel> GetPlayerTeams(string playerSteamId)
         {
-            List<TeamModel> teams = new List<TeamModel>();
-
-            using (var connection = new SQLiteConnection(connectionString))
+            using (var context = CreateContext())
             {
-                connection.Open();
+                var teams = context.Teams
+                    .AsNoTracking()
+                    .Include(t => t.Players)
+                    .Where(t => t.Players.Any(p => p.PlayerSteamId == playerSteamId))
+                    .ToList();
 
-                //Получаем команды, где steamId является игроком
-                using (var cmd = connection.CreateCommand())
-                {
-                    cmd.CommandText =
-                    @"
-            SELECT t.Id, t.Name, t.TrainerSteamId
-            FROM Teams t
-            JOIN TeamPlayers tp ON t.Id = tp.TeamId
-            WHERE tp.PlayerSteamId = @steamId
-            ";
-
-                    cmd.Parameters.AddWithValue("@steamId", playerSteamId);
-
-                    using (var reader = cmd.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            TeamModel team = new TeamModel(
-                                reader.GetInt32(0),
-                                reader.GetString(1),
-                                reader.GetString(2)
-                            );
-
-                            //Избегаем дублирования, если вдруг несколько записей для одного игрока
-                            if (!teams.Exists(x => x.Id == team.Id))
-                            {
-                                teams.Add(team);
-                            }
-                        }
-                    }
-                }
-
-                //Подгружаем игроков для каждой команды
-                foreach (var team in teams)
-                {
-                    using (var cmd = connection.CreateCommand())
-                    {
-                        cmd.CommandText =
-                        @"
-                        SELECT Name, AccountId, PlayerSteamId, Avatar
-                        FROM TeamPlayers
-                        WHERE TeamId = @teamId
-                        ";
-
-                        cmd.Parameters.AddWithValue("@teamId", team.Id);
-
-                        using (var reader = cmd.ExecuteReader())
-                        {
-                            while (reader.Read())
-                            {
-                                team.Players.Add(new UserModel(
-                                    reader.GetString(0),
-                                    reader.GetString(1),
-                                    reader.GetString(2),
-                                    "",
-                                    reader.GetString(3)
-                                ));
-                            }
-                        }
-                    }
-                }
+                return teams
+                    .GroupBy(t => t.Id)
+                    .Select(g => MapTeam(g.First()))
+                    .ToList();
             }
-
-            return teams;
         }
 
         public static async Task<TeamModel> UpdateTeamFullAsync(
-    TeamModel team,
-    string newTeamName,
-    string acc1,
-    string acc2,
-    string acc3,
-    string acc4,
-    string acc5)
+            TeamModel team,
+            string newTeamName,
+            string acc1,
+            string acc2,
+            string acc3,
+            string acc4,
+            string acc5)
         {
             var newAccounts = new List<string> { acc1, acc2, acc3, acc4, acc5 };
 
-            using (var connection = new SQLiteConnection(connectionString))
+            using (var context = CreateContext())
+            using (var transaction = await context.Database.BeginTransactionAsync())
             {
-                await connection.OpenAsync();
-
-                using (var transaction = connection.BeginTransaction())
+                try
                 {
-                    try
+                    if (team.Name != newTeamName)
                     {
-                        // ==============================
-                        // 1. Обновляем имя команды
-                        // ==============================
-                        if (team.Name != newTeamName)
+                        var teamEntity = await context.Teams.FindAsync(team.Id);
+                        if (teamEntity != null)
+                            teamEntity.Name = newTeamName;
+                        team.Name = newTeamName;
+                    }
+
+                    var nonEmptyAccounts = newAccounts
+                        .Where(a => !string.IsNullOrEmpty(a) && a != "0")
+                        .ToList();
+
+                    if (nonEmptyAccounts.Count != nonEmptyAccounts.Distinct().Count())
+                        throw new Exception("Нельзя добавить одного и того же игрока дважды");
+
+                    if (nonEmptyAccounts.Contains(team.TrainerSteamId))
+                        throw new Exception("Тренер команды не может быть игроком");
+
+                    foreach (var acc in nonEmptyAccounts)
+                    {
+                        if (await context.Trainers.AnyAsync(t => t.SteamId == acc))
+                            throw new Exception("Нельзя добавить тренера как игрока");
+                    }
+
+                    for (int slot = 0; slot < 5; slot++)
+                    {
+                        string newAcc = newAccounts[slot];
+                        UserModel existingPlayer = slot < team.Players.Count ? team.Players[slot] : null;
+
+                        if (string.IsNullOrEmpty(newAcc) || newAcc == "0")
                         {
-                            using (var cmd = connection.CreateCommand())
-                            {
-                                cmd.CommandText = "UPDATE Teams SET Name = @name WHERE Id = @id";
-                                cmd.Parameters.AddWithValue("@name", newTeamName);
-                                cmd.Parameters.AddWithValue("@id", team.Id);
-                                await cmd.ExecuteNonQueryAsync();
-                            }
-                            team.Name = newTeamName; // Обновляем локально
-                        }
-
-                        // ==============================
-                        // 2. Проверка дубликатов
-                        // ==============================
-                        var nonEmptyAccounts = newAccounts.Where(a => !string.IsNullOrEmpty(a) && a != "0").ToList();
-                        if (nonEmptyAccounts.Count != nonEmptyAccounts.Distinct().Count())
-                            throw new Exception("Нельзя добавить одного и того же игрока дважды");
-
-                        // ==============================
-                        // 3. Проверка на тренера
-                        // ==============================
-                        if (nonEmptyAccounts.Contains(team.TrainerSteamId))
-                            throw new Exception("Тренер команды не может быть игроком");
-
-                        foreach (var acc in nonEmptyAccounts)
-                        {
-                            using (var cmd = connection.CreateCommand())
-                            {
-                                cmd.CommandText = "SELECT COUNT(*) FROM Trainers WHERE SteamId = @steamId";
-                                cmd.Parameters.AddWithValue("@steamId", acc);
-                                if (Convert.ToInt32(await cmd.ExecuteScalarAsync()) > 0)
-                                    throw new Exception("Нельзя добавить тренера как игрока");
-                            }
-                        }
-
-                        // ==============================
-                        // 4. Обновляем состав
-                        // ==============================
-                        for (int slot = 0; slot < 5; slot++)
-                        {
-                            string newAcc = newAccounts[slot];
-                            UserModel existingPlayer = slot < team.Players.Count ? team.Players[slot] : null;
-
-                            // Если пустой слот → удаляем
-                            if (string.IsNullOrEmpty(newAcc) || newAcc == "0")
-                            {
-                                if (existingPlayer != null)
-                                {
-                                    using (var cmd = connection.CreateCommand())
-                                    {
-                                        cmd.CommandText = "DELETE FROM TeamPlayers WHERE TeamId = @teamId AND AccountId = @accountId";
-                                        cmd.Parameters.AddWithValue("@teamId", team.Id);
-                                        cmd.Parameters.AddWithValue("@accountId", existingPlayer.AccountID);
-                                        await cmd.ExecuteNonQueryAsync();
-                                    }
-                                    team.Players[slot] = null;
-                                }
-                                continue;
-                            }
-
-                            // Если игрок не меняется → пропускаем
-                            if (existingPlayer != null && existingPlayer.AccountID == newAcc)
-                                continue;
-
-                            // Получаем данные через API
-                            var apiResult = await ApiCourier.TryGetUserInfo(newAcc);
-                            if (!apiResult.IsSuccess)
-                                throw new Exception($"Игрок {newAcc} не найден");
-
-                            var p = apiResult.Data.profile;
-                            var user = new UserModel(p.personaname.ToString(), p.account_id.ToString(), p.steamid.ToString(), "", p.avatarfull.ToString());
-
-                            // Обновляем или вставляем
                             if (existingPlayer != null)
                             {
-                                using (var cmd = connection.CreateCommand())
-                                {
-                                    cmd.CommandText = @"
-                                UPDATE TeamPlayers
-                                SET Name = @name,
-                                    AccountId = @accountId,
-                                    PlayerSteamId = @steamId,
-                                    Avatar = @avatar
-                                WHERE TeamId = @teamId AND AccountId = @oldAcc";
+                                var toRemove = await context.TeamPlayers.FirstOrDefaultAsync(tp =>
+                                    tp.TeamId == team.Id && tp.AccountId == existingPlayer.AccountID);
 
-                                    cmd.Parameters.AddWithValue("@name", user.Name);
-                                    cmd.Parameters.AddWithValue("@accountId", user.AccountID);
-                                    cmd.Parameters.AddWithValue("@steamId", user.SteamID);
-                                    cmd.Parameters.AddWithValue("@avatar", user.Avatarfull);
-                                    cmd.Parameters.AddWithValue("@teamId", team.Id);
-                                    cmd.Parameters.AddWithValue("@oldAcc", existingPlayer.AccountID);
+                                if (toRemove != null)
+                                    context.TeamPlayers.Remove(toRemove);
 
-                                    await cmd.ExecuteNonQueryAsync();
-                                }
-                                team.Players[slot] = user;
+                                team.Players[slot] = null;
                             }
-                            else
-                            {
-                                using (var cmd = connection.CreateCommand())
-                                {
-                                    cmd.CommandText = @"
-                                INSERT INTO TeamPlayers
-                                (TeamId, Name, AccountId, PlayerSteamId, Avatar)
-                                VALUES
-                                (@teamId, @name, @accountId, @steamId, @avatar)";
-
-                                    cmd.Parameters.AddWithValue("@teamId", team.Id);
-                                    cmd.Parameters.AddWithValue("@name", user.Name);
-                                    cmd.Parameters.AddWithValue("@accountId", user.AccountID);
-                                    cmd.Parameters.AddWithValue("@steamId", user.SteamID);
-                                    cmd.Parameters.AddWithValue("@avatar", user.Avatarfull);
-
-                                    await cmd.ExecuteNonQueryAsync();
-                                }
-
-                                if (slot < team.Players.Count)
-                                    team.Players[slot] = user;
-                                else
-                                    team.Players.Add(user);
-                            }
+                            continue;
                         }
 
-                        // Очистка пустых слотов в памяти
-                        team.Players = team.Players.Take(5).Where(p => p != null).ToList();
+                        if (existingPlayer != null && existingPlayer.AccountID == newAcc)
+                            continue;
 
-                        transaction.Commit();
-                        return team;
+                        var apiResult = await ApiCourier.TryGetUserInfo(newAcc);
+                        if (!apiResult.IsSuccess)
+                            throw new Exception($"Игрок {newAcc} не найден");
+
+                        var p = apiResult.Data.profile;
+                        var user = new UserModel(
+                            p.personaname.ToString(),
+                            p.account_id.ToString(),
+                            p.steamid.ToString(),
+                            "",
+                            p.avatarfull.ToString());
+
+                        if (existingPlayer != null)
+                        {
+                            var entity = await context.TeamPlayers.FirstOrDefaultAsync(tp =>
+                                tp.TeamId == team.Id && tp.AccountId == existingPlayer.AccountID);
+
+                            if (entity != null)
+                            {
+                                entity.Name = user.Name;
+                                entity.AccountId = user.AccountID;
+                                entity.PlayerSteamId = user.SteamID;
+                                entity.Avatar = user.Avatarfull;
+                            }
+
+                            team.Players[slot] = user;
+                        }
+                        else
+                        {
+                            context.TeamPlayers.Add(new TeamPlayerEntity
+                            {
+                                TeamId = team.Id,
+                                Name = user.Name,
+                                AccountId = user.AccountID,
+                                PlayerSteamId = user.SteamID,
+                                Avatar = user.Avatarfull
+                            });
+
+                            if (slot < team.Players.Count)
+                                team.Players[slot] = user;
+                            else
+                                team.Players.Add(user);
+                        }
                     }
-                    catch
-                    {
-                        transaction.Rollback();
-                        throw; // Выбрасываем исключение наружу
-                    }
+
+                    team.Players = team.Players.Take(5).Where(p => p != null).ToList();
+
+                    await context.SaveChangesAsync();
+                    await transaction.CommitAsync();
+                    return team;
+                }
+                catch
+                {
+                    await transaction.RollbackAsync();
+                    throw;
                 }
             }
         }
+
         public static bool AddPlayerToTeam(int teamId, string playerSteamId)
         {
-            using (var connection = new SQLiteConnection(connectionString))
+            using (var context = CreateContext())
             {
-                connection.Open();
+                var team = context.Teams.AsNoTracking().FirstOrDefault(t => t.Id == teamId);
+                if (team == null)
+                    return false;
 
-                //Получаем тренера команды
-                string trainerSteamId;
-                using (var cmd = connection.CreateCommand())
-                {
-                    cmd.CommandText = "SELECT TrainerSteamId FROM Teams WHERE Id = @teamId";
-                    cmd.Parameters.AddWithValue("@teamId", teamId);
-                    trainerSteamId = cmd.ExecuteScalar()?.ToString();
-                }
-
-                if (trainerSteamId == playerSteamId)
+                if (team.TrainerSteamId == playerSteamId)
                 {
                     MessageBox.Show("Тренер не может быть участником команды");
                     return false;
                 }
 
-                //Проверяем количество игроков
-                using (var cmd = connection.CreateCommand())
+                if (context.TeamPlayers.Count(tp => tp.TeamId == teamId) >= 5)
                 {
-                    cmd.CommandText = "SELECT COUNT(*) FROM TeamPlayers WHERE TeamId = @teamId";
-                    cmd.Parameters.AddWithValue("@teamId", teamId);
-                    if (Convert.ToInt32(cmd.ExecuteScalar()) >= 5)
-                    {
-                        MessageBox.Show("В команде уже 5 игроков");
-                        return false;
-                    }
+                    MessageBox.Show("В команде уже 5 игроков");
+                    return false;
                 }
 
-                //Проверяем, есть ли игрок уже в команде
-                using (var cmd = connection.CreateCommand())
+                if (context.TeamPlayers.Any(tp =>
+                        tp.TeamId == teamId && tp.PlayerSteamId == playerSteamId))
                 {
-                    cmd.CommandText = @"
-                SELECT COUNT(*) FROM TeamPlayers
-                WHERE TeamId = @teamId AND PlayerSteamId = @playerSteamId
-            ";
-                    cmd.Parameters.AddWithValue("@teamId", teamId);
-                    cmd.Parameters.AddWithValue("@playerSteamId", playerSteamId);
-
-                    if (Convert.ToInt32(cmd.ExecuteScalar()) > 0)
-                    {
-                        MessageBox.Show("Игрок уже в этой команде");
-                        return false;
-                    }
+                    MessageBox.Show("Игрок уже в этой команде");
+                    return false;
                 }
 
-                //Добавляем игрока
-                using (var cmd = connection.CreateCommand())
+                context.TeamPlayers.Add(new TeamPlayerEntity
                 {
-                    cmd.CommandText = @"
-                INSERT INTO TeamPlayers (TeamId, PlayerSteamId)
-                VALUES (@teamId, @playerSteamId)
-            ";
-                    cmd.Parameters.AddWithValue("@teamId", teamId);
-                    cmd.Parameters.AddWithValue("@playerSteamId", playerSteamId);
-                    cmd.ExecuteNonQuery();
-                }
+                    TeamId = teamId,
+                    PlayerSteamId = playerSteamId
+                });
 
-                return true;
+                return context.SaveChanges() > 0;
             }
         }
-
 
         public static bool RemovePlayerFromTeam(int teamId, string playerSteamId)
         {
-            using (var connection = new SQLiteConnection(connectionString))
+            using (var context = CreateContext())
             {
-                connection.Open();
+                var entity = context.TeamPlayers.FirstOrDefault(tp =>
+                    tp.TeamId == teamId && tp.PlayerSteamId == playerSteamId);
 
-                using (var cmd = connection.CreateCommand())
-                {
-                    cmd.CommandText =
-                    @"
-            DELETE FROM TeamPlayers
-            WHERE TeamId = @teamId AND PlayerSteamId = @playerSteamId
-            ";
+                if (entity == null)
+                    return false;
 
-                    cmd.Parameters.AddWithValue("@teamId", teamId);
-                    cmd.Parameters.AddWithValue("@playerSteamId", playerSteamId);
-
-                    return cmd.ExecuteNonQuery() > 0;
-                }
+                context.TeamPlayers.Remove(entity);
+                return context.SaveChanges() > 0;
             }
         }
 
-
         #endregion
-
 
         #region TrainingTasks
 
         public static async Task AddTrainingTaskAsync(TrainingTask task, int teamId)
         {
-            using (var connection = new SQLiteConnection(connectionString))
+            using (var context = CreateContext())
+            using (var transaction = await context.Database.BeginTransactionAsync())
             {
-                await connection.OpenAsync();
-
-                using (var transaction = connection.BeginTransaction())
+                try
                 {
-                    try
+                    var entity = new TrainingTaskEntity
                     {
-                        // 1. Добавляем тренировку
-                        string insertTask = @"
-                        INSERT INTO TrainingTasks 
-                        (Title, Type, Metric, TargetValue, Comparison, Period, PeriodValue, StartDate, Deadline, IsCompleted, TeamId)
-                        VALUES
-                        (@Title, @Type, @Metric, @TargetValue, @Comparison, @Period, @PeriodValue, @StartDate, @Deadline, @IsCompleted, @TeamId);
-                        SELECT last_insert_rowid();";
+                        TeamId = teamId,
+                        Title = task.Title,
+                        Type = task.Type,
+                        Metric = task.Metric,
+                        TargetValue = task.TargetValue,
+                        Comparison = task.Comparison,
+                        Period = task.Period,
+                        PeriodValue = task.PeriodValue,
+                        StartDate = task.StartDate,
+                        Deadline = task.Deadline,
+                        IsCompleted = task.IsCompleted
+                    };
 
-                        
-
-                        long taskId;
-
-                        using (var cmd = new SQLiteCommand(insertTask, connection))
-                        {
-                            cmd.Parameters.AddWithValue("@Title", task.Title);
-                            cmd.Parameters.AddWithValue("@Type", (int)task.Type);
-                            cmd.Parameters.AddWithValue("@Metric", (int)task.Metric);
-                            cmd.Parameters.AddWithValue("@TargetValue", task.TargetValue);
-                            cmd.Parameters.AddWithValue("@Comparison", (int)task.Comparison);
-                            cmd.Parameters.AddWithValue("@Period", (int)task.Period);
-                            cmd.Parameters.AddWithValue("@PeriodValue", task.PeriodValue);
-                            cmd.Parameters.AddWithValue("@StartDate", task.StartDate.ToString("o"));
-                            cmd.Parameters.AddWithValue("@Deadline", task.Deadline.ToString("o"));
-                            cmd.Parameters.AddWithValue("@IsCompleted", task.IsCompleted ? 1 : 0);
-                            cmd.Parameters.AddWithValue("@TeamId", teamId);
-
-                            taskId = (long)await cmd.ExecuteScalarAsync();
-                        }
-
-                        // 2. Добавляем игроков + прогресс
-                        foreach (var playerId in task.PlayerIds)
-                        {
-                            // связь игрока
-                            using (var cmd = new SQLiteCommand(
-                                "INSERT INTO TrainingTaskPlayers (TaskId, PlayerId) VALUES (@TaskId, @PlayerId)", connection))
-                            {
-                                cmd.Parameters.AddWithValue("@TaskId", taskId);
-                                cmd.Parameters.AddWithValue("@PlayerId", playerId);
-                                await cmd.ExecuteNonQueryAsync();
-                            }
-
-                            // прогресс игрока
-                            using (var cmd = new SQLiteCommand(
-                                "INSERT INTO TrainingTaskProgress (TaskId, PlayerId, IsCompleted) VALUES (@TaskId, @PlayerId, 0)", connection))
-                            {
-                                cmd.Parameters.AddWithValue("@TaskId", taskId);
-                                cmd.Parameters.AddWithValue("@PlayerId", playerId);
-                                await cmd.ExecuteNonQueryAsync();
-                            }
-                        }
-
-                        transaction.Commit();
-                    }
-                    catch
+                    foreach (var playerId in task.PlayerIds)
                     {
-                        transaction.Rollback();
-                        throw;
+                        entity.AssignedPlayers.Add(new TrainingTaskPlayerEntity
+                        {
+                            PlayerId = playerId
+                        });
+
+                        entity.Progresses.Add(new TrainingTaskProgressEntity
+                        {
+                            PlayerId = playerId,
+                            IsCompleted = false
+                        });
                     }
+
+                    context.TrainingTasks.Add(entity);
+                    await context.SaveChangesAsync();
+                    await transaction.CommitAsync();
+                }
+                catch
+                {
+                    await transaction.RollbackAsync();
+                    throw;
                 }
             }
         }
 
         public static async Task<List<TrainingTask>> GetTrainingTasksAsync(int teamId)
         {
-            var dict = new Dictionary<int, TrainingTask>();
-
-            using (var connection = new SQLiteConnection(connectionString))
+            using (var context = CreateContext())
             {
-                await connection.OpenAsync();
+                var entities = await context.TrainingTasks
+                    .AsNoTracking()
+                    .Include(t => t.AssignedPlayers)
+                    .Include(t => t.Progresses)
+                    .Where(t => t.TeamId == teamId)
+                    .ToListAsync();
 
-                string query = @"
-        SELECT t.*, p.PlayerId, pr.IsCompleted as PlayerCompleted
-        FROM TrainingTasks t
-        LEFT JOIN TrainingTaskPlayers p ON t.Id = p.TaskId
-        LEFT JOIN TrainingTaskProgress pr 
-            ON t.Id = pr.TaskId AND p.PlayerId = pr.PlayerId
-        WHERE t.TeamId = @TeamId";
-
-                using (var cmd = new SQLiteCommand(query, connection))
-                {
-                    cmd.Parameters.AddWithValue("@TeamId", teamId);
-
-                    using (var reader = await cmd.ExecuteReaderAsync())
-                    {
-                        while (await reader.ReadAsync())
-                        {
-                            int taskId = Convert.ToInt32(reader["Id"]);
-
-                            if (!dict.ContainsKey(taskId))
-                            {
-                                dict[taskId] = new TrainingTask
-                                {
-                                    Id = taskId,
-                                    Title = reader["Title"].ToString(),
-                                    Type = (TrainingType)Convert.ToInt32(reader["Type"]),
-                                    Metric = (TrainingMetric)Convert.ToInt32(reader["Metric"]),
-                                    TargetValue = Convert.ToInt32(reader["TargetValue"]),
-                                    Comparison = (ComparisonType)Convert.ToInt32(reader["Comparison"]),
-                                    Period = (TrainingPeriod)Convert.ToInt32(reader["Period"]),
-                                    PeriodValue = Convert.ToInt32(reader["PeriodValue"]),
-                                    StartDate = DateTime.Parse(reader["StartDate"].ToString()),
-                                    Deadline = DateTime.Parse(reader["Deadline"].ToString()),
-                                    IsCompleted = Convert.ToInt32(reader["IsCompleted"]) == 1,
-                                    PlayerIds = new List<string>(),
-                                    CompletedPlayers = new Dictionary<string, bool>()
-                                };
-                            }
-
-                            if (reader["PlayerId"] != DBNull.Value)
-                            {
-                                string playerId = reader["PlayerId"].ToString();
-
-                                dict[taskId].PlayerIds.Add(playerId);
-
-                                bool completed = reader["PlayerCompleted"] != DBNull.Value &&
-                                                 Convert.ToInt32(reader["PlayerCompleted"]) == 1;
-
-                                dict[taskId].CompletedPlayers[playerId] = completed;
-                            }
-                        }
-                    }
-                }
+                return entities.Select(MapTrainingTask).ToList();
             }
-
-            return dict.Values.ToList();
         }
 
         public static async Task RemovePlayerFromTrainings(string playerId)
         {
-            using (var connection = new SQLiteConnection(connectionString))
+            using (var context = CreateContext())
+            using (var transaction = await context.Database.BeginTransactionAsync())
             {
-                await connection.OpenAsync();
-
-                using (var transaction = connection.BeginTransaction())
+                try
                 {
-                    try
-                    {
-                        // удалить связи
-                        using (var cmd = new SQLiteCommand(
-                            "DELETE FROM TrainingTaskPlayers WHERE PlayerId = @PlayerId", connection))
-                        {
-                            cmd.Parameters.AddWithValue("@PlayerId", playerId);
-                            await cmd.ExecuteNonQueryAsync();
-                        }
+                    var assignments = context.TrainingTaskPlayers
+                        .Where(p => p.PlayerId == playerId);
+                    context.TrainingTaskPlayers.RemoveRange(assignments);
 
-                        // удалить прогресс
-                        using (var cmd = new SQLiteCommand(
-                            "DELETE FROM TrainingTaskProgress WHERE PlayerId = @PlayerId", connection))
-                        {
-                            cmd.Parameters.AddWithValue("@PlayerId", playerId);
-                            await cmd.ExecuteNonQueryAsync();
-                        }
+                    var progresses = context.TrainingTaskProgresses
+                        .Where(p => p.PlayerId == playerId);
+                    context.TrainingTaskProgresses.RemoveRange(progresses);
 
-                        transaction.Commit();
-                    }
-                    catch
-                    {
-                        transaction.Rollback();
-                        throw;
-                    }
+                    await context.SaveChangesAsync();
+                    await transaction.CommitAsync();
+                }
+                catch
+                {
+                    await transaction.RollbackAsync();
+                    throw;
                 }
             }
         }
 
-        //public static async Task<List<TrainingTask>> GetTrainingsByTeam(int teamId)
-        //{
-        //    var list = new List<TrainingTask>();
-
-        //    using (var connection = new SQLiteConnection(connectionString))
-        //    {
-        //        await connection.OpenAsync();
-
-        //        using (var cmd = connection.CreateCommand())
-        //        {
-        //            cmd.CommandText = @"
-        //        SELECT * FROM TrainingTasks
-        //        WHERE TeamId = @teamId";
-
-        //            cmd.Parameters.AddWithValue("@teamId", teamId);
-
-        //            using (var reader = await cmd.ExecuteReaderAsync())
-        //            {
-        //                while (await reader.ReadAsync())
-        //                {
-        //                    list.Add(new TrainingTask
-        //                    {
-        //                        Id = reader.GetInt32(0),
-        //                        TeamId = reader.GetInt32(1),
-        //                        Title = reader.GetString(2),
-        //                        Type = (TrainingType)reader.GetInt32(3),
-        //                        Metric = (TrainingMetric)reader.GetInt32(4),
-        //                        TargetValue = reader.GetInt32(5),
-        //                        Comparison = (ComparisonType)reader.GetInt32(6),
-        //                        Period = (TrainingPeriod)reader.GetInt32(7),
-        //                        PeriodValue = reader.GetInt32(8),
-        //                        StartDate = DateTime.Parse(reader.GetString(9)),
-        //                        Deadline = DateTime.Parse(reader.GetString(9)),
-        //                        IsCompleted = reader.GetInt32(10) == 1
-        //                    });
-        //                }
-        //            }
-        //        }
-        //    }
-
-        //    return list;
-        //}
-
         public static async Task UpdatePlayerProgressAsync(int taskId, string playerId, bool isCompleted)
         {
-            using (var connection = new SQLiteConnection(connectionString))
+            using (var context = CreateContext())
+            using (var transaction = await context.Database.BeginTransactionAsync())
             {
-                await connection.OpenAsync();
-
-                using (var transaction = connection.BeginTransaction())
+                try
                 {
-                    try
-                    {
-                        //Обновляем прогресс конкретного игрока
-                        using (var cmd = new SQLiteCommand(
-                            "UPDATE TrainingTaskProgress SET IsCompleted = @IsCompleted WHERE TaskId = @TaskId AND PlayerId = @PlayerId",
-                            connection))
-                        {
-                            cmd.Parameters.AddWithValue("@IsCompleted", isCompleted ? 1 : 0);
-                            cmd.Parameters.AddWithValue("@TaskId", taskId);
-                            cmd.Parameters.AddWithValue("@PlayerId", playerId);
-                            await cmd.ExecuteNonQueryAsync();
-                        }
+                    var progress = await context.TrainingTaskProgresses
+                        .FirstOrDefaultAsync(p => p.TaskId == taskId && p.PlayerId == playerId);
 
-                        //Проверяем, все ли игроки выполнили задачу
-                        bool allCompleted;
-                        using (var cmd = new SQLiteCommand(
-                            "SELECT COUNT(*) FROM TrainingTaskProgress WHERE TaskId = @TaskId AND IsCompleted = 0",
-                            connection))
-                        {
-                            cmd.Parameters.AddWithValue("@TaskId", taskId);
-                            long count = (long)await cmd.ExecuteScalarAsync();
-                            allCompleted = count == 0;
-                        }
+                    if (progress != null)
+                        progress.IsCompleted = isCompleted;
 
-                        //Обновляем общий статус задачи
-                        using (var cmd = new SQLiteCommand(
-                            "UPDATE TrainingTasks SET IsCompleted = @IsCompleted WHERE Id = @TaskId",
-                            connection))
-                        {
-                            cmd.Parameters.AddWithValue("@IsCompleted", allCompleted ? 1 : 0);
-                            cmd.Parameters.AddWithValue("@TaskId", taskId);
-                            await cmd.ExecuteNonQueryAsync();
-                        }
+                    bool allCompleted = !await context.TrainingTaskProgresses
+                        .AnyAsync(p => p.TaskId == taskId && !p.IsCompleted);
 
-                        transaction.Commit();
-                    }
-                    catch
-                    {
-                        transaction.Rollback();
-                        throw;
-                    }
+                    var task = await context.TrainingTasks.FindAsync(taskId);
+                    if (task != null)
+                        task.IsCompleted = allCompleted;
+
+                    await context.SaveChangesAsync();
+                    await transaction.CommitAsync();
+                }
+                catch
+                {
+                    await transaction.RollbackAsync();
+                    throw;
                 }
             }
         }
 
         public static async Task RemoveTrainingTaskAsync(int taskId)
         {
-            using (var connection = new SQLiteConnection(connectionString))
+            using (var context = CreateContext())
             {
-                await connection.OpenAsync();
-
-                using (var cmd = new SQLiteCommand(
-                    "DELETE FROM TrainingTasks WHERE Id = @TaskId",
-                    connection))
+                var task = await context.TrainingTasks.FindAsync(taskId);
+                if (task != null)
                 {
-                    cmd.Parameters.AddWithValue("@TaskId", taskId);
-                    await cmd.ExecuteNonQueryAsync();
+                    context.TrainingTasks.Remove(task);
+                    await context.SaveChangesAsync();
                 }
             }
         }
 
         public static async Task ClearTrainingArchiveAsync(int teamId, DateTime archiveBorderDate)
         {
-            using (var connection = new SQLiteConnection(connectionString))
+            using (var context = CreateContext())
             {
-                await connection.OpenAsync();
+                var tasks = await context.TrainingTasks
+                    .Where(t => t.TeamId == teamId && t.Deadline < archiveBorderDate)
+                    .ToListAsync();
 
-                using (var cmd = new SQLiteCommand(
-                    "DELETE FROM TrainingTasks WHERE TeamId = @TeamId AND Deadline < @BorderDate",
-                    connection))
-                {
-                    cmd.Parameters.AddWithValue("@TeamId", teamId);
-                    cmd.Parameters.AddWithValue("@BorderDate", archiveBorderDate.ToString("o"));
-                    await cmd.ExecuteNonQueryAsync();
-                }
+                context.TrainingTasks.RemoveRange(tasks);
+                await context.SaveChangesAsync();
             }
+        }
+
+        #endregion
+
+        #region Mapping
+
+        private static UserModel ToUserModel(PlayerEntity entity)
+        {
+            return new UserModel(
+                entity.Name ?? string.Empty,
+                entity.AccountId ?? string.Empty,
+                entity.SteamId ?? string.Empty,
+                entity.Password ?? string.Empty,
+                entity.Avatar ?? string.Empty);
+        }
+
+        private static UserModel ToUserModel(TrainerEntity entity)
+        {
+            return new UserModel(
+                entity.Name ?? string.Empty,
+                entity.AccountId ?? string.Empty,
+                entity.SteamId ?? string.Empty,
+                entity.Password ?? string.Empty,
+                entity.Avatar ?? string.Empty);
+        }
+
+        private static UserModel ToUserModel(TeamPlayerEntity entity)
+        {
+            return new UserModel(
+                entity.Name ?? string.Empty,
+                entity.AccountId ?? string.Empty,
+                entity.PlayerSteamId ?? string.Empty,
+                string.Empty,
+                entity.Avatar ?? string.Empty);
+        }
+
+        private static TeamModel MapTeam(TeamEntity team)
+        {
+            var model = new TeamModel(team.Id, team.Name, team.TrainerSteamId);
+            foreach (var player in team.Players)
+                model.Players.Add(ToUserModel(player));
+            return model;
+        }
+
+        private static TrainingTask MapTrainingTask(TrainingTaskEntity entity)
+        {
+            var task = new TrainingTask
+            {
+                Id = entity.Id,
+                TeamId = entity.TeamId,
+                Title = entity.Title,
+                Type = entity.Type,
+                Metric = entity.Metric,
+                TargetValue = entity.TargetValue,
+                Comparison = entity.Comparison,
+                Period = entity.Period,
+                PeriodValue = entity.PeriodValue,
+                StartDate = entity.StartDate,
+                Deadline = entity.Deadline,
+                IsCompleted = entity.IsCompleted,
+                PlayerIds = entity.AssignedPlayers.Select(p => p.PlayerId).ToList(),
+                CompletedPlayers = new Dictionary<string, bool>()
+            };
+
+            foreach (var progress in entity.Progresses)
+            {
+                if (!string.IsNullOrEmpty(progress.PlayerId))
+                    task.CompletedPlayers[progress.PlayerId] = progress.IsCompleted;
+            }
+
+            return task;
         }
 
         #endregion
