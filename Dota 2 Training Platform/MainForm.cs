@@ -82,7 +82,7 @@ namespace Dota_2_Training_Platform
 
         bool canEdit = false;
 
-        List<string> newNames = new List<string>();
+        string[] oldIds = new string[5];
         bool selfclose = false;
         Form StartForm;
         Form TeamsForm;
@@ -220,7 +220,7 @@ namespace Dota_2_Training_Platform
 
         }
 
-        private void MainForm_Load(object sender, EventArgs e)
+        private async void MainForm_Load(object sender, EventArgs e)
         {
             #region trash // лучше это не видеть
 
@@ -233,20 +233,8 @@ namespace Dota_2_Training_Platform
 
             #endregion
 
-            
+            await SyncCurrentTeamProfilesAsync();
             LoadTeam();
-     
-
-            var trainerToShow = _trainerUser ?? currentUser;
-            if (!string.IsNullOrWhiteSpace(trainerToShow.Avatarfull))
-            {
-                TrainerPicture.LoadAsync(trainerToShow.Avatarfull);
-            }
-            TrainerName.Text = string.IsNullOrWhiteSpace(trainerToShow.Name) ? "Тренер команды" : trainerToShow.Name;
-            TrainerID.Text = string.IsNullOrWhiteSpace(trainerToShow.AccountID)
-                ? currentTeam.TrainerSteamId
-                : trainerToShow.AccountID;
-
 
             EditSwitchButtonColor = EditSwitcher.FillColor;
 
@@ -513,6 +501,61 @@ namespace Dota_2_Training_Platform
         }
 
         
+        private async Task SyncCurrentTeamProfilesAsync()
+        {
+            if (currentTeam == null)
+                return;
+
+            Cursor = Cursors.WaitCursor;
+            try
+            {
+                var sync = await dbManager.SyncTeamProfilesFromApiAsync(currentTeam.Id);
+                if (sync?.Team != null)
+                    currentTeam = sync.Team;
+
+                if (sync?.Trainer != null)
+                    ApplyTrainerToUi(sync.Trainer);
+                else
+                {
+                    var trainerToShow = _trainerUser ?? currentUser;
+                    ApplyTrainerToUi(trainerToShow);
+                }
+
+                if (sync != null && sync.HasChanges)
+                {
+                    var lines = new List<string>();
+                    if (sync.ChangedPlayers.Count > 0)
+                        lines.Add("Игроки: " + string.Join(", ", sync.ChangedPlayers));
+                    if (sync.TrainerUpdated)
+                        lines.Add("Тренер: обновлены ник или аватар");
+
+                    MessageBox.Show(
+                        "Данные профилей изменились в Steam и сохранены в базе:\n" + string.Join("\n", lines),
+                        "Профили обновлены",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information);
+                }
+            }
+            finally
+            {
+                Cursor = Cursors.Default;
+            }
+        }
+
+        private void ApplyTrainerToUi(UserModel trainer)
+        {
+            if (trainer == null)
+                return;
+
+            if (!string.IsNullOrWhiteSpace(trainer.Avatarfull))
+                TrainerPicture.LoadAsync(trainer.Avatarfull);
+
+            TrainerName.Text = string.IsNullOrWhiteSpace(trainer.Name) ? "Тренер команды" : trainer.Name;
+            TrainerID.Text = string.IsNullOrWhiteSpace(trainer.AccountID)
+                ? currentTeam?.TrainerSteamId ?? string.Empty
+                : trainer.AccountID;
+        }
+
         private void LoadTeam()
         {
             //очистка полей
@@ -539,7 +582,7 @@ namespace Dota_2_Training_Platform
 
         private void guna2Button2_Click(object sender, EventArgs e) // переключатель редактирования
         {
-            
+            oldIds = textBoxes.Select(t => t.Text).ToArray();
             SwitchTeamEdit(EditSwitcher);
         }
 
@@ -566,6 +609,7 @@ namespace Dota_2_Training_Platform
                 for (int i = 0; i < textBoxes.Length; i++)
                 {
                     textBoxes[i].ReadOnly = true;
+                    textBoxes[i].Text = oldIds[i];
                 }
 
             }
@@ -675,6 +719,67 @@ namespace Dota_2_Training_Platform
             this.Close();
             form.Show();
             form.PrintAllTeams();
+        }
+
+        private async void DeleteTeamButton_Click(object sender, EventArgs e)
+        {
+            if (!IsTrainer || currentTeam == null)
+                return;
+
+            if (!string.Equals(currentUser.SteamID, currentTeam.TrainerSteamId, StringComparison.Ordinal))
+            {
+                MessageBox.Show("Удалить команду может только её тренер.", "Удаление команды", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            var confirm = MessageBox.Show(
+                $"Удалить команду «{currentTeam.Name}» безвозвратно?\n\n" +
+                "Из базы будут удалены состав этой команды и все тренировки. Учётные записи игроков в приложении не затронуты; в других командах игроки останутся.\n\n" +
+                "Также будет удалена папка с записями экрана (видео и метаданные) для этой команды.",
+                "Удаление команды",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Warning);
+
+            if (confirm != DialogResult.Yes)
+                return;
+
+            if (!await TryStopRecordingIfActiveForExitAsync())
+                return;
+
+            int teamId = currentTeam.Id;
+            DeleteTeamButton.Enabled = false;
+            try
+            {
+                bool deleted = await dbManager.DeleteTeamAsync(teamId, currentUser.SteamID);
+                if (!deleted)
+                {
+                    MessageBox.Show("Не удалось удалить команду (команда не найдена или нет прав).", "Удаление команды", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                if (!dbManager.TryDeleteTeamRecordingsFolder(teamId))
+                {
+                    MessageBox.Show(
+                        "Команда удалена из базы, но папку с записями удалить не удалось. Удалите вручную папку records\\" + teamId + " рядом с программой.",
+                        "Записи",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
+                }
+
+                selfclose = true;
+                SelectTeamForm selectForm = TeamsForm as SelectTeamForm;
+                selectForm.StartPosition = FormStartPosition.Manual;
+                int x = DesktopLocation.X + (Width - selectForm.Width) / 2;
+                int y = DesktopLocation.Y + (Height - selectForm.Height) / 2;
+                selectForm.Location = new Point(x, y);
+                Close();
+                selectForm.Show();
+                selectForm.PrintAllTeams();
+            }
+            finally
+            {
+                DeleteTeamButton.Enabled = true;
+            }
         }
 
         private async void SelectPlayerComboBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -828,7 +933,7 @@ namespace Dota_2_Training_Platform
             //form.Show();
         }
 
-        private async void AiAdviceButton_Click(object sender, EventArgs e)
+        private void AiAdviceButton_Click(object sender, EventArgs e)
         {
             if (match == null || SelectPlayerComboBox.SelectedIndex < 0 || SelectPlayerComboBox.SelectedIndex >= currentTeam.Players.Count)
             {
@@ -836,89 +941,28 @@ namespace Dota_2_Training_Platform
                 return;
             }
 
-            AiAdviceButton.Enabled = false;
-            try
+            var playerAccountId = currentTeam.Players[SelectPlayerComboBox.SelectedIndex].AccountID;
+            if (!long.TryParse(playerAccountId, out long accountId))
             {
-                var playerAccountId = currentTeam.Players[SelectPlayerComboBox.SelectedIndex].AccountID;
-                long accountId;
-                if (!long.TryParse(playerAccountId, out accountId))
-                {
-                    ShowAiAdviceWindow("Ошибка AI", "Не удалось определить игрока.");
-                    return;
-                }
-
-                var player = match.players?.FirstOrDefault(p => p.account_id == accountId);
-                if (player == null)
-                {
-                    ShowAiAdviceWindow("Ошибка AI", "Игрок не найден в выбранном матче.");
-                    return;
-                }
-
-                string heroName = ApiCourier.Heroes.ContainsKey(player.hero_id)
-                    ? ApiCourier.Heroes[player.hero_id].localized_name
-                    : $"hero_id={player.hero_id}";
-
-                string position = GuessPosition(player);
-                string winner = match.radiant_win ? "Radiant" : "Dire";
-                string playerSide = player.isRadiant ? "Radiant" : "Dire";
-                string result = winner == playerSide ? "Победа" : "Поражение";
-
-                string prompt =
-                    "Ты тренер по Dota 2. Дай ровно 4-5 коротких предложения на русском языке. Не обращайся к игроку на прямую. Говори как третье, независимое лицо.\n" +
-                    "Формат: 1-2 сильная сторона, 1-2 точки роста, 1-2 практический совет к следующей игре.\n" +
-                    "Без воды и без общих фраз. Не зацикливайся на роли игрока, роль не всегда корректно вычисляется\n\n" +
-                    $"Герой: {heroName}\n" +
-                    $"Позиция (приблизительное решение): {position}\n" +
-                    $"Результат матча: {result}\n" +
-                    $"K/D/A: {player.kills}/{player.deaths}/{player.assists}\n" +
-                    $"GPM/XPM: {player.gold_per_min}/{player.xp_per_min}\n" +
-                    $"LH/DN: {player.last_hits}/{player.denies}\n" +
-                    $"NetWorth: {player.net_worth}\n" +
-                    $"Hero/Tower damage: {player.hero_damage}/{player.tower_damage}\n" +
-                    $"Длительность матча в секундах: {match.duration}\n";
-
-                var advice = await GetGeminiAdviceAsync(prompt);
-                ShowAiAdviceWindow("AI-рекомендация", advice);
+                MessageBox.Show("Не удалось определить игрока.", "AI-анализ", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
             }
-            catch (Exception ex)
+
+            var player = match.players?.FirstOrDefault(p => p.account_id == accountId);
+            if (player == null)
             {
-                ShowAiAdviceWindow("Ошибка AI", $"Ошибка AI: {ex.Message}");
+                MessageBox.Show("Игрок не найден в выбранном матче.", "AI-анализ", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
             }
-            finally
+
+            string heroName = ApiCourier.Heroes.ContainsKey(player.hero_id)
+                ? ApiCourier.Heroes[player.hero_id].localized_name
+                : $"hero_id={player.hero_id}";
+
+            using (var adviceForm = new AiAdviceForm(heroName, player, match, GetGeminiAdviceAsync))
             {
-                AiAdviceButton.Enabled = true;
+                adviceForm.ShowDialog(this);
             }
-        }
-
-        private void ShowAiAdviceWindow(string title, string text)
-        {
-            using (var form = new Form())
-            using (var box = new TextBox())
-            {
-                form.Text = title;
-                form.StartPosition = FormStartPosition.CenterParent;
-                form.FormBorderStyle = FormBorderStyle.SizableToolWindow;
-                form.Width = 640;
-                form.Height = 360;
-
-                box.Multiline = true;
-                box.ReadOnly = true;
-                box.ScrollBars = ScrollBars.Vertical;
-                box.Dock = DockStyle.Fill;
-                box.Font = new Font("Segoe UI", 10F);
-                box.Text = text ?? "";
-
-                form.Controls.Add(box);
-                form.ShowDialog(this);
-            }
-        }
-
-        private string GuessPosition(MatchPlayerModel player)
-        {
-            if (player.gold_per_min >= 600 && player.last_hits >= 180) return "Керри (позиция 1)";
-            if (player.gold_per_min >= 500 && player.assists >= 8) return "Мид/Оффлейн (позиция 2-3)";
-            if (player.assists >= 12 && player.last_hits < 90) return "Саппорт (позиция 4-5)";
-            return "Позиция не определена";
         }
 
         private async Task<string> GetGeminiAdviceAsync(string prompt)
@@ -2453,6 +2497,7 @@ namespace Dota_2_Training_Platform
             if (_recordRefreshButton != null) _recordRefreshButton.Visible = true;
             if (_recordPlayButton != null) _recordPlayButton.Visible = true;
             if (_recordRenameButton != null) _recordRenameButton.Visible = false;
+            if (DeleteTeamButton != null) DeleteTeamButton.Visible = false;
         }
 
         private void InitializeRecordingTab()

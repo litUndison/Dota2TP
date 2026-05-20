@@ -6,6 +6,7 @@ using Dota_2_Training_Platform.Models.Trainings;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -406,6 +407,150 @@ namespace DataBaseManager
             }
         }
 
+        /// <summary>
+        /// Запрашивает актуальные ник и аватар у API для состава и тренера команды.
+        /// При отличии от БД обновляет TeamPlayers, Trainers и при наличии — Players.
+        /// </summary>
+        public static async Task<TeamProfileSyncResult> SyncTeamProfilesFromApiAsync(int teamId)
+        {
+            using (var context = CreateContext())
+            {
+                var teamEntity = await context.Teams
+                    .Include(t => t.Players)
+                    .FirstOrDefaultAsync(t => t.Id == teamId);
+
+                if (teamEntity == null)
+                    return null;
+
+                var result = new TeamProfileSyncResult();
+
+                foreach (var teamPlayer in teamEntity.Players.ToList())
+                {
+                    string lookupId = !string.IsNullOrWhiteSpace(teamPlayer.AccountId)
+                        ? teamPlayer.AccountId
+                        : teamPlayer.PlayerSteamId;
+
+                    if (string.IsNullOrWhiteSpace(lookupId))
+                        continue;
+
+                    var apiResult = await ApiCourier.TryGetUserInfo(lookupId);
+                    if (!apiResult.IsSuccess || apiResult.Data?.profile == null)
+                        continue;
+
+                    if (TryApplyTeamPlayerProfile(context, teamPlayer, apiResult.Data.profile, out string changeDescription))
+                        result.ChangedPlayers.Add(changeDescription);
+                }
+
+                if (!string.IsNullOrWhiteSpace(teamEntity.TrainerSteamId))
+                {
+                    var trainerApi = await ApiCourier.TryGetUserInfo(teamEntity.TrainerSteamId);
+                    if (trainerApi.IsSuccess && trainerApi.Data?.profile != null)
+                    {
+                        var trainerEntity = await context.Trainers
+                            .FirstOrDefaultAsync(t => t.SteamId == teamEntity.TrainerSteamId);
+
+                        if (trainerEntity != null &&
+                            TryApplyTrainerProfile(trainerEntity, trainerApi.Data.profile, out _))
+                        {
+                            result.TrainerUpdated = true;
+                            result.Trainer = ToUserModel(trainerEntity);
+                        }
+                    }
+                }
+
+                if (context.ChangeTracker.HasChanges())
+                    await context.SaveChangesAsync();
+
+                result.Team = MapTeam(teamEntity);
+                return result;
+            }
+        }
+
+        private static bool TryApplyTeamPlayerProfile(
+            AppDbContext context,
+            TeamPlayerEntity teamPlayer,
+            DotaPlayerProfileInfo profile,
+            out string changeDescription)
+        {
+            changeDescription = null;
+
+            string newName = profile.personaname.ToString() ?? string.Empty;
+            string newAvatar = profile.avatarfull.ToString() ?? string.Empty;
+            string newAccountId = profile.account_id.ToString() ?? string.Empty;
+            string newSteamId = profile.steamid.ToString() ?? string.Empty;
+
+            bool nameChanged = !string.Equals(teamPlayer.Name ?? string.Empty, newName, StringComparison.Ordinal);
+            bool avatarChanged = !string.Equals(teamPlayer.Avatar ?? string.Empty, newAvatar, StringComparison.Ordinal);
+
+            if (!nameChanged && !avatarChanged)
+                return false;
+
+            string displayName = string.IsNullOrWhiteSpace(teamPlayer.Name) ? newName : teamPlayer.Name;
+            changeDescription = nameChanged
+                ? $"{displayName} → {newName}"
+                : displayName;
+
+            string oldSteamId = teamPlayer.PlayerSteamId;
+
+            teamPlayer.Name = newName;
+            teamPlayer.Avatar = newAvatar;
+
+            if (!string.IsNullOrWhiteSpace(newAccountId))
+                teamPlayer.AccountId = newAccountId;
+            if (!string.IsNullOrWhiteSpace(newSteamId))
+                teamPlayer.PlayerSteamId = newSteamId;
+
+            var registeredPlayer = context.Players.FirstOrDefault(p =>
+                p.SteamId == oldSteamId ||
+                (!string.IsNullOrWhiteSpace(newSteamId) && p.SteamId == newSteamId));
+
+            if (registeredPlayer != null)
+            {
+                registeredPlayer.Name = newName;
+                registeredPlayer.Avatar = newAvatar;
+                if (!string.IsNullOrWhiteSpace(newAccountId))
+                    registeredPlayer.AccountId = newAccountId;
+                if (!string.IsNullOrWhiteSpace(newSteamId))
+                    registeredPlayer.SteamId = newSteamId;
+            }
+
+            return true;
+        }
+
+        private static bool TryApplyTrainerProfile(
+            TrainerEntity trainer,
+            DotaPlayerProfileInfo profile,
+            out string changeDescription)
+        {
+            changeDescription = null;
+
+            string newName = profile.personaname.ToString() ?? string.Empty;
+            string newAvatar = profile.avatarfull.ToString() ?? string.Empty;
+            string newAccountId = profile.account_id.ToString() ?? string.Empty;
+            string newSteamId = profile.steamid.ToString() ?? string.Empty;
+
+            bool nameChanged = !string.Equals(trainer.Name ?? string.Empty, newName, StringComparison.Ordinal);
+            bool avatarChanged = !string.Equals(trainer.Avatar ?? string.Empty, newAvatar, StringComparison.Ordinal);
+
+            if (!nameChanged && !avatarChanged)
+                return false;
+
+            string displayName = string.IsNullOrWhiteSpace(trainer.Name) ? newName : trainer.Name;
+            changeDescription = nameChanged
+                ? $"{displayName} → {newName}"
+                : displayName;
+
+            trainer.Name = newName;
+            trainer.Avatar = newAvatar;
+
+            if (!string.IsNullOrWhiteSpace(newAccountId))
+                trainer.AccountId = newAccountId;
+            if (!string.IsNullOrWhiteSpace(newSteamId))
+                trainer.SteamId = newSteamId;
+
+            return true;
+        }
+
         public static async Task<TeamModel> UpdateTeamFullAsync(
             TeamModel team,
             string newTeamName,
@@ -577,6 +722,51 @@ namespace DataBaseManager
 
                 context.TeamPlayers.Remove(entity);
                 return context.SaveChanges() > 0;
+            }
+        }
+
+        /// <summary>
+        /// Удаляет команду: записи в TeamPlayers, TrainingTasks и связанные строки удаляются каскадно.
+        /// Учётные записи приложения в таблице Players не затрагиваются; игроки в других командах остаются.
+        /// </summary>
+        public static async Task<bool> DeleteTeamAsync(int teamId, string trainerSteamId)
+        {
+            try
+            {
+                using (var context = CreateContext())
+                {
+                    var team = await context.Teams
+                        .FirstOrDefaultAsync(t => t.Id == teamId && t.TrainerSteamId == trainerSteamId);
+                    if (team == null)
+                        return false;
+
+                    context.Teams.Remove(team);
+                    await context.SaveChangesAsync();
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Ошибка удаления команды", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Папка записей экрана для команды: BaseDirectory/records/{teamId}.
+        /// </summary>
+        public static bool TryDeleteTeamRecordingsFolder(int teamId)
+        {
+            try
+            {
+                string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "records", teamId.ToString());
+                if (Directory.Exists(path))
+                    Directory.Delete(path, true);
+                return true;
+            }
+            catch
+            {
+                return false;
             }
         }
 

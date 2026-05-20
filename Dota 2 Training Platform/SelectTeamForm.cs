@@ -4,21 +4,21 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Xml;
 using DataBaseManager;
 using Dota_2_Training_Platform.Models;
 using Dota_2_Training_Platform.Functions;
 using Guna.UI2.WinForms;
-using System.Web.WebSockets;
 
 namespace Dota_2_Training_Platform
 {
     public partial class SelectTeamForm : Form
     {
+        private const string CreateTeamButtonTextDefault = "Добавить команду";
+        private const string CreateTeamButtonTextCancel = "Отменить создание";
+
         UserModel currentUser;
         UserRole userRole;
         bool IsTrainer => userRole == UserRole.Trainer;
@@ -28,7 +28,7 @@ namespace Dota_2_Training_Platform
 
         Form StartForm = null;
 
-
+        bool isCreating = false;
         bool selfExit = false; //если самовыход = true, то закрывается только текущее окно. Без закрытия всей программы. Немного криво, ну лан))
         public SelectTeamForm(UserModel currentUser, Form StartForm, UserRole userRole = UserRole.Trainer)
         {
@@ -64,29 +64,77 @@ namespace Dota_2_Training_Platform
 
         private void CreateTeamButton_Click(object sender, EventArgs e) // добавление команды
         {
-            Guna2TextBox[] playerBoxes = new Guna2TextBox[] { PlayerBox1, PlayerBox2, PlayerBox3, PlayerBox4, PlayerBox5 };
+            SwitchTeamCreate();
+        }
+        private void SwitchTeamCreate()
+        {
+            if (!isCreating)
+            {
+                isCreating = true;
+                EnterTeamCreateMode();
+            }
+            else
+            {
+                CancelTeamCreation();
+            }
+        }
+
+        private void EnterTeamCreateMode()
+        {
+            Guna2TextBox[] playerBoxes = { PlayerBox1, PlayerBox2, PlayerBox3, PlayerBox4, PlayerBox5 };
             Guna2HtmlLabel[] nameboxes = { guna2HtmlLabel1, guna2HtmlLabel2, guna2HtmlLabel3, guna2HtmlLabel4, guna2HtmlLabel5 };
             Guna2PictureBox[] imageboxes = { PlayerPicture1, PlayerPicture2, PlayerPicture3, PlayerPicture4, PlayerPicture5 };
+
             for (int i = 0; i < playerBoxes.Length; i++)
             {
                 playerBoxes[i].ReadOnly = false;
                 playerBoxes[i].Text = "";
             }
+
             TeamNameBox.ReadOnly = false;
+            TeamNameBox.Text = "";
+
             for (int i = 0; i < nameboxes.Length; i++)
-            {
                 nameboxes[i].Text = $"Игрок {i + 1}";
-            }
-            TeamConfirm.Visible = true;
+
             for (int i = 0; i < imageboxes.Length; i++)
+                imageboxes[i].Image = null;
+
+            TeamConfirm.Visible = true;
+            TeamInfoPanel.Visible = true;
+            ContinueButton.Visible = false;
+            currentTeam = null;
+
+            CreateTeamButton.Text = CreateTeamButtonTextCancel;
+        }
+
+        /// <summary>
+        /// Выход из режима создания команды: сброс полей и скрытие подтверждения.
+        /// </summary>
+        private void CancelTeamCreation()
+        {
+            isCreating = false;
+            CreateTeamButton.Text = CreateTeamButtonTextDefault;
+
+            Guna2TextBox[] playerBoxes = { PlayerBox1, PlayerBox2, PlayerBox3, PlayerBox4, PlayerBox5 };
+            Guna2HtmlLabel[] nameboxes = { guna2HtmlLabel1, guna2HtmlLabel2, guna2HtmlLabel3, guna2HtmlLabel4, guna2HtmlLabel5 };
+            Guna2PictureBox[] imageboxes = { PlayerPicture1, PlayerPicture2, PlayerPicture3, PlayerPicture4, PlayerPicture5 };
+
+            for (int i = 0; i < playerBoxes.Length; i++)
             {
+                playerBoxes[i].Text = "";
+                playerBoxes[i].ReadOnly = true;
+                nameboxes[i].Text = $"Игрок {i + 1}";
                 imageboxes[i].Image = null;
             }
-            if (!TeamInfoPanel.Visible)
-            {
-                TeamInfoPanel.Visible = true;
-            }
-            MessageBox.Show("Поля доступны для ввода");
+
+            TeamNameBox.Text = "";
+            TeamNameBox.ReadOnly = true;
+
+            TeamConfirm.Visible = false;
+            ContinueButton.Visible = false;
+            currentTeam = null;
+            TeamInfoPanel.Visible = false;
         }
         private async void TeamConfirm_Click(object sender, EventArgs e)
         {
@@ -141,6 +189,8 @@ namespace Dota_2_Training_Platform
 
             await Task.Run(() => dbManager.CreateTeam(TeamNameBox.Text, currentUser.SteamID, players));
 
+            isCreating = false;
+            CreateTeamButton.Text = CreateTeamButtonTextDefault;
             TeamConfirm.Visible = false;
 
             PrintAllTeams();
@@ -182,17 +232,73 @@ namespace Dota_2_Training_Platform
             }
         }
 
-        private void LoadTeam(object sender, EventArgs e)
+        private async void LoadTeam(object sender, EventArgs e)
         {
             var button = (Guna2Button)sender;
             var team = (TeamModel)button.Tag;
 
-            if(!TeamInfoPanel.Visible)
+            if (isCreating)
             {
-                TeamInfoPanel.Visible = true;
+                isCreating = false;
+                CreateTeamButton.Text = CreateTeamButtonTextDefault;
+                TeamConfirm.Visible = false;
             }
 
-            ShowAllMembers(team);
+            if (!TeamInfoPanel.Visible)
+                TeamInfoPanel.Visible = true;
+
+            await RefreshAndShowTeamAsync(team);
+        }
+
+        private async Task RefreshAndShowTeamAsync(TeamModel team)
+        {
+            Cursor = Cursors.WaitCursor;
+            try
+            {
+                var sync = await dbManager.SyncTeamProfilesFromApiAsync(team.Id);
+                if (sync?.Team != null)
+                {
+                    team = sync.Team;
+                    UpdateTeamButtonTag(team);
+                }
+
+                if (sync != null && sync.HasChanges)
+                    ShowProfileSyncMessage(sync);
+
+                ShowAllMembers(team);
+            }
+            finally
+            {
+                Cursor = Cursors.Default;
+            }
+        }
+
+        private void UpdateTeamButtonTag(TeamModel team)
+        {
+            foreach (Control control in guna2Panel1.Controls)
+            {
+                if (control is Guna2Button button && button.Tag is TeamModel tagged && tagged.Id == team.Id)
+                    button.Tag = team;
+            }
+
+            int index = currentTeams.FindIndex(t => t.Id == team.Id);
+            if (index >= 0)
+                currentTeams[index] = team;
+        }
+
+        private static void ShowProfileSyncMessage(TeamProfileSyncResult sync)
+        {
+            var lines = new List<string>();
+            if (sync.ChangedPlayers.Count > 0)
+                lines.Add("Игроки: " + string.Join(", ", sync.ChangedPlayers));
+            if (sync.TrainerUpdated)
+                lines.Add("Тренер: обновлены ник или аватар");
+
+            MessageBox.Show(
+                "Данные профилей изменились в Steam и сохранены в базе:\n" + string.Join("\n", lines),
+                "Профили обновлены",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Information);
         }
 
         private void ShowAllMembers(TeamModel team)
@@ -285,10 +391,28 @@ namespace Dota_2_Training_Platform
                 return;
             }
 
-            UserModel trainerUser = currentUser;
-            if (!IsTrainer)
+            TeamProfileSyncResult sync = null;
+            Cursor = Cursors.WaitCursor;
+            try
             {
-                trainerUser = null;
+                sync = await dbManager.SyncTeamProfilesFromApiAsync(currentTeam.Id);
+                if (sync?.Team != null)
+                {
+                    currentTeam = sync.Team;
+                    UpdateTeamButtonTag(currentTeam);
+                }
+
+                if (sync != null && sync.HasChanges)
+                    ShowProfileSyncMessage(sync);
+            }
+            finally
+            {
+                Cursor = Cursors.Default;
+            }
+
+            UserModel trainerUser = sync?.Trainer ?? currentUser;
+            if (!IsTrainer && trainerUser == null)
+            {
                 var trainerInfo = await ApiCourier.TryGetUserInfo(currentTeam.TrainerSteamId);
                 if (trainerInfo.IsSuccess && trainerInfo.Data?.profile != null)
                 {
@@ -316,6 +440,7 @@ namespace Dota_2_Training_Platform
         private void ApplyRolePermissions()
         {
             CreateTeamButton.Visible = IsTrainer;
+            CreateTeamButton.Text = CreateTeamButtonTextDefault;
             TeamConfirm.Visible = false;
             TeamInfoPanel.Visible = false;
             ContinueButton.Visible = false;
