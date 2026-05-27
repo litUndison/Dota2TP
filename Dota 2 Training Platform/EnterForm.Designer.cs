@@ -28,14 +28,18 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.RegistrationButton = new Guna.UI2.WinForms.Guna2GradientButton();
             this.SteamIDTextBox = new Guna.UI2.WinForms.Guna2TextBox();
             this.AuthorizationButton = new Guna.UI2.WinForms.Guna2GradientButton();
             this.PasswordTextBox = new Guna.UI2.WinForms.Guna2TextBox();
             this.TrainerButton = new Guna.UI2.WinForms.Guna2GradientButton();
             this.PlayerButton = new Guna.UI2.WinForms.Guna2GradientButton();
-            this.guna2CheckBox1 = new Guna.UI2.WinForms.Guna2CheckBox();
             this.guna2HtmlLabel1 = new Guna.UI2.WinForms.Guna2HtmlLabel();
+            this.guna2BorderlessForm1 = new Guna.UI2.WinForms.Guna2BorderlessForm(this.components);
+            this.guna2ControlBox1 = new Guna.UI2.WinForms.Guna2ControlBox();
+            this.guna2ControlBox2 = new Guna.UI2.WinForms.Guna2ControlBox();
+            this.guna2CheckBox1 = new Guna.UI2.WinForms.Guna2CheckBox();
             this.SuspendLayout();
             // 
             // RegistrationButton
@@ -54,7 +58,7 @@
             this.RegistrationButton.ForeColor = System.Drawing.Color.White;
             this.RegistrationButton.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.ForwardDiagonal;
             this.RegistrationButton.IndicateFocus = true;
-            this.RegistrationButton.Location = new System.Drawing.Point(89, 297);
+            this.RegistrationButton.Location = new System.Drawing.Point(45, 302);
             this.RegistrationButton.Name = "RegistrationButton";
             this.RegistrationButton.Size = new System.Drawing.Size(160, 43);
             this.RegistrationButton.TabIndex = 7;
@@ -74,11 +78,15 @@
             this.SteamIDTextBox.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(226)))), ((int)(((byte)(226)))));
             this.SteamIDTextBox.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
             this.SteamIDTextBox.DisabledState.PlaceholderForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
+            this.SteamIDTextBox.FillColor = System.Drawing.Color.DarkGray;
             this.SteamIDTextBox.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
             this.SteamIDTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.SteamIDTextBox.ForeColor = System.Drawing.Color.Black;
             this.SteamIDTextBox.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
-            this.SteamIDTextBox.Location = new System.Drawing.Point(69, 38);
+            this.SteamIDTextBox.Location = new System.Drawing.Point(25, 67);
+            this.SteamIDTextBox.Margin = new System.Windows.Forms.Padding(4);
             this.SteamIDTextBox.Name = "SteamIDTextBox";
+            this.SteamIDTextBox.PlaceholderForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
             this.SteamIDTextBox.PlaceholderText = "AccountID";
             this.SteamIDTextBox.SelectedText = "";
             this.SteamIDTextBox.Size = new System.Drawing.Size(200, 38);
@@ -101,7 +109,7 @@
             this.AuthorizationButton.ForeColor = System.Drawing.Color.White;
             this.AuthorizationButton.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.ForwardDiagonal;
             this.AuthorizationButton.IndicateFocus = true;
-            this.AuthorizationButton.Location = new System.Drawing.Point(89, 237);
+            this.AuthorizationButton.Location = new System.Drawing.Point(45, 253);
             this.AuthorizationButton.Name = "AuthorizationButton";
             this.AuthorizationButton.Size = new System.Drawing.Size(160, 43);
             this.AuthorizationButton.TabIndex = 6;
@@ -121,12 +129,17 @@
             this.PasswordTextBox.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(226)))), ((int)(((byte)(226)))));
             this.PasswordTextBox.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
             this.PasswordTextBox.DisabledState.PlaceholderForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(138)))), ((int)(((byte)(138)))), ((int)(((byte)(138)))));
+            this.PasswordTextBox.FillColor = System.Drawing.Color.DarkGray;
             this.PasswordTextBox.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
             this.PasswordTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.PasswordTextBox.ForeColor = System.Drawing.Color.Black;
             this.PasswordTextBox.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
-            this.PasswordTextBox.Location = new System.Drawing.Point(69, 82);
+            this.PasswordTextBox.Location = new System.Drawing.Point(25, 113);
+            this.PasswordTextBox.Margin = new System.Windows.Forms.Padding(4);
             this.PasswordTextBox.Name = "PasswordTextBox";
+            this.PasswordTextBox.Padding = new System.Windows.Forms.Padding(0, 0, 30, 0);
             this.PasswordTextBox.PasswordChar = '*';
+            this.PasswordTextBox.PlaceholderForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
             this.PasswordTextBox.PlaceholderText = "Пароль";
             this.PasswordTextBox.SelectedText = "";
             this.PasswordTextBox.Size = new System.Drawing.Size(200, 38);
@@ -150,7 +163,7 @@
             this.TrainerButton.ForeColor = System.Drawing.Color.White;
             this.TrainerButton.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.ForwardDiagonal;
             this.TrainerButton.IndicateFocus = true;
-            this.TrainerButton.Location = new System.Drawing.Point(69, 183);
+            this.TrainerButton.Location = new System.Drawing.Point(25, 214);
             this.TrainerButton.Name = "TrainerButton";
             this.TrainerButton.Size = new System.Drawing.Size(101, 24);
             this.TrainerButton.TabIndex = 4;
@@ -175,13 +188,56 @@
             this.PlayerButton.ForeColor = System.Drawing.Color.White;
             this.PlayerButton.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.ForwardDiagonal;
             this.PlayerButton.IndicateFocus = true;
-            this.PlayerButton.Location = new System.Drawing.Point(168, 183);
+            this.PlayerButton.Location = new System.Drawing.Point(124, 214);
             this.PlayerButton.Name = "PlayerButton";
             this.PlayerButton.Size = new System.Drawing.Size(101, 24);
             this.PlayerButton.TabIndex = 5;
             this.PlayerButton.Text = "Игрок";
             this.PlayerButton.UseTransparentBackground = true;
             this.PlayerButton.Click += new System.EventHandler(this.PlayerButton_Click);
+            // 
+            // guna2HtmlLabel1
+            // 
+            this.guna2HtmlLabel1.AutoSize = false;
+            this.guna2HtmlLabel1.BackColor = System.Drawing.Color.Transparent;
+            this.guna2HtmlLabel1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.guna2HtmlLabel1.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.guna2HtmlLabel1.Location = new System.Drawing.Point(25, 190);
+            this.guna2HtmlLabel1.Name = "guna2HtmlLabel1";
+            this.guna2HtmlLabel1.Size = new System.Drawing.Size(200, 18);
+            this.guna2HtmlLabel1.TabIndex = 0;
+            this.guna2HtmlLabel1.TabStop = false;
+            this.guna2HtmlLabel1.Text = "Выберите способ входа";
+            this.guna2HtmlLabel1.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // guna2BorderlessForm1
+            // 
+            this.guna2BorderlessForm1.ContainerControl = this;
+            this.guna2BorderlessForm1.DockIndicatorTransparencyValue = 1D;
+            this.guna2BorderlessForm1.DragStartTransparencyValue = 1D;
+            // 
+            // guna2ControlBox1
+            // 
+            this.guna2ControlBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.guna2ControlBox1.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(42)))), ((int)(((byte)(57)))));
+            this.guna2ControlBox1.IconColor = System.Drawing.Color.White;
+            this.guna2ControlBox1.Location = new System.Drawing.Point(208, 0);
+            this.guna2ControlBox1.Margin = new System.Windows.Forms.Padding(2);
+            this.guna2ControlBox1.Name = "guna2ControlBox1";
+            this.guna2ControlBox1.Size = new System.Drawing.Size(42, 24);
+            this.guna2ControlBox1.TabIndex = 8;
+            // 
+            // guna2ControlBox2
+            // 
+            this.guna2ControlBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.guna2ControlBox2.ControlBoxType = Guna.UI2.WinForms.Enums.ControlBoxType.MinimizeBox;
+            this.guna2ControlBox2.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(42)))), ((int)(((byte)(57)))));
+            this.guna2ControlBox2.IconColor = System.Drawing.Color.White;
+            this.guna2ControlBox2.Location = new System.Drawing.Point(166, 0);
+            this.guna2ControlBox2.Margin = new System.Windows.Forms.Padding(2);
+            this.guna2ControlBox2.Name = "guna2ControlBox2";
+            this.guna2ControlBox2.Size = new System.Drawing.Size(42, 24);
+            this.guna2ControlBox2.TabIndex = 9;
             // 
             // guna2CheckBox1
             // 
@@ -190,11 +246,11 @@
             this.guna2CheckBox1.CheckedState.BorderRadius = 0;
             this.guna2CheckBox1.CheckedState.BorderThickness = 0;
             this.guna2CheckBox1.CheckedState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
-            this.guna2CheckBox1.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.guna2CheckBox1.Location = new System.Drawing.Point(69, 126);
+            this.guna2CheckBox1.ForeColor = System.Drawing.SystemColors.ControlLight;
+            this.guna2CheckBox1.Location = new System.Drawing.Point(25, 158);
             this.guna2CheckBox1.Name = "guna2CheckBox1";
             this.guna2CheckBox1.Size = new System.Drawing.Size(127, 17);
-            this.guna2CheckBox1.TabIndex = 3;
+            this.guna2CheckBox1.TabIndex = 10;
             this.guna2CheckBox1.Text = "Отображать пароль";
             this.guna2CheckBox1.UncheckedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(125)))), ((int)(((byte)(137)))), ((int)(((byte)(149)))));
             this.guna2CheckBox1.UncheckedState.BorderRadius = 0;
@@ -202,29 +258,17 @@
             this.guna2CheckBox1.UncheckedState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(125)))), ((int)(((byte)(137)))), ((int)(((byte)(149)))));
             this.guna2CheckBox1.CheckedChanged += new System.EventHandler(this.guna2CheckBox1_CheckedChanged);
             // 
-            // guna2HtmlLabel1
-            // 
-            this.guna2HtmlLabel1.AutoSize = false;
-            this.guna2HtmlLabel1.BackColor = System.Drawing.Color.Transparent;
-            this.guna2HtmlLabel1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.guna2HtmlLabel1.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.guna2HtmlLabel1.Location = new System.Drawing.Point(69, 159);
-            this.guna2HtmlLabel1.Name = "guna2HtmlLabel1";
-            this.guna2HtmlLabel1.Size = new System.Drawing.Size(200, 18);
-            this.guna2HtmlLabel1.TabIndex = 0;
-            this.guna2HtmlLabel1.TabStop = false;
-            this.guna2HtmlLabel1.Text = "Выберите способ входа";
-            this.guna2HtmlLabel1.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
             // EnterForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(83)))), ((int)(((byte)(92)))), ((int)(((byte)(107)))));
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(42)))), ((int)(((byte)(57)))));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.ClientSize = new System.Drawing.Size(334, 361);
-            this.Controls.Add(this.guna2HtmlLabel1);
+            this.ClientSize = new System.Drawing.Size(250, 361);
             this.Controls.Add(this.guna2CheckBox1);
+            this.Controls.Add(this.guna2ControlBox2);
+            this.Controls.Add(this.guna2ControlBox1);
+            this.Controls.Add(this.guna2HtmlLabel1);
             this.Controls.Add(this.PlayerButton);
             this.Controls.Add(this.TrainerButton);
             this.Controls.Add(this.RegistrationButton);
@@ -232,7 +276,7 @@
             this.Controls.Add(this.AuthorizationButton);
             this.Controls.Add(this.PasswordTextBox);
             this.DoubleBuffered = true;
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "EnterForm";
             this.Text = "Dota 2 Training Platrform";
             this.Load += new System.EventHandler(this.Form1_Load);
@@ -248,8 +292,11 @@
         private Guna.UI2.WinForms.Guna2TextBox PasswordTextBox;
         private Guna.UI2.WinForms.Guna2GradientButton TrainerButton;
         private Guna.UI2.WinForms.Guna2GradientButton PlayerButton;
-        private Guna.UI2.WinForms.Guna2CheckBox guna2CheckBox1;
         private Guna.UI2.WinForms.Guna2HtmlLabel guna2HtmlLabel1;
+        private Guna.UI2.WinForms.Guna2BorderlessForm guna2BorderlessForm1;
+        private Guna.UI2.WinForms.Guna2ControlBox guna2ControlBox2;
+        private Guna.UI2.WinForms.Guna2ControlBox guna2ControlBox1;
+        private Guna.UI2.WinForms.Guna2CheckBox guna2CheckBox1;
     }
 }
 

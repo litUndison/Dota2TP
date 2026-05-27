@@ -25,17 +25,16 @@ namespace Dota_2_Training_Platform
             this._playPauseButton = new System.Windows.Forms.Button();
             this._timelineHost = new System.Windows.Forms.Panel();
             this._markersPanel = new System.Windows.Forms.Panel();
-            this._timeline = new System.Windows.Forms.TrackBar();
             this._momentsList = new System.Windows.Forms.ListView();
             this._colTime = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this._colColor = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this._colTitle = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this._colDescription = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.guna2TrackBar1 = new Guna.UI2.WinForms.Guna2TrackBar();
             this._rootLayout.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this._webView)).BeginInit();
             this._controlsPanel.SuspendLayout();
             this._timelineHost.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this._timeline)).BeginInit();
             this.SuspendLayout();
             // 
             // _rootLayout
@@ -140,8 +139,8 @@ namespace Dota_2_Training_Platform
             // _timelineHost
             // 
             this._timelineHost.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(24)))), ((int)(((byte)(24)))));
+            this._timelineHost.Controls.Add(this.guna2TrackBar1);
             this._timelineHost.Controls.Add(this._markersPanel);
-            this._timelineHost.Controls.Add(this._timeline);
             this._timelineHost.Location = new System.Drawing.Point(2, 423);
             this._timelineHost.Margin = new System.Windows.Forms.Padding(2);
             this._timelineHost.Name = "_timelineHost";
@@ -154,27 +153,11 @@ namespace Dota_2_Training_Platform
             | System.Windows.Forms.AnchorStyles.Right)));
             this._markersPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(70)))), ((int)(((byte)(70)))));
             this._markersPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this._markersPanel.Location = new System.Drawing.Point(8, 22);
+            this._markersPanel.Location = new System.Drawing.Point(0, 22);
             this._markersPanel.Margin = new System.Windows.Forms.Padding(2);
             this._markersPanel.Name = "_markersPanel";
-            this._markersPanel.Size = new System.Drawing.Size(881, 10);
+            this._markersPanel.Size = new System.Drawing.Size(898, 10);
             this._markersPanel.TabIndex = 1;
-            // 
-            // _timeline
-            // 
-            this._timeline.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this._timeline.AutoSize = false;
-            this._timeline.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(24)))), ((int)(((byte)(24)))));
-            this._timeline.LargeChange = 500;
-            this._timeline.Location = new System.Drawing.Point(-2, 2);
-            this._timeline.Margin = new System.Windows.Forms.Padding(2);
-            this._timeline.Maximum = 10000;
-            this._timeline.Name = "_timeline";
-            this._timeline.Size = new System.Drawing.Size(900, 46);
-            this._timeline.SmallChange = 5;
-            this._timeline.TabIndex = 0;
-            this._timeline.TickStyle = System.Windows.Forms.TickStyle.None;
             // 
             // _momentsList
             // 
@@ -215,6 +198,17 @@ namespace Dota_2_Training_Platform
             this._colDescription.Text = "Описание";
             this._colDescription.Width = 700;
             // 
+            // guna2TrackBar1
+            // 
+            this.guna2TrackBar1.Location = new System.Drawing.Point(-2, 0);
+            this.guna2TrackBar1.Maximum = 1000;
+            this.guna2TrackBar1.Name = "guna2TrackBar1";
+            this.guna2TrackBar1.Size = new System.Drawing.Size(900, 23);
+            this.guna2TrackBar1.Style = Guna.UI2.WinForms.Enums.TrackBarStyle.Metro;
+            this.guna2TrackBar1.TabIndex = 2;
+            this.guna2TrackBar1.ThumbColor = System.Drawing.Color.SlateBlue;
+            this.guna2TrackBar1.Value = 0;
+            // 
             // VideoPlayerForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -231,7 +225,6 @@ namespace Dota_2_Training_Platform
             this._controlsPanel.ResumeLayout(false);
             this._controlsPanel.PerformLayout();
             this._timelineHost.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this._timeline)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -245,12 +238,12 @@ namespace Dota_2_Training_Platform
         private System.Windows.Forms.Label _timeLabel;
         private System.Windows.Forms.Button _playPauseButton;
         private System.Windows.Forms.Panel _timelineHost;
-        private System.Windows.Forms.TrackBar _timeline;
         private System.Windows.Forms.ListView _momentsList;
         private System.Windows.Forms.ColumnHeader _colTime;
         private System.Windows.Forms.ColumnHeader _colColor;
         private System.Windows.Forms.ColumnHeader _colTitle;
         private System.Windows.Forms.ColumnHeader _colDescription;
         private System.Windows.Forms.Panel _markersPanel;
+        private Guna.UI2.WinForms.Guna2TrackBar guna2TrackBar1;
     }
 }

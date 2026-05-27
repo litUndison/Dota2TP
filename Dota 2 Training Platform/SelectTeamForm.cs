@@ -232,7 +232,7 @@ namespace Dota_2_Training_Platform
             }
         }
 
-        private async void LoadTeam(object sender, EventArgs e)
+        private void LoadTeam(object sender, EventArgs e)
         {
             var button = (Guna2Button)sender;
             var team = (TeamModel)button.Tag;
@@ -247,58 +247,7 @@ namespace Dota_2_Training_Platform
             if (!TeamInfoPanel.Visible)
                 TeamInfoPanel.Visible = true;
 
-            await RefreshAndShowTeamAsync(team);
-        }
-
-        private async Task RefreshAndShowTeamAsync(TeamModel team)
-        {
-            Cursor = Cursors.WaitCursor;
-            try
-            {
-                var sync = await dbManager.SyncTeamProfilesFromApiAsync(team.Id);
-                if (sync?.Team != null)
-                {
-                    team = sync.Team;
-                    UpdateTeamButtonTag(team);
-                }
-
-                if (sync != null && sync.HasChanges)
-                    ShowProfileSyncMessage(sync);
-
-                ShowAllMembers(team);
-            }
-            finally
-            {
-                Cursor = Cursors.Default;
-            }
-        }
-
-        private void UpdateTeamButtonTag(TeamModel team)
-        {
-            foreach (Control control in guna2Panel1.Controls)
-            {
-                if (control is Guna2Button button && button.Tag is TeamModel tagged && tagged.Id == team.Id)
-                    button.Tag = team;
-            }
-
-            int index = currentTeams.FindIndex(t => t.Id == team.Id);
-            if (index >= 0)
-                currentTeams[index] = team;
-        }
-
-        private static void ShowProfileSyncMessage(TeamProfileSyncResult sync)
-        {
-            var lines = new List<string>();
-            if (sync.ChangedPlayers.Count > 0)
-                lines.Add("Игроки: " + string.Join(", ", sync.ChangedPlayers));
-            if (sync.TrainerUpdated)
-                lines.Add("Тренер: обновлены ник или аватар");
-
-            MessageBox.Show(
-                "Данные профилей изменились в Steam и сохранены в базе:\n" + string.Join("\n", lines),
-                "Профили обновлены",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Information);
+            ShowAllMembers(team);
         }
 
         private void ShowAllMembers(TeamModel team)
@@ -391,28 +340,10 @@ namespace Dota_2_Training_Platform
                 return;
             }
 
-            TeamProfileSyncResult sync = null;
-            Cursor = Cursors.WaitCursor;
-            try
+            UserModel trainerUser = currentUser;
+            if (!IsTrainer)
             {
-                sync = await dbManager.SyncTeamProfilesFromApiAsync(currentTeam.Id);
-                if (sync?.Team != null)
-                {
-                    currentTeam = sync.Team;
-                    UpdateTeamButtonTag(currentTeam);
-                }
-
-                if (sync != null && sync.HasChanges)
-                    ShowProfileSyncMessage(sync);
-            }
-            finally
-            {
-                Cursor = Cursors.Default;
-            }
-
-            UserModel trainerUser = sync?.Trainer ?? currentUser;
-            if (!IsTrainer && trainerUser == null)
-            {
+                trainerUser = null;
                 var trainerInfo = await ApiCourier.TryGetUserInfo(currentTeam.TrainerSteamId);
                 if (trainerInfo.IsSuccess && trainerInfo.Data?.profile != null)
                 {

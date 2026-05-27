@@ -241,11 +241,11 @@ namespace Dota_2_Training_Platform
 
             //размещение кнопок меню над gunaPage
 
-            PanelWithButtons.Parent = this; // форма
-            PanelWithButtons.BringToFront();
+            // PanelWithButtons.Parent = this; // форма
+            // PanelWithButtons.BringToFront();
 
-            PanelWithButtons.Location = new Point(0, PanelWithButtons.Location.Y);
-            PanelWithButtons.Anchor = AnchorStyles.Top | AnchorStyles.Left;
+            // PanelWithButtons.Location = new Point(0, PanelWithButtons.Location.Y);
+            // PanelWithButtons.Anchor = AnchorStyles.Top | AnchorStyles.Left;
 
             guna2TabControl1.SelectedIndexChanged += Guna2TabControl1_SelectedIndexChanged;
 

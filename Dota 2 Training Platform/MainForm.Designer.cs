@@ -31,23 +31,21 @@ namespace Dota_2_Training_Platform
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.guna2TabControl1 = new Guna.UI2.WinForms.Guna2TabControl();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.guna2HtmlLabel3 = new Guna.UI2.WinForms.Guna2HtmlLabel();
             this.TeamPageTasksPanel = new Guna.UI2.WinForms.Guna2Panel();
             this.TeamPageTasksLabel = new Guna.UI2.WinForms.Guna2HtmlLabel();
-            this.TeamName = new Guna.UI2.WinForms.Guna2TextBox();
-            this.PanelWithButtons = new Guna.UI2.WinForms.Guna2Panel();
-            this.ExitButton = new Guna.UI2.WinForms.Guna2Button();
             this.ToEnterFormButton = new Guna.UI2.WinForms.Guna2Button();
             this.ChangeTeamButton = new Guna.UI2.WinForms.Guna2Button();
+            this.TeamName = new Guna.UI2.WinForms.Guna2TextBox();
             this.guna2Panel7 = new Guna.UI2.WinForms.Guna2Panel();
             this.TrainerID = new Guna.UI2.WinForms.Guna2TextBox();
             this.TrainerName = new Guna.UI2.WinForms.Guna2HtmlLabel();
             this.TrainerPicture = new Guna.UI2.WinForms.Guna2PictureBox();
             this.EditConfirm = new Guna.UI2.WinForms.Guna2Button();
-            this.DeleteTeamButton = new Guna.UI2.WinForms.Guna2Button();
             this.EditSwitcher = new Guna.UI2.WinForms.Guna2Button();
             this.guna2Panel5 = new Guna.UI2.WinForms.Guna2Panel();
             this.PlayerID5 = new Guna.UI2.WinForms.Guna2TextBox();
@@ -69,6 +67,7 @@ namespace Dota_2_Training_Platform
             this.PlayerID1 = new Guna.UI2.WinForms.Guna2TextBox();
             this.PlayerName1 = new Guna.UI2.WinForms.Guna2HtmlLabel();
             this.PlayerPicture1 = new Guna.UI2.WinForms.Guna2PictureBox();
+            this.DeleteTeamButton = new Guna.UI2.WinForms.Guna2Button();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.comparePlayersBtn = new Guna.UI2.WinForms.Guna2Button();
             this.AiAdviceButton = new Guna.UI2.WinForms.Guna2Button();
@@ -135,9 +134,11 @@ namespace Dota_2_Training_Platform
             this.recordStatusLabel = new System.Windows.Forms.Label();
             this.TitleLabel = new System.Windows.Forms.Label();
             this.RecordStartButton = new Guna.UI2.WinForms.Guna2Button();
+            this.guna2BorderlessForm1 = new Guna.UI2.WinForms.Guna2BorderlessForm(this.components);
+            this.guna2ControlBox1 = new Guna.UI2.WinForms.Guna2ControlBox();
+            this.guna2ControlBox2 = new Guna.UI2.WinForms.Guna2ControlBox();
             this.guna2TabControl1.SuspendLayout();
             this.tabPage2.SuspendLayout();
-            this.PanelWithButtons.SuspendLayout();
             this.guna2Panel7.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.TrainerPicture)).BeginInit();
             this.guna2Panel5.SuspendLayout();
@@ -173,7 +174,7 @@ namespace Dota_2_Training_Platform
             this.guna2TabControl1.Controls.Add(this.tabPage6);
             this.guna2TabControl1.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.guna2TabControl1.ItemSize = new System.Drawing.Size(180, 40);
-            this.guna2TabControl1.Location = new System.Drawing.Point(0, 0);
+            this.guna2TabControl1.Location = new System.Drawing.Point(0, 24);
             this.guna2TabControl1.Name = "guna2TabControl1";
             this.guna2TabControl1.SelectedIndex = 0;
             this.guna2TabControl1.Size = new System.Drawing.Size(1185, 765);
@@ -202,7 +203,6 @@ namespace Dota_2_Training_Platform
             this.tabPage2.Controls.Add(this.TeamPageTasksPanel);
             this.tabPage2.Controls.Add(this.TeamPageTasksLabel);
             this.tabPage2.Controls.Add(this.TeamName);
-            this.tabPage2.Controls.Add(this.PanelWithButtons);
             this.tabPage2.Controls.Add(this.guna2Panel7);
             this.tabPage2.Controls.Add(this.EditConfirm);
             this.tabPage2.Controls.Add(this.EditSwitcher);
@@ -254,6 +254,40 @@ namespace Dota_2_Training_Platform
             this.TeamPageTasksLabel.Text = "Актуальные тренировки";
             this.TeamPageTasksLabel.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // ToEnterFormButton
+            // 
+            this.ToEnterFormButton.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
+            this.ToEnterFormButton.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
+            this.ToEnterFormButton.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.ToEnterFormButton.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.ToEnterFormButton.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(42)))), ((int)(((byte)(57)))));
+            this.ToEnterFormButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ToEnterFormButton.ForeColor = System.Drawing.Color.Silver;
+            this.ToEnterFormButton.Location = new System.Drawing.Point(0, -1);
+            this.ToEnterFormButton.Margin = new System.Windows.Forms.Padding(0);
+            this.ToEnterFormButton.Name = "ToEnterFormButton";
+            this.ToEnterFormButton.Size = new System.Drawing.Size(180, 24);
+            this.ToEnterFormButton.TabIndex = 1;
+            this.ToEnterFormButton.Text = "К окну входа";
+            this.ToEnterFormButton.Click += new System.EventHandler(this.ToEnterFormButton_Click);
+            // 
+            // ChangeTeamButton
+            // 
+            this.ChangeTeamButton.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
+            this.ChangeTeamButton.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
+            this.ChangeTeamButton.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.ChangeTeamButton.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.ChangeTeamButton.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(42)))), ((int)(((byte)(57)))));
+            this.ChangeTeamButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ChangeTeamButton.ForeColor = System.Drawing.Color.Silver;
+            this.ChangeTeamButton.Location = new System.Drawing.Point(180, -1);
+            this.ChangeTeamButton.Margin = new System.Windows.Forms.Padding(0);
+            this.ChangeTeamButton.Name = "ChangeTeamButton";
+            this.ChangeTeamButton.Size = new System.Drawing.Size(180, 24);
+            this.ChangeTeamButton.TabIndex = 0;
+            this.ChangeTeamButton.Text = "Сменить команду";
+            this.ChangeTeamButton.Click += new System.EventHandler(this.ChangeTeamButton_Click);
+            // 
             // TeamName
             // 
             this.TeamName.BorderRadius = 1;
@@ -275,64 +309,6 @@ namespace Dota_2_Training_Platform
             this.TeamName.Size = new System.Drawing.Size(310, 42);
             this.TeamName.TabIndex = 24;
             this.TeamName.TextChanged += new System.EventHandler(this.TeamName_TextChanged);
-            // 
-            // PanelWithButtons
-            // 
-            this.PanelWithButtons.Controls.Add(this.ExitButton);
-            this.PanelWithButtons.Controls.Add(this.ToEnterFormButton);
-            this.PanelWithButtons.Controls.Add(this.ChangeTeamButton);
-            this.PanelWithButtons.Location = new System.Drawing.Point(877, 622);
-            this.PanelWithButtons.Name = "PanelWithButtons";
-            this.PanelWithButtons.Size = new System.Drawing.Size(180, 135);
-            this.PanelWithButtons.TabIndex = 30;
-            // 
-            // ExitButton
-            // 
-            this.ExitButton.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
-            this.ExitButton.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
-            this.ExitButton.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
-            this.ExitButton.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
-            this.ExitButton.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(130)))), ((int)(((byte)(42)))), ((int)(((byte)(57)))));
-            this.ExitButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ExitButton.ForeColor = System.Drawing.Color.Silver;
-            this.ExitButton.Location = new System.Drawing.Point(0, 89);
-            this.ExitButton.Name = "ExitButton";
-            this.ExitButton.Size = new System.Drawing.Size(180, 45);
-            this.ExitButton.TabIndex = 2;
-            this.ExitButton.Text = "Выход";
-            this.ExitButton.Click += new System.EventHandler(this.ExitButton_Click);
-            // 
-            // ToEnterFormButton
-            // 
-            this.ToEnterFormButton.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
-            this.ToEnterFormButton.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
-            this.ToEnterFormButton.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
-            this.ToEnterFormButton.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
-            this.ToEnterFormButton.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(42)))), ((int)(((byte)(57)))));
-            this.ToEnterFormButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ToEnterFormButton.ForeColor = System.Drawing.Color.Silver;
-            this.ToEnterFormButton.Location = new System.Drawing.Point(0, 45);
-            this.ToEnterFormButton.Name = "ToEnterFormButton";
-            this.ToEnterFormButton.Size = new System.Drawing.Size(180, 45);
-            this.ToEnterFormButton.TabIndex = 1;
-            this.ToEnterFormButton.Text = "К окну входа";
-            this.ToEnterFormButton.Click += new System.EventHandler(this.ToEnterFormButton_Click);
-            // 
-            // ChangeTeamButton
-            // 
-            this.ChangeTeamButton.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
-            this.ChangeTeamButton.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
-            this.ChangeTeamButton.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
-            this.ChangeTeamButton.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
-            this.ChangeTeamButton.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(42)))), ((int)(((byte)(57)))));
-            this.ChangeTeamButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ChangeTeamButton.ForeColor = System.Drawing.Color.Silver;
-            this.ChangeTeamButton.Location = new System.Drawing.Point(0, 0);
-            this.ChangeTeamButton.Name = "ChangeTeamButton";
-            this.ChangeTeamButton.Size = new System.Drawing.Size(180, 45);
-            this.ChangeTeamButton.TabIndex = 0;
-            this.ChangeTeamButton.Text = "Сменить команду";
-            this.ChangeTeamButton.Click += new System.EventHandler(this.ChangeTeamButton_Click);
             // 
             // guna2Panel7
             // 
@@ -409,23 +385,6 @@ namespace Dota_2_Training_Platform
             this.EditConfirm.Text = "Применить изменения";
             this.EditConfirm.Visible = false;
             this.EditConfirm.Click += new System.EventHandler(this.EditConfirm_Click);
-            // 
-            // DeleteTeamButton
-            // 
-            this.DeleteTeamButton.Animated = true;
-            this.DeleteTeamButton.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
-            this.DeleteTeamButton.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
-            this.DeleteTeamButton.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
-            this.DeleteTeamButton.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
-            this.DeleteTeamButton.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
-            this.DeleteTeamButton.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.DeleteTeamButton.ForeColor = System.Drawing.Color.White;
-            this.DeleteTeamButton.Location = new System.Drawing.Point(778, 686);
-            this.DeleteTeamButton.Name = "DeleteTeamButton";
-            this.DeleteTeamButton.Size = new System.Drawing.Size(210, 44);
-            this.DeleteTeamButton.TabIndex = 0;
-            this.DeleteTeamButton.Text = "Удалить команду";
-            this.DeleteTeamButton.Click += new System.EventHandler(this.DeleteTeamButton_Click);
             // 
             // EditSwitcher
             // 
@@ -734,6 +693,23 @@ namespace Dota_2_Training_Platform
             this.PlayerPicture1.TabIndex = 22;
             this.PlayerPicture1.TabStop = false;
             this.PlayerPicture1.Click += new System.EventHandler(this.PlayerPicture1_Click);
+            // 
+            // DeleteTeamButton
+            // 
+            this.DeleteTeamButton.Animated = true;
+            this.DeleteTeamButton.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
+            this.DeleteTeamButton.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
+            this.DeleteTeamButton.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.DeleteTeamButton.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.DeleteTeamButton.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
+            this.DeleteTeamButton.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.DeleteTeamButton.ForeColor = System.Drawing.Color.White;
+            this.DeleteTeamButton.Location = new System.Drawing.Point(778, 686);
+            this.DeleteTeamButton.Name = "DeleteTeamButton";
+            this.DeleteTeamButton.Size = new System.Drawing.Size(210, 44);
+            this.DeleteTeamButton.TabIndex = 0;
+            this.DeleteTeamButton.Text = "Удалить команду";
+            this.DeleteTeamButton.Click += new System.EventHandler(this.DeleteTeamButton_Click);
             // 
             // tabPage3
             // 
@@ -1593,13 +1569,49 @@ namespace Dota_2_Training_Platform
             this.RecordStartButton.TabIndex = 0;
             this.RecordStartButton.Text = "Начать запись";
             // 
+            // guna2BorderlessForm1
+            // 
+            this.guna2BorderlessForm1.ContainerControl = this;
+            this.guna2BorderlessForm1.DockIndicatorTransparencyValue = 0.6D;
+            this.guna2BorderlessForm1.DragStartTransparencyValue = 1D;
+            this.guna2BorderlessForm1.HasFormShadow = false;
+            this.guna2BorderlessForm1.ResizeForm = false;
+            // 
+            // guna2ControlBox1
+            // 
+            this.guna2ControlBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.guna2ControlBox1.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(42)))), ((int)(((byte)(57)))));
+            this.guna2ControlBox1.IconColor = System.Drawing.Color.White;
+            this.guna2ControlBox1.Location = new System.Drawing.Point(1143, 0);
+            this.guna2ControlBox1.Margin = new System.Windows.Forms.Padding(0);
+            this.guna2ControlBox1.Name = "guna2ControlBox1";
+            this.guna2ControlBox1.Size = new System.Drawing.Size(42, 24);
+            this.guna2ControlBox1.TabIndex = 1;
+            // 
+            // guna2ControlBox2
+            // 
+            this.guna2ControlBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.guna2ControlBox2.ControlBoxType = Guna.UI2.WinForms.Enums.ControlBoxType.MinimizeBox;
+            this.guna2ControlBox2.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(42)))), ((int)(((byte)(57)))));
+            this.guna2ControlBox2.IconColor = System.Drawing.Color.White;
+            this.guna2ControlBox2.Location = new System.Drawing.Point(1101, 0);
+            this.guna2ControlBox2.Margin = new System.Windows.Forms.Padding(0);
+            this.guna2ControlBox2.Name = "guna2ControlBox2";
+            this.guna2ControlBox2.Size = new System.Drawing.Size(42, 24);
+            this.guna2ControlBox2.TabIndex = 2;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1184, 752);
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(42)))), ((int)(((byte)(57)))));
+            this.ClientSize = new System.Drawing.Size(1184, 763);
+            this.Controls.Add(this.guna2ControlBox2);
+            this.Controls.Add(this.ToEnterFormButton);
+            this.Controls.Add(this.guna2ControlBox1);
+            this.Controls.Add(this.ChangeTeamButton);
             this.Controls.Add(this.guna2TabControl1);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.MaximizeBox = false;
             this.Name = "MainForm";
             this.Text = "Dota 2 Training Polygon";
@@ -1607,7 +1619,6 @@ namespace Dota_2_Training_Platform
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.guna2TabControl1.ResumeLayout(false);
             this.tabPage2.ResumeLayout(false);
-            this.PanelWithButtons.ResumeLayout(false);
             this.guna2Panel7.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.TrainerPicture)).EndInit();
             this.guna2Panel5.ResumeLayout(false);
@@ -1669,9 +1680,7 @@ namespace Dota_2_Training_Platform
         private Guna.UI2.WinForms.Guna2TextBox TrainerID;
         private Guna.UI2.WinForms.Guna2HtmlLabel TrainerName;
         private Guna.UI2.WinForms.Guna2PictureBox TrainerPicture;
-        private Guna.UI2.WinForms.Guna2Panel PanelWithButtons;
         private Guna.UI2.WinForms.Guna2Button ChangeTeamButton;
-        private Guna.UI2.WinForms.Guna2Button ExitButton;
         private Guna.UI2.WinForms.Guna2Button ToEnterFormButton;
         private Guna.UI2.WinForms.Guna2ComboBox SelectPlayerComboBox;
         private Guna.UI2.WinForms.Guna2Panel SelectedPlayerMatches;
@@ -1740,5 +1749,8 @@ namespace Dota_2_Training_Platform
         private Guna.UI2.WinForms.Guna2Button recordRenameButton;
         private Guna.UI2.WinForms.Guna2Button recordDeleteButton;
         private System.Windows.Forms.ListView recordingsListView;
+        private Guna.UI2.WinForms.Guna2BorderlessForm guna2BorderlessForm1;
+        private Guna.UI2.WinForms.Guna2ControlBox guna2ControlBox2;
+        private Guna.UI2.WinForms.Guna2ControlBox guna2ControlBox1;
     }
 }

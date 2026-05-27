@@ -49,7 +49,7 @@ namespace Dota_2_Training_Platform
             _addMomentButton.Click += AddMomentButton_Click;
             _editMomentButton.Click += EditMomentButton_Click;
             _deleteMomentButton.Click += DeleteMomentButton_Click;
-            _timeline.MouseDown += async (s, e) => 
+            guna2TrackBar1.MouseDown += async (s, e) => 
             { 
                 _isSeeking = true;
                 _startPlayState = _isPlaying;
@@ -57,13 +57,13 @@ namespace Dota_2_Training_Platform
                     "(function(){var v=document.querySelector('video'); if(!v){return false;} if(!v.paused){v.pause();} return !v.paused;})()");
 
             };
-            _timeline.MouseMove += async (s, e) =>
+            guna2TrackBar1.MouseMove += async (s, e) =>
             {
                 if (!_isSeeking) return;
                 
                 await SeekToTrackbarAsync();
             };
-            _timeline.MouseUp += async (s, e) =>
+            guna2TrackBar1.MouseUp += async (s, e) =>
             {
                 await SeekToTrackbarAsync();
                 if(_startPlayState == false)
@@ -167,9 +167,9 @@ namespace Dota_2_Training_Platform
 
                 if (!_isSeeking && _durationSec > 0)
                 {
-                    int max = Math.Max(1, _timeline.Maximum);
+                    int max = Math.Max(1, guna2TrackBar1.Maximum);
                     int value = (int)Math.Max(0, Math.Min(max, (_currentSec / _durationSec) * max));
-                    _timeline.Value = value;
+                    guna2TrackBar1.Value = value;
                 }
 
                 // Когда длительность появляется не сразу, перерисовываем маркеры после её получения.
@@ -200,7 +200,7 @@ namespace Dota_2_Training_Platform
         private async Task SeekToTrackbarAsync()
         {
             if (_webView?.CoreWebView2 == null || _durationSec <= 0) return;
-            double sec = (_timeline.Value / (double)Math.Max(1, _timeline.Maximum)) * _durationSec;
+            double sec = (guna2TrackBar1.Value / (double)Math.Max(1, guna2TrackBar1.Maximum)) * _durationSec;
             await SeekToSecondAsync(sec);
         }
 
@@ -453,5 +453,23 @@ namespace Dota_2_Training_Platform
             public string ColorHex { get; set; }
             public double Second { get; set; }
         }
+
+        //private void _momentsList_MouseDoubleClick(object sender, MouseEventArgs e)
+        //{
+        //    var selected = GetSelectedMoment();
+        //    if (selected == null) return;
+
+        //    var edited = ShowMomentEditor(selected, selected.Second);
+        //    if (edited == null) return;
+
+        //    selected.Title = edited.Title;
+        //    selected.Description = edited.Description;
+        //    selected.ColorHex = edited.ColorHex;
+        //    selected.Second = edited.Second;
+        //    _moments = _moments.OrderBy(m => m.Second).ToList();
+        //    SaveMoments();
+        //    RenderMomentsList();
+        //    RenderMomentMarkers();
+        //}
     }
 }

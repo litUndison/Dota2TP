@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.guna2GradientButton3 = new Guna.UI2.WinForms.Guna2GradientButton();
             this.CreateTeamButton = new Guna.UI2.WinForms.Guna2GradientButton();
             this.guna2Panel1 = new Guna.UI2.WinForms.Guna2Panel();
@@ -55,6 +56,9 @@
             this.guna2Panel3 = new Guna.UI2.WinForms.Guna2Panel();
             this.TeamInfoPanel = new Guna.UI2.WinForms.Guna2Panel();
             this.ContinueButton = new Guna.UI2.WinForms.Guna2GradientButton();
+            this.guna2BorderlessForm1 = new Guna.UI2.WinForms.Guna2BorderlessForm(this.components);
+            this.guna2ControlBox1 = new Guna.UI2.WinForms.Guna2ControlBox();
+            this.guna2ControlBox2 = new Guna.UI2.WinForms.Guna2ControlBox();
             this.guna2Panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.PlayerPicture1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.PlayerPicture2)).BeginInit();
@@ -82,7 +86,7 @@
             this.guna2GradientButton3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.guna2GradientButton3.ForeColor = System.Drawing.Color.White;
             this.guna2GradientButton3.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.ForwardDiagonal;
-            this.guna2GradientButton3.Location = new System.Drawing.Point(286, 534);
+            this.guna2GradientButton3.Location = new System.Drawing.Point(272, 533);
             this.guna2GradientButton3.Name = "guna2GradientButton3";
             this.guna2GradientButton3.Size = new System.Drawing.Size(160, 29);
             this.guna2GradientButton3.TabIndex = 12;
@@ -104,9 +108,9 @@
             this.CreateTeamButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.CreateTeamButton.ForeColor = System.Drawing.Color.White;
             this.CreateTeamButton.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.ForwardDiagonal;
-            this.CreateTeamButton.Location = new System.Drawing.Point(12, 534);
+            this.CreateTeamButton.Location = new System.Drawing.Point(3, 532);
             this.CreateTeamButton.Name = "CreateTeamButton";
-            this.CreateTeamButton.Size = new System.Drawing.Size(254, 29);
+            this.CreateTeamButton.Size = new System.Drawing.Size(263, 29);
             this.CreateTeamButton.TabIndex = 14;
             this.CreateTeamButton.Text = "Добавить команду";
             this.CreateTeamButton.UseTransparentBackground = true;
@@ -115,9 +119,9 @@
             // guna2Panel1
             // 
             this.guna2Panel1.AutoScroll = true;
-            this.guna2Panel1.Location = new System.Drawing.Point(12, 13);
+            this.guna2Panel1.Location = new System.Drawing.Point(3, 11);
             this.guna2Panel1.Name = "guna2Panel1";
-            this.guna2Panel1.Size = new System.Drawing.Size(254, 515);
+            this.guna2Panel1.Size = new System.Drawing.Size(263, 515);
             this.guna2Panel1.TabIndex = 15;
             // 
             // PlayerBox1
@@ -160,7 +164,7 @@
             this.guna2Panel2.Controls.Add(this.PlayerPicture1);
             this.guna2Panel2.Controls.Add(this.guna2HtmlLabel1);
             this.guna2Panel2.Controls.Add(this.PlayerBox1);
-            this.guna2Panel2.Location = new System.Drawing.Point(15, 12);
+            this.guna2Panel2.Location = new System.Drawing.Point(14, 49);
             this.guna2Panel2.Name = "guna2Panel2";
             this.guna2Panel2.Size = new System.Drawing.Size(580, 74);
             this.guna2Panel2.TabIndex = 19;
@@ -374,7 +378,7 @@
             this.TeamNameBox.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
             this.TeamNameBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.TeamNameBox.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
-            this.TeamNameBox.Location = new System.Drawing.Point(479, 13);
+            this.TeamNameBox.Location = new System.Drawing.Point(192, 8);
             this.TeamNameBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.TeamNameBox.Name = "TeamNameBox";
             this.TeamNameBox.PlaceholderText = "Название команды";
@@ -398,7 +402,7 @@
             this.TeamConfirm.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.TeamConfirm.ForeColor = System.Drawing.Color.White;
             this.TeamConfirm.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.ForwardDiagonal;
-            this.TeamConfirm.Location = new System.Drawing.Point(452, 534);
+            this.TeamConfirm.Location = new System.Drawing.Point(438, 533);
             this.TeamConfirm.Name = "TeamConfirm";
             this.TeamConfirm.Size = new System.Drawing.Size(254, 29);
             this.TeamConfirm.TabIndex = 23;
@@ -413,7 +417,7 @@
             this.guna2Panel5.Controls.Add(this.PlayerPicture5);
             this.guna2Panel5.Controls.Add(this.guna2HtmlLabel5);
             this.guna2Panel5.Controls.Add(this.PlayerBox5);
-            this.guna2Panel5.Location = new System.Drawing.Point(15, 372);
+            this.guna2Panel5.Location = new System.Drawing.Point(14, 409);
             this.guna2Panel5.Name = "guna2Panel5";
             this.guna2Panel5.Size = new System.Drawing.Size(580, 74);
             this.guna2Panel5.TabIndex = 21;
@@ -424,7 +428,7 @@
             this.guna2Panel6.Controls.Add(this.PlayerPicture4);
             this.guna2Panel6.Controls.Add(this.PlayerBox4);
             this.guna2Panel6.Controls.Add(this.guna2HtmlLabel4);
-            this.guna2Panel6.Location = new System.Drawing.Point(15, 282);
+            this.guna2Panel6.Location = new System.Drawing.Point(14, 319);
             this.guna2Panel6.Name = "guna2Panel6";
             this.guna2Panel6.Size = new System.Drawing.Size(580, 74);
             this.guna2Panel6.TabIndex = 22;
@@ -435,7 +439,7 @@
             this.guna2Panel4.Controls.Add(this.PlayerPicture3);
             this.guna2Panel4.Controls.Add(this.guna2HtmlLabel3);
             this.guna2Panel4.Controls.Add(this.PlayerBox3);
-            this.guna2Panel4.Location = new System.Drawing.Point(15, 192);
+            this.guna2Panel4.Location = new System.Drawing.Point(14, 229);
             this.guna2Panel4.Name = "guna2Panel4";
             this.guna2Panel4.Size = new System.Drawing.Size(580, 74);
             this.guna2Panel4.TabIndex = 20;
@@ -446,7 +450,7 @@
             this.guna2Panel3.Controls.Add(this.PlayerPicture2);
             this.guna2Panel3.Controls.Add(this.guna2HtmlLabel2);
             this.guna2Panel3.Controls.Add(this.PlayerBox2);
-            this.guna2Panel3.Location = new System.Drawing.Point(15, 102);
+            this.guna2Panel3.Location = new System.Drawing.Point(14, 139);
             this.guna2Panel3.Name = "guna2Panel3";
             this.guna2Panel3.Size = new System.Drawing.Size(580, 74);
             this.guna2Panel3.TabIndex = 20;
@@ -460,11 +464,12 @@
             this.TeamInfoPanel.Controls.Add(this.guna2Panel3);
             this.TeamInfoPanel.Controls.Add(this.guna2Panel6);
             this.TeamInfoPanel.Controls.Add(this.guna2Panel4);
+            this.TeamInfoPanel.Controls.Add(this.TeamNameBox);
             this.TeamInfoPanel.Controls.Add(this.guna2Panel5);
             this.TeamInfoPanel.FillColor = System.Drawing.SystemColors.AppWorkspace;
-            this.TeamInfoPanel.Location = new System.Drawing.Point(286, 66);
+            this.TeamInfoPanel.Location = new System.Drawing.Point(272, 30);
             this.TeamInfoPanel.Name = "TeamInfoPanel";
-            this.TeamInfoPanel.Size = new System.Drawing.Size(608, 462);
+            this.TeamInfoPanel.Size = new System.Drawing.Size(608, 497);
             this.TeamInfoPanel.TabIndex = 24;
             this.TeamInfoPanel.Visible = false;
             // 
@@ -482,7 +487,7 @@
             this.ContinueButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.ContinueButton.ForeColor = System.Drawing.Color.White;
             this.ContinueButton.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.ForwardDiagonal;
-            this.ContinueButton.Location = new System.Drawing.Point(712, 534);
+            this.ContinueButton.Location = new System.Drawing.Point(698, 533);
             this.ContinueButton.Name = "ContinueButton";
             this.ContinueButton.Size = new System.Drawing.Size(182, 29);
             this.ContinueButton.TabIndex = 25;
@@ -491,19 +496,48 @@
             this.ContinueButton.Visible = false;
             this.ContinueButton.Click += new System.EventHandler(this.guna2GradientButton1_Click);
             // 
+            // guna2BorderlessForm1
+            // 
+            this.guna2BorderlessForm1.ContainerControl = this;
+            this.guna2BorderlessForm1.DockIndicatorTransparencyValue = 0.6D;
+            this.guna2BorderlessForm1.ResizeForm = false;
+            // 
+            // guna2ControlBox1
+            // 
+            this.guna2ControlBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.guna2ControlBox1.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(139)))), ((int)(((byte)(152)))), ((int)(((byte)(166)))));
+            this.guna2ControlBox1.IconColor = System.Drawing.Color.White;
+            this.guna2ControlBox1.Location = new System.Drawing.Point(844, 0);
+            this.guna2ControlBox1.Name = "guna2ControlBox1";
+            this.guna2ControlBox1.Size = new System.Drawing.Size(42, 24);
+            this.guna2ControlBox1.TabIndex = 26;
+            // 
+            // guna2ControlBox2
+            // 
+            this.guna2ControlBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.guna2ControlBox2.ControlBoxType = Guna.UI2.WinForms.Enums.ControlBoxType.MinimizeBox;
+            this.guna2ControlBox2.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(139)))), ((int)(((byte)(152)))), ((int)(((byte)(166)))));
+            this.guna2ControlBox2.IconColor = System.Drawing.Color.White;
+            this.guna2ControlBox2.Location = new System.Drawing.Point(802, 0);
+            this.guna2ControlBox2.Name = "guna2ControlBox2";
+            this.guna2ControlBox2.Size = new System.Drawing.Size(42, 24);
+            this.guna2ControlBox2.TabIndex = 27;
+            // 
             // SelectTeamForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(906, 572);
+            this.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.ClientSize = new System.Drawing.Size(886, 567);
+            this.Controls.Add(this.guna2ControlBox2);
+            this.Controls.Add(this.guna2ControlBox1);
             this.Controls.Add(this.ContinueButton);
             this.Controls.Add(this.TeamInfoPanel);
             this.Controls.Add(this.TeamConfirm);
             this.Controls.Add(this.CreateTeamButton);
-            this.Controls.Add(this.TeamNameBox);
             this.Controls.Add(this.guna2Panel1);
             this.Controls.Add(this.guna2GradientButton3);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.MaximizeBox = false;
             this.Name = "SelectTeamForm";
             this.Text = "Dota 2 Training Polygon";
@@ -553,5 +587,8 @@
         private Guna.UI2.WinForms.Guna2Panel guna2Panel3;
         private Guna.UI2.WinForms.Guna2Panel TeamInfoPanel;
         private Guna.UI2.WinForms.Guna2GradientButton ContinueButton;
+        private Guna.UI2.WinForms.Guna2BorderlessForm guna2BorderlessForm1;
+        private Guna.UI2.WinForms.Guna2ControlBox guna2ControlBox2;
+        private Guna.UI2.WinForms.Guna2ControlBox guna2ControlBox1;
     }
 }
