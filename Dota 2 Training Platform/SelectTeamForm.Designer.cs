@@ -86,7 +86,7 @@
             this.guna2GradientButton3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.guna2GradientButton3.ForeColor = System.Drawing.Color.White;
             this.guna2GradientButton3.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.ForwardDiagonal;
-            this.guna2GradientButton3.Location = new System.Drawing.Point(272, 533);
+            this.guna2GradientButton3.Location = new System.Drawing.Point(272, 532);
             this.guna2GradientButton3.Name = "guna2GradientButton3";
             this.guna2GradientButton3.Size = new System.Drawing.Size(160, 29);
             this.guna2GradientButton3.TabIndex = 12;
@@ -402,7 +402,7 @@
             this.TeamConfirm.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.TeamConfirm.ForeColor = System.Drawing.Color.White;
             this.TeamConfirm.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.ForwardDiagonal;
-            this.TeamConfirm.Location = new System.Drawing.Point(438, 533);
+            this.TeamConfirm.Location = new System.Drawing.Point(438, 532);
             this.TeamConfirm.Name = "TeamConfirm";
             this.TeamConfirm.Size = new System.Drawing.Size(254, 29);
             this.TeamConfirm.TabIndex = 23;
@@ -487,7 +487,7 @@
             this.ContinueButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.ContinueButton.ForeColor = System.Drawing.Color.White;
             this.ContinueButton.GradientMode = System.Drawing.Drawing2D.LinearGradientMode.ForwardDiagonal;
-            this.ContinueButton.Location = new System.Drawing.Point(698, 533);
+            this.ContinueButton.Location = new System.Drawing.Point(698, 532);
             this.ContinueButton.Name = "ContinueButton";
             this.ContinueButton.Size = new System.Drawing.Size(182, 29);
             this.ContinueButton.TabIndex = 25;
@@ -501,12 +501,13 @@
             this.guna2BorderlessForm1.ContainerControl = this;
             this.guna2BorderlessForm1.DockIndicatorTransparencyValue = 0.6D;
             this.guna2BorderlessForm1.ResizeForm = false;
+            this.guna2BorderlessForm1.TransparentWhileDrag = true;
             // 
             // guna2ControlBox1
             // 
             this.guna2ControlBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.guna2ControlBox1.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(139)))), ((int)(((byte)(152)))), ((int)(((byte)(166)))));
-            this.guna2ControlBox1.IconColor = System.Drawing.Color.White;
+            this.guna2ControlBox1.FillColor = System.Drawing.Color.Transparent;
+            this.guna2ControlBox1.IconColor = System.Drawing.Color.Black;
             this.guna2ControlBox1.Location = new System.Drawing.Point(844, 0);
             this.guna2ControlBox1.Name = "guna2ControlBox1";
             this.guna2ControlBox1.Size = new System.Drawing.Size(42, 24);
@@ -516,8 +517,8 @@
             // 
             this.guna2ControlBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.guna2ControlBox2.ControlBoxType = Guna.UI2.WinForms.Enums.ControlBoxType.MinimizeBox;
-            this.guna2ControlBox2.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(139)))), ((int)(((byte)(152)))), ((int)(((byte)(166)))));
-            this.guna2ControlBox2.IconColor = System.Drawing.Color.White;
+            this.guna2ControlBox2.FillColor = System.Drawing.Color.Transparent;
+            this.guna2ControlBox2.IconColor = System.Drawing.Color.Black;
             this.guna2ControlBox2.Location = new System.Drawing.Point(802, 0);
             this.guna2ControlBox2.Name = "guna2ControlBox2";
             this.guna2ControlBox2.Size = new System.Drawing.Size(42, 24);

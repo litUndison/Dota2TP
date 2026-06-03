@@ -1,14 +1,14 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <configuration>
   <appSettings>
-    <add key="GeminiApiKey" value="AQ.Ab8RN6Kqul0MknmfzLPn0s12o5_DLUEBZyJo7gjGDEGahkR4aA" />
+    <add key="GeminiApiKey" value="" />
     <add key="GeminiModel" value="gemini-2.5-flash" />
-    <add key="TwitchClientId" value="5dw1oq9csrt0xavpnzo0pn17dwwyek" />
-    <add key="TwitchClientSecret" value="4ljuod5jq0e0cu3nahc0euofcz3qvk" />
+    <add key="TwitchClientId" value="" />
+    <add key="TwitchClientSecret" value="" />
   </appSettings>
-    <startup> 
-        <supportedRuntime version="v4.0" sku=".NETFramework,Version=v4.7.2" />
-    </startup>
+  <startup>
+    <supportedRuntime version="v4.0" sku=".NETFramework,Version=v4.7.2" />
+  </startup>
   <runtime>
     <assemblyBinding xmlns="urn:schemas-microsoft-com:asm.v1">
       <dependentAssembly>

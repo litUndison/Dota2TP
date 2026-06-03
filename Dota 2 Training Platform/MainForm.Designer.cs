@@ -38,8 +38,6 @@ namespace Dota_2_Training_Platform
             this.guna2HtmlLabel3 = new Guna.UI2.WinForms.Guna2HtmlLabel();
             this.TeamPageTasksPanel = new Guna.UI2.WinForms.Guna2Panel();
             this.TeamPageTasksLabel = new Guna.UI2.WinForms.Guna2HtmlLabel();
-            this.ToEnterFormButton = new Guna.UI2.WinForms.Guna2Button();
-            this.ChangeTeamButton = new Guna.UI2.WinForms.Guna2Button();
             this.TeamName = new Guna.UI2.WinForms.Guna2TextBox();
             this.guna2Panel7 = new Guna.UI2.WinForms.Guna2Panel();
             this.TrainerID = new Guna.UI2.WinForms.Guna2TextBox();
@@ -123,6 +121,23 @@ namespace Dota_2_Training_Platform
             this.tabPage5 = new System.Windows.Forms.TabPage();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.webView21 = new Microsoft.Web.WebView2.WinForms.WebView2();
+            this.twitchStreamInfoPanel = new Guna.UI2.WinForms.Guna2Panel();
+            this.twitchInfoTagsLabel = new Guna.UI2.WinForms.Guna2HtmlLabel();
+            this.twitchInfoLanguageLabel = new Guna.UI2.WinForms.Guna2HtmlLabel();
+            this.twitchInfoStartedLabel = new Guna.UI2.WinForms.Guna2HtmlLabel();
+            this.twitchInfoViewersLabel = new Guna.UI2.WinForms.Guna2HtmlLabel();
+            this.twitchInfoStreamerLabel = new Guna.UI2.WinForms.Guna2HtmlLabel();
+            this.twitchInfoTitleLabel = new Guna.UI2.WinForms.Guna2HtmlLabel();
+            this.twitchInfoAvatarPictureBox = new System.Windows.Forms.PictureBox();
+            this.twitchWebToolbarPanel = new Guna.UI2.WinForms.Guna2Panel();
+            this.twitchFullscreenButton = new Guna.UI2.WinForms.Guna2Button();
+            this.twitchLeftPanel = new Guna.UI2.WinForms.Guna2Panel();
+            this.twitchTopStreamsLabel = new Guna.UI2.WinForms.Guna2HtmlLabel();
+            this.twitchStreamsFlowPanel = new System.Windows.Forms.FlowLayoutPanel();
+            this.twitchStreamsStatusLabel = new System.Windows.Forms.Label();
+            this.twitchLeftButtonsPanel = new Guna.UI2.WinForms.Guna2Panel();
+            this.twitchSettingsButton = new Guna.UI2.WinForms.Guna2Button();
+            this.twitchRefreshStreamsButton = new Guna.UI2.WinForms.Guna2Button();
             this.tabPage6 = new System.Windows.Forms.TabPage();
             this.recordingsListView = new System.Windows.Forms.ListView();
             this.recordDeleteButton = new Guna.UI2.WinForms.Guna2Button();
@@ -134,6 +149,8 @@ namespace Dota_2_Training_Platform
             this.recordStatusLabel = new System.Windows.Forms.Label();
             this.TitleLabel = new System.Windows.Forms.Label();
             this.RecordStartButton = new Guna.UI2.WinForms.Guna2Button();
+            this.ToEnterFormButton = new Guna.UI2.WinForms.Guna2Button();
+            this.ChangeTeamButton = new Guna.UI2.WinForms.Guna2Button();
             this.guna2BorderlessForm1 = new Guna.UI2.WinForms.Guna2BorderlessForm(this.components);
             this.guna2ControlBox1 = new Guna.UI2.WinForms.Guna2ControlBox();
             this.guna2ControlBox2 = new Guna.UI2.WinForms.Guna2ControlBox();
@@ -160,6 +177,11 @@ namespace Dota_2_Training_Platform
             this.tabPage4.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.webView21)).BeginInit();
+            this.twitchStreamInfoPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.twitchInfoAvatarPictureBox)).BeginInit();
+            this.twitchWebToolbarPanel.SuspendLayout();
+            this.twitchLeftPanel.SuspendLayout();
+            this.twitchLeftButtonsPanel.SuspendLayout();
             this.tabPage6.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -253,40 +275,6 @@ namespace Dota_2_Training_Platform
             this.TeamPageTasksLabel.TabIndex = 31;
             this.TeamPageTasksLabel.Text = "Актуальные тренировки";
             this.TeamPageTasksLabel.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // ToEnterFormButton
-            // 
-            this.ToEnterFormButton.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
-            this.ToEnterFormButton.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
-            this.ToEnterFormButton.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
-            this.ToEnterFormButton.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
-            this.ToEnterFormButton.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(42)))), ((int)(((byte)(57)))));
-            this.ToEnterFormButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ToEnterFormButton.ForeColor = System.Drawing.Color.Silver;
-            this.ToEnterFormButton.Location = new System.Drawing.Point(0, -1);
-            this.ToEnterFormButton.Margin = new System.Windows.Forms.Padding(0);
-            this.ToEnterFormButton.Name = "ToEnterFormButton";
-            this.ToEnterFormButton.Size = new System.Drawing.Size(180, 24);
-            this.ToEnterFormButton.TabIndex = 1;
-            this.ToEnterFormButton.Text = "К окну входа";
-            this.ToEnterFormButton.Click += new System.EventHandler(this.ToEnterFormButton_Click);
-            // 
-            // ChangeTeamButton
-            // 
-            this.ChangeTeamButton.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
-            this.ChangeTeamButton.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
-            this.ChangeTeamButton.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
-            this.ChangeTeamButton.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
-            this.ChangeTeamButton.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(42)))), ((int)(((byte)(57)))));
-            this.ChangeTeamButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ChangeTeamButton.ForeColor = System.Drawing.Color.Silver;
-            this.ChangeTeamButton.Location = new System.Drawing.Point(180, -1);
-            this.ChangeTeamButton.Margin = new System.Windows.Forms.Padding(0);
-            this.ChangeTeamButton.Name = "ChangeTeamButton";
-            this.ChangeTeamButton.Size = new System.Drawing.Size(180, 24);
-            this.ChangeTeamButton.TabIndex = 0;
-            this.ChangeTeamButton.Text = "Сменить команду";
-            this.ChangeTeamButton.Click += new System.EventHandler(this.ChangeTeamButton_Click);
             // 
             // TeamName
             // 
@@ -1305,7 +1293,7 @@ namespace Dota_2_Training_Platform
             this.DeleteTaskButton.ForeColor = System.Drawing.Color.White;
             this.DeleteTaskButton.Location = new System.Drawing.Point(230, 693);
             this.DeleteTaskButton.Name = "DeleteTaskButton";
-            this.DeleteTaskButton.Size = new System.Drawing.Size(212, 45);
+            this.DeleteTaskButton.Size = new System.Drawing.Size(212, 35);
             this.DeleteTaskButton.TabIndex = 6;
             this.DeleteTaskButton.Text = "Удалить тренировку";
             this.DeleteTaskButton.Click += new System.EventHandler(this.DeleteTaskButton_Click);
@@ -1320,7 +1308,7 @@ namespace Dota_2_Training_Platform
             this.ClearArchiveButton.ForeColor = System.Drawing.Color.White;
             this.ClearArchiveButton.Location = new System.Drawing.Point(640, 693);
             this.ClearArchiveButton.Name = "ClearArchiveButton";
-            this.ClearArchiveButton.Size = new System.Drawing.Size(180, 45);
+            this.ClearArchiveButton.Size = new System.Drawing.Size(180, 35);
             this.ClearArchiveButton.TabIndex = 5;
             this.ClearArchiveButton.Text = "Очистить архив";
             this.ClearArchiveButton.Click += new System.EventHandler(this.ClearArchiveButton_Click);
@@ -1335,7 +1323,7 @@ namespace Dota_2_Training_Platform
             this.guna2Button1.ForeColor = System.Drawing.Color.White;
             this.guna2Button1.Location = new System.Drawing.Point(23, 693);
             this.guna2Button1.Name = "guna2Button1";
-            this.guna2Button1.Size = new System.Drawing.Size(205, 45);
+            this.guna2Button1.Size = new System.Drawing.Size(205, 35);
             this.guna2Button1.TabIndex = 3;
             this.guna2Button1.Text = "Добавить тренировку";
             this.guna2Button1.Click += new System.EventHandler(this.guna2Button1_Click_1);
@@ -1393,6 +1381,9 @@ namespace Dota_2_Training_Platform
             // tabPage1
             // 
             this.tabPage1.Controls.Add(this.webView21);
+            this.tabPage1.Controls.Add(this.twitchStreamInfoPanel);
+            this.tabPage1.Controls.Add(this.twitchWebToolbarPanel);
+            this.tabPage1.Controls.Add(this.twitchLeftPanel);
             this.tabPage1.Location = new System.Drawing.Point(184, 4);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
@@ -1406,12 +1397,212 @@ namespace Dota_2_Training_Platform
             this.webView21.AllowExternalDrop = true;
             this.webView21.CreationProperties = null;
             this.webView21.DefaultBackgroundColor = System.Drawing.Color.White;
-            this.webView21.Location = new System.Drawing.Point(0, -4);
+            this.webView21.Location = new System.Drawing.Point(283, 36);
             this.webView21.Name = "webView21";
-            this.webView21.Size = new System.Drawing.Size(997, 639);
+            this.webView21.Size = new System.Drawing.Size(711, 541);
             this.webView21.Source = new System.Uri("https://www.twitch.tv/directory/category/dota-2", System.UriKind.Absolute);
             this.webView21.TabIndex = 0;
             this.webView21.ZoomFactor = 1D;
+            // 
+            // twitchStreamInfoPanel
+            // 
+            this.twitchStreamInfoPanel.Controls.Add(this.twitchInfoTagsLabel);
+            this.twitchStreamInfoPanel.Controls.Add(this.twitchInfoLanguageLabel);
+            this.twitchStreamInfoPanel.Controls.Add(this.twitchInfoStartedLabel);
+            this.twitchStreamInfoPanel.Controls.Add(this.twitchInfoViewersLabel);
+            this.twitchStreamInfoPanel.Controls.Add(this.twitchInfoStreamerLabel);
+            this.twitchStreamInfoPanel.Controls.Add(this.twitchInfoTitleLabel);
+            this.twitchStreamInfoPanel.Controls.Add(this.twitchInfoAvatarPictureBox);
+            this.twitchStreamInfoPanel.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(245)))), ((int)(((byte)(245)))));
+            this.twitchStreamInfoPanel.Location = new System.Drawing.Point(283, 583);
+            this.twitchStreamInfoPanel.Name = "twitchStreamInfoPanel";
+            this.twitchStreamInfoPanel.Size = new System.Drawing.Size(711, 150);
+            this.twitchStreamInfoPanel.TabIndex = 2;
+            // 
+            // twitchInfoTagsLabel
+            // 
+            this.twitchInfoTagsLabel.BackColor = System.Drawing.Color.Transparent;
+            this.twitchInfoTagsLabel.Font = new System.Drawing.Font("Segoe UI", 8.25F);
+            this.twitchInfoTagsLabel.ForeColor = System.Drawing.Color.DimGray;
+            this.twitchInfoTagsLabel.Location = new System.Drawing.Point(88, 108);
+            this.twitchInfoTagsLabel.Name = "twitchInfoTagsLabel";
+            this.twitchInfoTagsLabel.Size = new System.Drawing.Size(44, 15);
+            this.twitchInfoTagsLabel.TabIndex = 6;
+            this.twitchInfoTagsLabel.Text = "Теги: —";
+            // 
+            // twitchInfoLanguageLabel
+            // 
+            this.twitchInfoLanguageLabel.BackColor = System.Drawing.Color.Transparent;
+            this.twitchInfoLanguageLabel.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.twitchInfoLanguageLabel.Location = new System.Drawing.Point(420, 82);
+            this.twitchInfoLanguageLabel.Name = "twitchInfoLanguageLabel";
+            this.twitchInfoLanguageLabel.Size = new System.Drawing.Size(48, 17);
+            this.twitchInfoLanguageLabel.TabIndex = 5;
+            this.twitchInfoLanguageLabel.Text = "Язык: —";
+            // 
+            // twitchInfoStartedLabel
+            // 
+            this.twitchInfoStartedLabel.BackColor = System.Drawing.Color.Transparent;
+            this.twitchInfoStartedLabel.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.twitchInfoStartedLabel.Location = new System.Drawing.Point(88, 82);
+            this.twitchInfoStartedLabel.Name = "twitchInfoStartedLabel";
+            this.twitchInfoStartedLabel.Size = new System.Drawing.Size(63, 17);
+            this.twitchInfoStartedLabel.TabIndex = 4;
+            this.twitchInfoStartedLabel.Text = "Начало: —";
+            // 
+            // twitchInfoViewersLabel
+            // 
+            this.twitchInfoViewersLabel.BackColor = System.Drawing.Color.Transparent;
+            this.twitchInfoViewersLabel.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.twitchInfoViewersLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(145)))), ((int)(((byte)(70)))), ((int)(((byte)(255)))));
+            this.twitchInfoViewersLabel.Location = new System.Drawing.Point(420, 58);
+            this.twitchInfoViewersLabel.Name = "twitchInfoViewersLabel";
+            this.twitchInfoViewersLabel.Size = new System.Drawing.Size(70, 17);
+            this.twitchInfoViewersLabel.TabIndex = 3;
+            this.twitchInfoViewersLabel.Text = "Зрители: —";
+            // 
+            // twitchInfoStreamerLabel
+            // 
+            this.twitchInfoStreamerLabel.BackColor = System.Drawing.Color.Transparent;
+            this.twitchInfoStreamerLabel.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.twitchInfoStreamerLabel.Location = new System.Drawing.Point(88, 58);
+            this.twitchInfoStreamerLabel.Name = "twitchInfoStreamerLabel";
+            this.twitchInfoStreamerLabel.Size = new System.Drawing.Size(70, 17);
+            this.twitchInfoStreamerLabel.TabIndex = 2;
+            this.twitchInfoStreamerLabel.Text = "Стример: —";
+            // 
+            // twitchInfoTitleLabel
+            // 
+            this.twitchInfoTitleLabel.BackColor = System.Drawing.Color.Transparent;
+            this.twitchInfoTitleLabel.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.twitchInfoTitleLabel.Location = new System.Drawing.Point(88, 12);
+            this.twitchInfoTitleLabel.Name = "twitchInfoTitleLabel";
+            this.twitchInfoTitleLabel.Size = new System.Drawing.Size(212, 19);
+            this.twitchInfoTitleLabel.TabIndex = 1;
+            this.twitchInfoTitleLabel.Text = "Выберите стрим из списка слева";
+            // 
+            // twitchInfoAvatarPictureBox
+            // 
+            this.twitchInfoAvatarPictureBox.BackColor = System.Drawing.Color.White;
+            this.twitchInfoAvatarPictureBox.Location = new System.Drawing.Point(12, 20);
+            this.twitchInfoAvatarPictureBox.Name = "twitchInfoAvatarPictureBox";
+            this.twitchInfoAvatarPictureBox.Size = new System.Drawing.Size(64, 64);
+            this.twitchInfoAvatarPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.twitchInfoAvatarPictureBox.TabIndex = 0;
+            this.twitchInfoAvatarPictureBox.TabStop = false;
+            // 
+            // twitchWebToolbarPanel
+            // 
+            this.twitchWebToolbarPanel.Controls.Add(this.twitchFullscreenButton);
+            this.twitchWebToolbarPanel.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(245)))), ((int)(((byte)(245)))));
+            this.twitchWebToolbarPanel.Location = new System.Drawing.Point(283, 3);
+            this.twitchWebToolbarPanel.Name = "twitchWebToolbarPanel";
+            this.twitchWebToolbarPanel.Size = new System.Drawing.Size(711, 36);
+            this.twitchWebToolbarPanel.TabIndex = 3;
+            // 
+            // twitchFullscreenButton
+            // 
+            this.twitchFullscreenButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.twitchFullscreenButton.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.twitchFullscreenButton.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.twitchFullscreenButton.ForeColor = System.Drawing.Color.White;
+            this.twitchFullscreenButton.Location = new System.Drawing.Point(275, 3);
+            this.twitchFullscreenButton.Name = "twitchFullscreenButton";
+            this.twitchFullscreenButton.Size = new System.Drawing.Size(160, 28);
+            this.twitchFullscreenButton.TabIndex = 0;
+            this.twitchFullscreenButton.Text = "На весь экран";
+            this.twitchFullscreenButton.Click += new System.EventHandler(this.TwitchFullscreenButton_Click);
+            // 
+            // twitchLeftPanel
+            // 
+            this.twitchLeftPanel.Controls.Add(this.twitchTopStreamsLabel);
+            this.twitchLeftPanel.Controls.Add(this.twitchStreamsFlowPanel);
+            this.twitchLeftPanel.Controls.Add(this.twitchStreamsStatusLabel);
+            this.twitchLeftPanel.Controls.Add(this.twitchLeftButtonsPanel);
+            this.twitchLeftPanel.FillColor = System.Drawing.Color.White;
+            this.twitchLeftPanel.Location = new System.Drawing.Point(3, 3);
+            this.twitchLeftPanel.Name = "twitchLeftPanel";
+            this.twitchLeftPanel.Size = new System.Drawing.Size(280, 751);
+            this.twitchLeftPanel.TabIndex = 1;
+            // 
+            // twitchTopStreamsLabel
+            // 
+            this.twitchTopStreamsLabel.AutoSize = false;
+            this.twitchTopStreamsLabel.BackColor = System.Drawing.Color.Transparent;
+            this.twitchTopStreamsLabel.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.twitchTopStreamsLabel.Location = new System.Drawing.Point(6, 3);
+            this.twitchTopStreamsLabel.Name = "twitchTopStreamsLabel";
+            this.twitchTopStreamsLabel.Padding = new System.Windows.Forms.Padding(8, 8, 0, 0);
+            this.twitchTopStreamsLabel.Size = new System.Drawing.Size(268, 31);
+            this.twitchTopStreamsLabel.TabIndex = 0;
+            this.twitchTopStreamsLabel.Text = "Самые просматриваемые стримы";
+            this.twitchTopStreamsLabel.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // twitchStreamsFlowPanel
+            // 
+            this.twitchStreamsFlowPanel.AutoScroll = true;
+            this.twitchStreamsFlowPanel.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+            this.twitchStreamsFlowPanel.Location = new System.Drawing.Point(2, 78);
+            this.twitchStreamsFlowPanel.Name = "twitchStreamsFlowPanel";
+            this.twitchStreamsFlowPanel.Padding = new System.Windows.Forms.Padding(4, 0, 4, 4);
+            this.twitchStreamsFlowPanel.Size = new System.Drawing.Size(274, 621);
+            this.twitchStreamsFlowPanel.TabIndex = 3;
+            this.twitchStreamsFlowPanel.WrapContents = false;
+            // 
+            // twitchStreamsStatusLabel
+            // 
+            this.twitchStreamsStatusLabel.ForeColor = System.Drawing.Color.DimGray;
+            this.twitchStreamsStatusLabel.Location = new System.Drawing.Point(0, 702);
+            this.twitchStreamsStatusLabel.Name = "twitchStreamsStatusLabel";
+            this.twitchStreamsStatusLabel.Padding = new System.Windows.Forms.Padding(8, 0, 8, 6);
+            this.twitchStreamsStatusLabel.Size = new System.Drawing.Size(277, 30);
+            this.twitchStreamsStatusLabel.TabIndex = 2;
+            this.twitchStreamsStatusLabel.Text = "Откройте вкладку для загрузки стримов";
+            this.twitchStreamsStatusLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // twitchLeftButtonsPanel
+            // 
+            this.twitchLeftButtonsPanel.Controls.Add(this.twitchSettingsButton);
+            this.twitchLeftButtonsPanel.Controls.Add(this.twitchRefreshStreamsButton);
+            this.twitchLeftButtonsPanel.FillColor = System.Drawing.Color.White;
+            this.twitchLeftButtonsPanel.Location = new System.Drawing.Point(0, 33);
+            this.twitchLeftButtonsPanel.Name = "twitchLeftButtonsPanel";
+            this.twitchLeftButtonsPanel.Size = new System.Drawing.Size(280, 40);
+            this.twitchLeftButtonsPanel.TabIndex = 4;
+            // 
+            // twitchSettingsButton
+            // 
+            this.twitchSettingsButton.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
+            this.twitchSettingsButton.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
+            this.twitchSettingsButton.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.twitchSettingsButton.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.twitchSettingsButton.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(125)))), ((int)(((byte)(139)))));
+            this.twitchSettingsButton.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.twitchSettingsButton.ForeColor = System.Drawing.Color.White;
+            this.twitchSettingsButton.Location = new System.Drawing.Point(140, 11);
+            this.twitchSettingsButton.Margin = new System.Windows.Forms.Padding(0);
+            this.twitchSettingsButton.Name = "twitchSettingsButton";
+            this.twitchSettingsButton.Size = new System.Drawing.Size(134, 29);
+            this.twitchSettingsButton.TabIndex = 1;
+            this.twitchSettingsButton.Text = "Настройки";
+            this.twitchSettingsButton.Click += new System.EventHandler(this.TwitchSettingsButton_Click);
+            // 
+            // twitchRefreshStreamsButton
+            // 
+            this.twitchRefreshStreamsButton.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
+            this.twitchRefreshStreamsButton.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
+            this.twitchRefreshStreamsButton.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.twitchRefreshStreamsButton.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.twitchRefreshStreamsButton.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(145)))), ((int)(((byte)(70)))), ((int)(((byte)(255)))));
+            this.twitchRefreshStreamsButton.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.twitchRefreshStreamsButton.ForeColor = System.Drawing.Color.White;
+            this.twitchRefreshStreamsButton.Location = new System.Drawing.Point(6, 11);
+            this.twitchRefreshStreamsButton.Margin = new System.Windows.Forms.Padding(0);
+            this.twitchRefreshStreamsButton.Name = "twitchRefreshStreamsButton";
+            this.twitchRefreshStreamsButton.Size = new System.Drawing.Size(134, 29);
+            this.twitchRefreshStreamsButton.TabIndex = 0;
+            this.twitchRefreshStreamsButton.Text = "Обновить";
+            this.twitchRefreshStreamsButton.Click += new System.EventHandler(this.TwitchRefreshStreamsButton_Click);
             // 
             // tabPage6
             // 
@@ -1569,6 +1760,40 @@ namespace Dota_2_Training_Platform
             this.RecordStartButton.TabIndex = 0;
             this.RecordStartButton.Text = "Начать запись";
             // 
+            // ToEnterFormButton
+            // 
+            this.ToEnterFormButton.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
+            this.ToEnterFormButton.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
+            this.ToEnterFormButton.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.ToEnterFormButton.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.ToEnterFormButton.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(42)))), ((int)(((byte)(57)))));
+            this.ToEnterFormButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ToEnterFormButton.ForeColor = System.Drawing.Color.Silver;
+            this.ToEnterFormButton.Location = new System.Drawing.Point(0, -1);
+            this.ToEnterFormButton.Margin = new System.Windows.Forms.Padding(0);
+            this.ToEnterFormButton.Name = "ToEnterFormButton";
+            this.ToEnterFormButton.Size = new System.Drawing.Size(180, 24);
+            this.ToEnterFormButton.TabIndex = 1;
+            this.ToEnterFormButton.Text = "К окну входа";
+            this.ToEnterFormButton.Click += new System.EventHandler(this.ToEnterFormButton_Click);
+            // 
+            // ChangeTeamButton
+            // 
+            this.ChangeTeamButton.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
+            this.ChangeTeamButton.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
+            this.ChangeTeamButton.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.ChangeTeamButton.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.ChangeTeamButton.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(42)))), ((int)(((byte)(57)))));
+            this.ChangeTeamButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ChangeTeamButton.ForeColor = System.Drawing.Color.Silver;
+            this.ChangeTeamButton.Location = new System.Drawing.Point(180, -1);
+            this.ChangeTeamButton.Margin = new System.Windows.Forms.Padding(0);
+            this.ChangeTeamButton.Name = "ChangeTeamButton";
+            this.ChangeTeamButton.Size = new System.Drawing.Size(180, 24);
+            this.ChangeTeamButton.TabIndex = 0;
+            this.ChangeTeamButton.Text = "Сменить команду";
+            this.ChangeTeamButton.Click += new System.EventHandler(this.ChangeTeamButton_Click);
+            // 
             // guna2BorderlessForm1
             // 
             this.guna2BorderlessForm1.ContainerControl = this;
@@ -1576,6 +1801,7 @@ namespace Dota_2_Training_Platform
             this.guna2BorderlessForm1.DragStartTransparencyValue = 1D;
             this.guna2BorderlessForm1.HasFormShadow = false;
             this.guna2BorderlessForm1.ResizeForm = false;
+            this.guna2BorderlessForm1.TransparentWhileDrag = true;
             // 
             // guna2ControlBox1
             // 
@@ -1640,6 +1866,12 @@ namespace Dota_2_Training_Platform
             this.tabPage4.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.webView21)).EndInit();
+            this.twitchStreamInfoPanel.ResumeLayout(false);
+            this.twitchStreamInfoPanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.twitchInfoAvatarPictureBox)).EndInit();
+            this.twitchWebToolbarPanel.ResumeLayout(false);
+            this.twitchLeftPanel.ResumeLayout(false);
+            this.twitchLeftButtonsPanel.ResumeLayout(false);
             this.tabPage6.ResumeLayout(false);
             this.tabPage6.PerformLayout();
             this.ResumeLayout(false);
@@ -1726,6 +1958,23 @@ namespace Dota_2_Training_Platform
         private Guna.UI2.WinForms.Guna2Panel MatchInfoPanel;
         private System.Windows.Forms.TabPage tabPage1;
         private Microsoft.Web.WebView2.WinForms.WebView2 webView21;
+        private Guna.UI2.WinForms.Guna2Panel twitchLeftPanel;
+        private Guna.UI2.WinForms.Guna2HtmlLabel twitchTopStreamsLabel;
+        private Guna.UI2.WinForms.Guna2Panel twitchLeftButtonsPanel;
+        private Guna.UI2.WinForms.Guna2Button twitchRefreshStreamsButton;
+        private Guna.UI2.WinForms.Guna2Button twitchSettingsButton;
+        private System.Windows.Forms.FlowLayoutPanel twitchStreamsFlowPanel;
+        private System.Windows.Forms.Label twitchStreamsStatusLabel;
+        private Guna.UI2.WinForms.Guna2Panel twitchWebToolbarPanel;
+        private Guna.UI2.WinForms.Guna2Button twitchFullscreenButton;
+        private Guna.UI2.WinForms.Guna2Panel twitchStreamInfoPanel;
+        private System.Windows.Forms.PictureBox twitchInfoAvatarPictureBox;
+        private Guna.UI2.WinForms.Guna2HtmlLabel twitchInfoTitleLabel;
+        private Guna.UI2.WinForms.Guna2HtmlLabel twitchInfoStreamerLabel;
+        private Guna.UI2.WinForms.Guna2HtmlLabel twitchInfoViewersLabel;
+        private Guna.UI2.WinForms.Guna2HtmlLabel twitchInfoStartedLabel;
+        private Guna.UI2.WinForms.Guna2HtmlLabel twitchInfoLanguageLabel;
+        private Guna.UI2.WinForms.Guna2HtmlLabel twitchInfoTagsLabel;
         private Guna.UI2.WinForms.Guna2Panel TrainingTasksPanel;
         private Guna.UI2.WinForms.Guna2Button guna2Button1;
         private Guna.UI2.WinForms.Guna2Button DeleteTaskButton;

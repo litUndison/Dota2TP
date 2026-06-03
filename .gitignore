@@ -361,3 +361,14 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+# Local secrets and databases (do not commit)
+**/App.config
+!**/App.config.example
+accountID.txt
+accountId.txt
+twitch_settings.json
+*.db
+TrainingPlatform.db
+TrainingPolygon.db
+records/

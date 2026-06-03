@@ -1,4 +1,5 @@
 using DataBaseManager;
+using Dota_2_Training_Platform.Api;
 using Dota_2_Training_Platform.Functions;
 using Dota_2_Training_Platform.Models;
 using Dota_2_Training_Platform.Models.Trainings;
@@ -73,6 +74,14 @@ namespace Dota_2_Training_Platform
         private Chart teamCompareChart;
         private const string DotaTwitchCategoryUrl = "https://www.twitch.tv/directory/category/dota-2";
         private bool isTwitchForcedRedirect = false;
+        private bool twitchStreamsLoaded;
+        private TwitchStreamInfo selectedTwitchStream;
+        private Panel selectedTwitchStreamCard;
+        private string lastWebViewSyncedLogin;
+        private bool twitchWebViewSyncInProgress;
+        private TwitchSettingsModel _twitchSettings = new TwitchSettingsModel();
+        private readonly Timer _twitchAutoRefreshTimer = new Timer();
+        private static readonly HttpClient TwitchImageHttp = new HttpClient();
         private static readonly HttpClient _aiHttpClient = new HttpClient();
         private static DateTime _aiRateLimitUntilUtc = DateTime.MinValue;
 
@@ -82,7 +91,6 @@ namespace Dota_2_Training_Platform
 
         bool canEdit = false;
 
-        string[] oldIds = new string[5];
         bool selfclose = false;
         Form StartForm;
         Form TeamsForm;
@@ -254,6 +262,7 @@ namespace Dota_2_Training_Platform
             InitializeProgressTab();
             InitializeTasksLoadingLabel();
             InitializeTwitchRestrictions();
+            InitializeTwitchStreamsFeature();
             InitializeRecordingFeature();
             ApplyRolePermissions();
             _ = RefreshTasksAsync();
@@ -266,6 +275,14 @@ namespace Dota_2_Training_Platform
                 await RefreshProgressTabAsync();
                 progressDataDirty = false;
             }
+
+            if (guna2TabControl1.SelectedTab == tabPage1 && !twitchStreamsLoaded)
+            {
+                twitchStreamsLoaded = true;
+                await RefreshTwitchStreamsAsync();
+            }
+
+            UpdateTwitchAutoRefreshTimerState();
         }
         private void InitializeTasksLoadingLabel()
         {
@@ -429,6 +446,133 @@ namespace Dota_2_Training_Platform
             }
             webView21.CoreWebView2.NavigationStarting -= CoreWebView2_NavigationStarting;
             webView21.CoreWebView2.NavigationStarting += CoreWebView2_NavigationStarting;
+            webView21.CoreWebView2.NavigationCompleted -= CoreWebView2_NavigationCompleted;
+            webView21.CoreWebView2.NavigationCompleted += CoreWebView2_NavigationCompleted;
+            webView21.CoreWebView2.HistoryChanged -= CoreWebView2_HistoryChanged;
+            webView21.CoreWebView2.HistoryChanged += CoreWebView2_HistoryChanged;
+        }
+
+        private void CoreWebView2_NavigationCompleted(object sender, CoreWebView2NavigationCompletedEventArgs e)
+        {
+            if (e.IsSuccess)
+                _ = SyncTwitchInfoFromWebViewAsync();
+        }
+
+        private void CoreWebView2_HistoryChanged(object sender, object e)
+        {
+            _ = SyncTwitchInfoFromWebViewAsync();
+        }
+
+        private async Task SyncTwitchInfoFromWebViewAsync()
+        {
+            if (webView21?.CoreWebView2 == null || guna2TabControl1.SelectedTab != tabPage1)
+                return;
+
+            string source = webView21.CoreWebView2.Source;
+            if (string.IsNullOrWhiteSpace(source) && webView21.Source != null)
+                source = webView21.Source.AbsoluteUri;
+
+            if (!Uri.TryCreate(source, UriKind.Absolute, out var uri))
+                return;
+
+            if (!TryGetTwitchChannelLogin(uri, out string login))
+            {
+                if (uri.AbsolutePath.TrimEnd('/').Equals("/directory/category/dota-2", StringComparison.OrdinalIgnoreCase))
+                {
+                    lastWebViewSyncedLogin = null;
+                    ClearTwitchSidebarSelection();
+                    selectedTwitchStream = null;
+                    if (InvokeRequired)
+                        BeginInvoke(new Action(ResetTwitchStreamInfoPanel));
+                    else
+                        ResetTwitchStreamInfoPanel();
+                }
+                return;
+            }
+
+            if (string.Equals(lastWebViewSyncedLogin, login, StringComparison.OrdinalIgnoreCase) &&
+                selectedTwitchStream != null &&
+                string.Equals(selectedTwitchStream.UserLogin, login, StringComparison.OrdinalIgnoreCase))
+            {
+                return;
+            }
+
+            if (twitchWebViewSyncInProgress)
+                return;
+
+            foreach (Control control in twitchStreamsFlowPanel.Controls)
+            {
+                if (control.Tag is TwitchStreamInfo stream &&
+                    string.Equals(stream.UserLogin, login, StringComparison.OrdinalIgnoreCase))
+                {
+                    lastWebViewSyncedLogin = login;
+                    if (InvokeRequired)
+                        BeginInvoke(new Action(() => SelectTwitchStream(stream, (Panel)control, navigateWebView: false)));
+                    else
+                        SelectTwitchStream(stream, (Panel)control, navigateWebView: false);
+                    return;
+                }
+            }
+
+            twitchWebViewSyncInProgress = true;
+            try
+            {
+                var streamInfo = await TwitchApiClient.GetStreamByLoginAsync(login);
+                if (streamInfo == null)
+                    return;
+
+                lastWebViewSyncedLogin = login;
+                void Apply()
+                {
+                    selectedTwitchStream = streamInfo;
+                    ClearTwitchSidebarSelection();
+                    UpdateTwitchStreamInfoPanel(streamInfo);
+                }
+
+                if (InvokeRequired)
+                    BeginInvoke(new Action(Apply));
+                else
+                    Apply();
+            }
+            catch
+            {
+                // Информация снизу необязательна при ручной навигации.
+            }
+            finally
+            {
+                twitchWebViewSyncInProgress = false;
+            }
+        }
+
+        private static bool TryGetTwitchChannelLogin(Uri uri, out string login)
+        {
+            login = null;
+            if (uri == null)
+                return false;
+
+            var host = uri.Host.ToLowerInvariant();
+            if (host != "www.twitch.tv" && host != "twitch.tv")
+                return false;
+
+            var path = uri.AbsolutePath.Trim('/');
+            if (path.Equals("directory/category/dota-2", StringComparison.OrdinalIgnoreCase))
+                return false;
+
+            var match = Regex.Match(path, "^([A-Za-z0-9_]+)$");
+            if (!match.Success)
+                return false;
+
+            login = match.Groups[1].Value;
+            return true;
+        }
+
+        private void ClearTwitchSidebarSelection()
+        {
+            if (selectedTwitchStreamCard != null)
+            {
+                selectedTwitchStreamCard.BackColor = Color.WhiteSmoke;
+                selectedTwitchStreamCard = null;
+            }
         }
 
         private void CoreWebView2_NavigationStarting(object sender, CoreWebView2NavigationStartingEventArgs e)
@@ -479,6 +623,362 @@ namespace Dota_2_Training_Platform
             isTwitchForcedRedirect = true;
             webView21.Source = new Uri(DotaTwitchCategoryUrl);
         }
+
+        private void InitializeTwitchStreamsFeature()
+        {
+            _twitchSettings = TwitchSettingsStorage.Load();
+            _twitchAutoRefreshTimer.Tick += TwitchAutoRefreshTimer_Tick;
+
+            twitchStreamsFlowPanel.Resize += TwitchStreamsFlowPanel_Resize;
+            ApplyTwitchSettingsToUi();
+            ResetTwitchStreamInfoPanel();
+        }
+
+        private void ApplyTwitchSettingsToUi()
+        {
+            //twitchTopStreamsLabel.Text = $"Топ-{_twitchSettings.StreamCount} стримов Dota 2";
+            ApplyTwitchStreamInfoPanelVisibility();
+
+            if (selectedTwitchStream != null)
+                UpdateTwitchStreamInfoPanel(selectedTwitchStream);
+            else
+                ResetTwitchStreamInfoPanel();
+        }
+
+        private void ApplyTwitchStreamInfoPanelVisibility()
+        {
+            twitchInfoTitleLabel.Visible = _twitchSettings.ShowTitle;
+            twitchInfoAvatarPictureBox.Visible = _twitchSettings.ShowAvatar;
+            twitchInfoStreamerLabel.Visible = _twitchSettings.ShowStreamer;
+            twitchInfoViewersLabel.Visible = _twitchSettings.ShowViewers;
+            twitchInfoStartedLabel.Visible = _twitchSettings.ShowStartedAt;
+            twitchInfoLanguageLabel.Visible = _twitchSettings.ShowLanguage;
+            twitchInfoTagsLabel.Visible = _twitchSettings.ShowTags;
+
+            int textLeft = _twitchSettings.ShowAvatar ? 88 : 12;
+            twitchInfoTitleLabel.Left = textLeft;
+            twitchInfoStreamerLabel.Left = textLeft;
+            twitchInfoStartedLabel.Left = textLeft;
+            twitchInfoViewersLabel.Left = _twitchSettings.ShowAvatar ? 420 : textLeft;
+            twitchInfoLanguageLabel.Left = _twitchSettings.ShowAvatar ? 420 : textLeft;
+            twitchInfoTagsLabel.Left = textLeft;
+
+            bool hasSecondRow = _twitchSettings.ShowStreamer || _twitchSettings.ShowViewers;
+            bool hasThirdRow = _twitchSettings.ShowStartedAt || _twitchSettings.ShowLanguage;
+            bool hasAnyInfo = _twitchSettings.ShowTitle || _twitchSettings.ShowAvatar ||
+                              _twitchSettings.ShowStreamer || _twitchSettings.ShowViewers ||
+                              _twitchSettings.ShowStartedAt || _twitchSettings.ShowLanguage ||
+                              _twitchSettings.ShowTags;
+
+            twitchStreamInfoPanel.Visible = hasAnyInfo;
+            twitchStreamInfoPanel.Height = hasAnyInfo
+                ? (_twitchSettings.ShowTags ? 140 : hasThirdRow ? 110 : hasSecondRow ? 86 : 64)
+                : 0;
+        }
+
+        private void UpdateTwitchAutoRefreshTimerState()
+        {
+            bool shouldRun = guna2TabControl1.SelectedTab == tabPage1 &&
+                             _twitchSettings.AutoRefreshEnabled;
+
+            _twitchAutoRefreshTimer.Stop();
+            if (!shouldRun)
+                return;
+
+            _twitchAutoRefreshTimer.Interval = Math.Max(5000, _twitchSettings.RefreshIntervalSeconds * 1000);
+            _twitchAutoRefreshTimer.Start();
+        }
+
+        private async void TwitchAutoRefreshTimer_Tick(object sender, EventArgs e)
+        {
+            if (guna2TabControl1.SelectedTab != tabPage1 || twitchRefreshStreamsButton.Enabled == false)
+                return;
+
+            await RefreshTwitchStreamsAsync();
+        }
+
+        private void TwitchSettingsButton_Click(object sender, EventArgs e)
+        {
+            using (var settingsForm = new TwitchSettingsForm())
+            {
+                settingsForm.SetSettings(_twitchSettings);
+                if (settingsForm.ShowDialog(this) != DialogResult.OK)
+                    return;
+
+                int previousCount = _twitchSettings.StreamCount;
+                _twitchSettings = settingsForm.GetSettings();
+                TwitchSettingsStorage.Save(_twitchSettings);
+                ApplyTwitchSettingsToUi();
+                UpdateTwitchAutoRefreshTimerState();
+
+                if (previousCount != _twitchSettings.StreamCount || twitchStreamsLoaded)
+                    _ = RefreshTwitchStreamsAsync();
+            }
+        }
+
+        private void TwitchFullscreenButton_Click(object sender, EventArgs e)
+        {
+            string streamUrl = selectedTwitchStream?.ChannelUrl;
+            if (string.IsNullOrWhiteSpace(streamUrl) && webView21?.Source != null)
+                streamUrl = webView21.Source.AbsoluteUri;
+
+            if (string.IsNullOrWhiteSpace(streamUrl) ||
+                streamUrl.IndexOf("/directory/category/dota-2", StringComparison.OrdinalIgnoreCase) >= 0)
+            {
+                MessageBox.Show("Сначала выберите стрим из списка.", "Twitch", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            using (var fullscreenForm = new TwitchFullscreenForm(streamUrl))
+            {
+                fullscreenForm.ShowDialog(this);
+            }
+        }
+
+        private void TwitchStreamsFlowPanel_Resize(object sender, EventArgs e)
+        {
+            int cardWidth = Math.Max(twitchStreamsFlowPanel.ClientSize.Width - 28, 220);
+            foreach (Control control in twitchStreamsFlowPanel.Controls)
+            {
+                control.Width = cardWidth;
+                foreach (Control child in control.Controls)
+                {
+                    if (child is Label label && label.Left > 10)
+                        label.Width = cardWidth - 68;
+                }
+            }
+        }
+
+        private void ResetTwitchStreamInfoPanel()
+        {
+            if (_twitchSettings.ShowTitle)
+                twitchInfoTitleLabel.Text = "Выберите стрим из списка слева";
+            if (_twitchSettings.ShowStreamer)
+                twitchInfoStreamerLabel.Text = "Стример: —";
+            if (_twitchSettings.ShowViewers)
+                twitchInfoViewersLabel.Text = "Зрители: —";
+            if (_twitchSettings.ShowStartedAt)
+                twitchInfoStartedLabel.Text = "Начало: —";
+            if (_twitchSettings.ShowLanguage)
+                twitchInfoLanguageLabel.Text = "Язык: —";
+            if (_twitchSettings.ShowTags)
+                twitchInfoTagsLabel.Text = "Теги: —";
+
+            if (_twitchSettings.ShowAvatar)
+            {
+                var oldImage = twitchInfoAvatarPictureBox.Image;
+                twitchInfoAvatarPictureBox.Image = null;
+                oldImage?.Dispose();
+            }
+        }
+
+        private async void TwitchRefreshStreamsButton_Click(object sender, EventArgs e)
+        {
+            await RefreshTwitchStreamsAsync();
+        }
+
+        private async Task RefreshTwitchStreamsAsync()
+        {
+            twitchRefreshStreamsButton.Enabled = false;
+            twitchSettingsButton.Enabled = false;
+            twitchStreamsStatusLabel.Text = "Загрузка стримов...";
+            twitchStreamsFlowPanel.Controls.Clear();
+            selectedTwitchStreamCard = null;
+            string previousLogin = selectedTwitchStream?.UserLogin;
+
+            try
+            {
+                var streams = await TwitchApiClient.GetTopDota2StreamsAsync(_twitchSettings.StreamCount);
+                if (streams.Count == 0)
+                {
+                    twitchStreamsStatusLabel.Text = "Сейчас нет активных стримов Dota 2.";
+                    selectedTwitchStream = null;
+                    ResetTwitchStreamInfoPanel();
+                    return;
+                }
+
+                foreach (var stream in streams)
+                {
+                    var card = CreateTwitchStreamCard(stream);
+                    twitchStreamsFlowPanel.Controls.Add(card);
+                }
+
+                if (!string.IsNullOrWhiteSpace(previousLogin))
+                {
+                    foreach (Control control in twitchStreamsFlowPanel.Controls)
+                    {
+                        if (control.Tag is TwitchStreamInfo stream &&
+                            string.Equals(stream.UserLogin, previousLogin, StringComparison.OrdinalIgnoreCase))
+                        {
+                            SelectTwitchStream(stream, (Panel)control, navigateWebView: false);
+                            break;
+                        }
+                    }
+                }
+
+                twitchStreamsStatusLabel.Text = $"Обновлено: {DateTime.Now:HH:mm:ss}";
+            }
+            catch (Exception ex)
+            {
+                twitchStreamsStatusLabel.Text = ex.Message;
+            }
+            finally
+            {
+                twitchRefreshStreamsButton.Enabled = true;
+                twitchSettingsButton.Enabled = true;
+            }
+        }
+
+        private Panel CreateTwitchStreamCard(TwitchStreamInfo stream)
+        {
+            var card = new Panel
+            {
+                Width = twitchStreamsFlowPanel.ClientSize.Width - 28,
+                Height = 92,
+                Margin = new Padding(0, 0, 0, 8),
+                BackColor = Color.WhiteSmoke,
+                BorderStyle = BorderStyle.FixedSingle,
+                Cursor = Cursors.Hand,
+                Tag = stream
+            };
+
+            var avatar = new PictureBox
+            {
+                Location = new Point(6, 8),
+                Size = new Size(48, 48),
+                SizeMode = PictureBoxSizeMode.Zoom,
+                BackColor = Color.White
+            };
+
+            var titleLabel = new Label
+            {
+                Location = new Point(62, 6),
+                Size = new Size(card.Width - 68, 34),
+                Font = new Font("Segoe UI", 8.25F, FontStyle.Bold),
+                Text = TruncateText(stream.Title, 70)
+            };
+
+            var streamerLabel = new Label
+            {
+                Location = new Point(62, 42),
+                Size = new Size(card.Width - 68, 18),
+                Font = new Font("Segoe UI", 8.25F),
+                ForeColor = Color.DimGray,
+                Text = stream.UserName
+            };
+
+            var viewersLabel = new Label
+            {
+                Location = new Point(62, 62),
+                Size = new Size(card.Width - 68, 18),
+                Font = new Font("Segoe UI", 8.25F, FontStyle.Bold),
+                ForeColor = Color.FromArgb(145, 70, 255),
+                Text = $"{stream.ViewerCount:N0} зрителей"
+            };
+
+            card.Controls.Add(avatar);
+            card.Controls.Add(titleLabel);
+            card.Controls.Add(streamerLabel);
+            card.Controls.Add(viewersLabel);
+
+            void OnCardClick(object s, EventArgs e) => SelectTwitchStream(stream, card);
+            card.Click += OnCardClick;
+            avatar.Click += OnCardClick;
+            titleLabel.Click += OnCardClick;
+            streamerLabel.Click += OnCardClick;
+            viewersLabel.Click += OnCardClick;
+
+            _ = LoadPictureBoxImageAsync(avatar, stream.ProfileImageUrl);
+
+            return card;
+        }
+
+        private void SelectTwitchStream(TwitchStreamInfo stream, Panel card, bool navigateWebView = true)
+        {
+            if (stream == null)
+                return;
+
+            selectedTwitchStream = stream;
+            lastWebViewSyncedLogin = stream.UserLogin;
+
+            if (selectedTwitchStreamCard != null)
+                selectedTwitchStreamCard.BackColor = Color.WhiteSmoke;
+
+            selectedTwitchStreamCard = card;
+            if (selectedTwitchStreamCard != null)
+                selectedTwitchStreamCard.BackColor = Color.FromArgb(230, 220, 255);
+
+            UpdateTwitchStreamInfoPanel(stream);
+
+            if (navigateWebView)
+            {
+                isTwitchForcedRedirect = true;
+                webView21.Source = new Uri(stream.ChannelUrl);
+            }
+        }
+
+        private void UpdateTwitchStreamInfoPanel(TwitchStreamInfo stream)
+        {
+            if (_twitchSettings.ShowTitle)
+                twitchInfoTitleLabel.Text = stream.Title ?? "—";
+            if (_twitchSettings.ShowStreamer)
+                twitchInfoStreamerLabel.Text = $"Стример: {stream.UserName} (@{stream.UserLogin})";
+            if (_twitchSettings.ShowViewers)
+            {
+                twitchInfoViewersLabel.Text = stream.ViewerCount > 0
+                    ? $"Зрители: {stream.ViewerCount:N0}"
+                    : "Зрители: офлайн";
+            }
+            if (_twitchSettings.ShowStartedAt && stream.StartedAtUtc > DateTime.MinValue)
+                twitchInfoStartedLabel.Text = $"Начало: {stream.StartedAtUtc.ToLocalTime():dd.MM.yyyy HH:mm}";
+            else if (_twitchSettings.ShowStartedAt)
+                twitchInfoStartedLabel.Text = "Начало: —";
+            if (_twitchSettings.ShowLanguage)
+                twitchInfoLanguageLabel.Text = $"Язык: {(string.IsNullOrWhiteSpace(stream.Language) ? "—" : stream.Language.ToUpperInvariant())}";
+            if (_twitchSettings.ShowTags)
+            {
+                twitchInfoTagsLabel.Text = stream.Tags != null && stream.Tags.Length > 0
+                    ? "Теги: " + string.Join(", ", stream.Tags)
+                    : "Теги: —";
+            }
+
+            if (_twitchSettings.ShowAvatar)
+                _ = LoadPictureBoxImageAsync(twitchInfoAvatarPictureBox, stream.ProfileImageUrl);
+        }
+
+        private static string TruncateText(string text, int maxLength)
+        {
+            if (string.IsNullOrWhiteSpace(text))
+                return "—";
+
+            return text.Length <= maxLength ? text : text.Substring(0, maxLength - 1) + "…";
+        }
+
+        private static async Task LoadPictureBoxImageAsync(PictureBox pictureBox, string url)
+        {
+            if (pictureBox == null || string.IsNullOrWhiteSpace(url))
+                return;
+
+            try
+            {
+                using (var stream = await TwitchImageHttp.GetStreamAsync(url))
+                using (var image = Image.FromStream(stream))
+                {
+                    if (pictureBox.IsDisposed)
+                        return;
+
+                    var bitmap = new Bitmap(image);
+                    var oldImage = pictureBox.Image;
+                    pictureBox.Image = bitmap;
+                    oldImage?.Dispose();
+                }
+            }
+            catch
+            {
+                // Аватар необязателен — игнорируем ошибки загрузки.
+            }
+        }
+
         private void PlayersComboBoxFill()
         {
             SelectPlayerComboBox.Items.Clear();
@@ -582,7 +1082,6 @@ namespace Dota_2_Training_Platform
 
         private void guna2Button2_Click(object sender, EventArgs e) // переключатель редактирования
         {
-            oldIds = textBoxes.Select(t => t.Text).ToArray();
             SwitchTeamEdit(EditSwitcher);
         }
 
@@ -609,9 +1108,9 @@ namespace Dota_2_Training_Platform
                 for (int i = 0; i < textBoxes.Length; i++)
                 {
                     textBoxes[i].ReadOnly = true;
-                    textBoxes[i].Text = oldIds[i];
                 }
 
+                LoadTeam();
             }
             return canEdit;
         }
