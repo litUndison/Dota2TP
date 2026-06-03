@@ -14,6 +14,7 @@ namespace Dota_2_Training_Platform.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     Name = table.Column<string>(nullable: true),
+                    Login = table.Column<string>(nullable: true),
                     AccountId = table.Column<string>(nullable: true),
                     SteamId = table.Column<string>(nullable: true),
                     Password = table.Column<string>(nullable: true),
@@ -45,6 +46,7 @@ namespace Dota_2_Training_Platform.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     Name = table.Column<string>(nullable: true),
+                    Login = table.Column<string>(nullable: true),
                     AccountId = table.Column<string>(nullable: true),
                     SteamId = table.Column<string>(nullable: true),
                     Password = table.Column<string>(nullable: true),
@@ -149,6 +151,12 @@ namespace Dota_2_Training_Platform.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_Players_Login",
+                table: "Players",
+                column: "Login",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Players_SteamId",
                 table: "Players",
                 column: "SteamId",
@@ -158,6 +166,12 @@ namespace Dota_2_Training_Platform.Migrations
                 name: "IX_TeamPlayers_TeamId_PlayerSteamId",
                 table: "TeamPlayers",
                 columns: new[] { "TeamId", "PlayerSteamId" },
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Trainers_Login",
+                table: "Trainers",
+                column: "Login",
                 unique: true);
 
             migrationBuilder.CreateIndex(

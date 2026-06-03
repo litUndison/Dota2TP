@@ -358,13 +358,14 @@ namespace Dota_2_Training_Platform
             }
 
             Form form2 = new MainForm(currentTeam, currentUser, StartForm, this, userRole, trainerUser);
-            selfExit = true;
+            
             form2.StartPosition = FormStartPosition.Manual;
 
             int x = this.DesktopLocation.X + (this.Width - form2.Width) / 2;
             int y = this.DesktopLocation.Y + (this.Height - form2.Height) / 2;
             form2.Location = new Point(x, y);
             form2.Show();
+            TeamInfoPanel.Visible = false;
             this.Hide();
         }
 

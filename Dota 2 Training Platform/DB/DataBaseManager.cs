@@ -20,20 +20,33 @@ namespace DataBaseManager
 
         private static AppDbContext CreateContext() => new AppDbContext();
 
-        public static void InitializeDatabase()
+        public static async void InitializeDatabase()
         {
-            using (var context = CreateContext())
+            using (var context = new AppDbContext())
             {
-                context.Database.Migrate();
+                await context.Database.MigrateAsync();
             }
         }
 
         #region PlayerMethods
 
-        public static async Task<DotaPlayerProfileModel> AddPlayer(string steamOrAccountId, string password)
+        public static async Task<DotaPlayerProfileModel> AddPlayer(string login, string steamOrAccountId, string password)
         {
             try
             {
+                login = NormalizeLogin(login);
+                if (string.IsNullOrWhiteSpace(login))
+                {
+                    MessageBox.Show("Введите логин.");
+                    return null;
+                }
+
+                if (login.Length < 3)
+                {
+                    MessageBox.Show("Логин должен содержать минимум 3 символа.");
+                    return null;
+                }
+
                 long accountId;
                 string steamId64;
 
@@ -59,6 +72,18 @@ namespace DataBaseManager
 
                 using (var context = CreateContext())
                 {
+                    if (await context.Players.AnyAsync(p => p.Login == login))
+                    {
+                        MessageBox.Show("Пользователь с таким логином уже существует!");
+                        return null;
+                    }
+
+                    if (await context.Trainers.AnyAsync(t => t.Login == login))
+                    {
+                        MessageBox.Show("Этот логин уже занят тренером.");
+                        return null;
+                    }
+
                     if (await context.Players.AnyAsync(p => p.SteamId == steamId64))
                     {
                         MessageBox.Show("Пользователь с таким SteamID уже существует!");
@@ -67,6 +92,7 @@ namespace DataBaseManager
 
                     context.Players.Add(new PlayerEntity
                     {
+                        Login = login,
                         Name = profileInfo.profile.personaname.ToString() ?? "Unknown",
                         AccountId = accountId.ToString(),
                         SteamId = steamId64,
@@ -89,11 +115,24 @@ namespace DataBaseManager
 
         #region TrainerMethods
 
-        public static async Task<DotaPlayerProfileModel> AddTrainer(string steamId, string password)
+        public static async Task<DotaPlayerProfileModel> AddTrainer(string login, string steamOrAccountId, string password)
         {
             try
             {
-                var apiResult = await ApiCourier.TryGetUserInfo(steamId);
+                login = NormalizeLogin(login);
+                if (string.IsNullOrWhiteSpace(login))
+                {
+                    MessageBox.Show("Введите логин.");
+                    return null;
+                }
+
+                if (login.Length < 3)
+                {
+                    MessageBox.Show("Логин должен содержать минимум 3 символа.");
+                    return null;
+                }
+
+                var apiResult = await ApiCourier.TryGetUserInfo(steamOrAccountId);
                 if (!apiResult.IsSuccess)
                 {
                     MessageBox.Show(apiResult.ErrorMessage);
@@ -105,6 +144,17 @@ namespace DataBaseManager
 
                 using (var context = CreateContext())
                 {
+                    if (await context.Trainers.AnyAsync(t => t.Login == login))
+                    {
+                        MessageBox.Show("Тренер с таким логином уже существует!");
+                        return null;
+                    }
+                    if (await context.Players.AnyAsync(p => p.Login == login))
+                    {
+                        MessageBox.Show("Этот логин уже занят игроком.");
+                        return null;
+                    }
+
                     if (await context.Trainers.AnyAsync(t => t.SteamId == profile.steamid.ToString()))
                     {
                         MessageBox.Show("Тренер с таким SteamID уже существует!");
@@ -113,6 +163,7 @@ namespace DataBaseManager
 
                     context.Trainers.Add(new TrainerEntity
                     {
+                        Login = login,
                         Name = profile.personaname.ToString(),
                         AccountId = profile.account_id.ToString(),
                         SteamId = profile.steamid.ToString(),
@@ -129,7 +180,7 @@ namespace DataBaseManager
                         password,
                         profile.avatarfull.ToString()));
 
-                    MessageBox.Show("Trainer saved to database");
+                    //MessageBox.Show("Trainer saved to database");
                     return profileInfo;
                 }
             }
@@ -196,32 +247,45 @@ namespace DataBaseManager
 
         #region GetCurrentUser
 
-        public static UserModel GetPlayer(string steamOrAccountId, string password)
+        public static UserModel GetPlayer(string loginOrLegacyId, string password)
         {
+            string normalizedLogin = NormalizeLogin(loginOrLegacyId);
             using (var context = CreateContext())
             {
                 var entity = context.Players
                     .AsNoTracking()
                     .FirstOrDefault(p =>
-                        (p.SteamId == steamOrAccountId || p.AccountId == steamOrAccountId) &&
-                        p.Password == password);
+                        p.Password == password &&
+                        (p.Login == normalizedLogin ||
+                         p.SteamId == loginOrLegacyId ||
+                         p.AccountId == loginOrLegacyId));
 
                 return entity == null ? null : ToUserModel(entity);
             }
         }
 
-        public static UserModel GetTrainer(string steamOrAccountId, string password)
+        public static UserModel GetTrainer(string loginOrLegacyId, string password)
         {
+            string normalizedLogin = NormalizeLogin(loginOrLegacyId);
             using (var context = CreateContext())
             {
                 var entity = context.Trainers
                     .AsNoTracking()
                     .FirstOrDefault(t =>
-                        (t.SteamId == steamOrAccountId || t.AccountId == steamOrAccountId) &&
-                        t.Password == password);
+                        t.Password == password &&
+                        (t.Login == normalizedLogin ||
+                         t.SteamId == loginOrLegacyId ||
+                         t.AccountId == loginOrLegacyId));
 
                 return entity == null ? null : ToUserModel(entity);
             }
+        }
+
+        private static string NormalizeLogin(string login)
+        {
+            return string.IsNullOrWhiteSpace(login)
+                ? string.Empty
+                : login.Trim().ToLowerInvariant();
         }
 
         #endregion

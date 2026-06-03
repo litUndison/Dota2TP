@@ -28,6 +28,9 @@ namespace Dota_2_Training_Platform.Migrations
                     b.Property<string>("Avatar")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("Login")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Name")
                         .HasColumnType("TEXT");
 
@@ -38,6 +41,9 @@ namespace Dota_2_Training_Platform.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Login")
+                        .IsUnique();
 
                     b.HasIndex("SteamId")
                         .IsUnique();
@@ -103,6 +109,9 @@ namespace Dota_2_Training_Platform.Migrations
                     b.Property<string>("Avatar")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("Login")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Name")
                         .HasColumnType("TEXT");
 
@@ -113,6 +122,9 @@ namespace Dota_2_Training_Platform.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Login")
+                        .IsUnique();
 
                     b.HasIndex("SteamId")
                         .IsUnique();

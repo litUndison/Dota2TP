@@ -37,8 +37,16 @@ namespace Dota_2_Training_Platform.DB
                 .HasIndex(x => x.SteamId)
                 .IsUnique();
 
+            modelBuilder.Entity<PlayerEntity>()
+                .HasIndex(x => x.Login)
+                .IsUnique();
+
             modelBuilder.Entity<TrainerEntity>()
                 .HasIndex(x => x.SteamId)
+                .IsUnique();
+
+            modelBuilder.Entity<TrainerEntity>()
+                .HasIndex(x => x.Login)
                 .IsUnique();
 
             modelBuilder.Entity<TeamPlayerEntity>()

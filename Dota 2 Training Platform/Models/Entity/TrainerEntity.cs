@@ -10,6 +10,7 @@ namespace Dota_2_Training_Platform.Models.Entity
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public string Login { get; set; }
         public string AccountId { get; set; }
         public string SteamId { get; set; }
         public string Password { get; set; }

@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Dota_2_Training_Platform.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260519171507_BaseMig")]
+    [Migration("20260603103137_BaseMig")]
     partial class BaseMig
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -30,6 +30,9 @@ namespace Dota_2_Training_Platform.Migrations
                     b.Property<string>("Avatar")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("Login")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Name")
                         .HasColumnType("TEXT");
 
@@ -40,6 +43,9 @@ namespace Dota_2_Training_Platform.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Login")
+                        .IsUnique();
 
                     b.HasIndex("SteamId")
                         .IsUnique();
@@ -105,6 +111,9 @@ namespace Dota_2_Training_Platform.Migrations
                     b.Property<string>("Avatar")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("Login")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Name")
                         .HasColumnType("TEXT");
 
@@ -115,6 +124,9 @@ namespace Dota_2_Training_Platform.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Login")
+                        .IsUnique();
 
                     b.HasIndex("SteamId")
                         .IsUnique();
