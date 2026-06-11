@@ -365,7 +365,7 @@ FodyWeavers.xsd
 # Local secrets and databases (do not commit)
 **/App.config
 !**/App.config.example
-accountID.txt
+AccountID.txt
 accountId.txt
 twitch_settings.json
 *.db

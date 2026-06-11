@@ -2523,7 +2523,9 @@ namespace Dota_2_Training_Platform
                 taskPanel.Width = hostPanel.Width - 17;
                 taskPanel.Height = 190;
                 taskPanel.FillColor = Color.Gray;
-                taskPanel.BorderThickness = 0;
+                taskPanel.BorderThickness = 1;
+                taskPanel.BorderColor = Color.Black;
+                taskPanel.BorderRadius = 2;
 
                 taskPanel.Top = hostPanel.Controls.Count == 0 ? 10 : hostPanel.Controls[hostPanel.Controls.Count - 1].Bottom + 2;
 
@@ -2540,14 +2542,14 @@ namespace Dota_2_Training_Platform
                     Font = font,
                     AutoSize = true,
                     Location = new Point(13, 31),
-                    Text = "Начало:" + task.StartDate
+                    Text = "Начало: " + task.StartDate
                 });
                 taskPanel.Controls.Add(new Guna2HtmlLabel()
                 {
                     Font = font,
                     AutoSize = true,
                     Location = new Point(13, 54),
-                    Text = "Конец:" + task.Deadline
+                    Text = "Конец: " + task.Deadline
                 });
                 string compare = string.Empty;
                 switch(task.Comparison)
@@ -2667,7 +2669,8 @@ namespace Dota_2_Training_Platform
             if (!isTaskDeleteMode) return;
             var panel = sender as Guna2Panel;
             if (panel == null) return;
-            panel.BorderThickness = 0;
+            panel.BorderThickness = 1;
+            panel.BorderColor = Color.Black;
         }
         private void OpenTask(object sender, EventArgs e)
         {
@@ -2905,7 +2908,8 @@ namespace Dota_2_Training_Platform
             {
                 if (control is Guna2Panel panel)
                 {
-                    panel.BorderThickness = 0;
+                    panel.BorderThickness = 1;
+                    panel.BorderColor = Color.Black;
                 }
             }
         }

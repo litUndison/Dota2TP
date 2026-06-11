@@ -35,11 +35,11 @@ namespace Dota_2_Training_Platform
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.guna2TabControl1 = new Guna.UI2.WinForms.Guna2TabControl();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.guna2HtmlLabel3 = new Guna.UI2.WinForms.Guna2HtmlLabel();
             this.TeamPageTasksPanel = new Guna.UI2.WinForms.Guna2Panel();
             this.TeamPageTasksLabel = new Guna.UI2.WinForms.Guna2HtmlLabel();
             this.TeamName = new Guna.UI2.WinForms.Guna2TextBox();
             this.guna2Panel7 = new Guna.UI2.WinForms.Guna2Panel();
+            this.guna2HtmlLabel3 = new Guna.UI2.WinForms.Guna2HtmlLabel();
             this.TrainerID = new Guna.UI2.WinForms.Guna2TextBox();
             this.TrainerName = new Guna.UI2.WinForms.Guna2HtmlLabel();
             this.TrainerPicture = new Guna.UI2.WinForms.Guna2PictureBox();
@@ -221,7 +221,7 @@ namespace Dota_2_Training_Platform
             // 
             // tabPage2
             // 
-            this.tabPage2.Controls.Add(this.guna2HtmlLabel3);
+            this.tabPage2.BackColor = System.Drawing.Color.WhiteSmoke;
             this.tabPage2.Controls.Add(this.TeamPageTasksPanel);
             this.tabPage2.Controls.Add(this.TeamPageTasksLabel);
             this.tabPage2.Controls.Add(this.TeamName);
@@ -241,27 +241,14 @@ namespace Dota_2_Training_Platform
             this.tabPage2.Size = new System.Drawing.Size(997, 757);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Команда";
-            this.tabPage2.UseVisualStyleBackColor = true;
-            // 
-            // guna2HtmlLabel3
-            // 
-            this.guna2HtmlLabel3.AutoSize = false;
-            this.guna2HtmlLabel3.BackColor = System.Drawing.Color.Transparent;
-            this.guna2HtmlLabel3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.guna2HtmlLabel3.Location = new System.Drawing.Point(342, 6);
-            this.guna2HtmlLabel3.Name = "guna2HtmlLabel3";
-            this.guna2HtmlLabel3.Size = new System.Drawing.Size(295, 30);
-            this.guna2HtmlLabel3.TabIndex = 27;
-            this.guna2HtmlLabel3.Text = "Тренер";
-            this.guna2HtmlLabel3.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // TeamPageTasksPanel
             // 
             this.TeamPageTasksPanel.AutoScroll = true;
             this.TeamPageTasksPanel.BackColor = System.Drawing.Color.Gainsboro;
-            this.TeamPageTasksPanel.Location = new System.Drawing.Point(342, 204);
+            this.TeamPageTasksPanel.Location = new System.Drawing.Point(376, 204);
             this.TeamPageTasksPanel.Name = "TeamPageTasksPanel";
-            this.TeamPageTasksPanel.Size = new System.Drawing.Size(419, 526);
+            this.TeamPageTasksPanel.Size = new System.Drawing.Size(366, 526);
             this.TeamPageTasksPanel.TabIndex = 32;
             // 
             // TeamPageTasksLabel
@@ -269,9 +256,9 @@ namespace Dota_2_Training_Platform
             this.TeamPageTasksLabel.AutoSize = false;
             this.TeamPageTasksLabel.BackColor = System.Drawing.Color.Transparent;
             this.TeamPageTasksLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.TeamPageTasksLabel.Location = new System.Drawing.Point(342, 175);
+            this.TeamPageTasksLabel.Location = new System.Drawing.Point(376, 172);
             this.TeamPageTasksLabel.Name = "TeamPageTasksLabel";
-            this.TeamPageTasksLabel.Size = new System.Drawing.Size(419, 31);
+            this.TeamPageTasksLabel.Size = new System.Drawing.Size(366, 31);
             this.TeamPageTasksLabel.TabIndex = 31;
             this.TeamPageTasksLabel.Text = "Актуальные тренировки";
             this.TeamPageTasksLabel.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
@@ -288,26 +275,39 @@ namespace Dota_2_Training_Platform
             this.TeamName.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
             this.TeamName.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.TeamName.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
-            this.TeamName.Location = new System.Drawing.Point(665, 13);
+            this.TeamName.Location = new System.Drawing.Point(376, 7);
             this.TeamName.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.TeamName.Name = "TeamName";
             this.TeamName.PlaceholderText = "Название команды";
             this.TeamName.ReadOnly = true;
             this.TeamName.SelectedText = "";
-            this.TeamName.Size = new System.Drawing.Size(310, 42);
+            this.TeamName.Size = new System.Drawing.Size(366, 29);
             this.TeamName.TabIndex = 24;
             this.TeamName.TextChanged += new System.EventHandler(this.TeamName_TextChanged);
             // 
             // guna2Panel7
             // 
+            this.guna2Panel7.Controls.Add(this.guna2HtmlLabel3);
             this.guna2Panel7.Controls.Add(this.TrainerID);
             this.guna2Panel7.Controls.Add(this.TrainerName);
             this.guna2Panel7.Controls.Add(this.TrainerPicture);
             this.guna2Panel7.FillColor = System.Drawing.SystemColors.AppWorkspace;
-            this.guna2Panel7.Location = new System.Drawing.Point(342, 39);
+            this.guna2Panel7.Location = new System.Drawing.Point(412, 43);
             this.guna2Panel7.Name = "guna2Panel7";
             this.guna2Panel7.Size = new System.Drawing.Size(295, 130);
             this.guna2Panel7.TabIndex = 29;
+            // 
+            // guna2HtmlLabel3
+            // 
+            this.guna2HtmlLabel3.AutoSize = false;
+            this.guna2HtmlLabel3.BackColor = System.Drawing.Color.Transparent;
+            this.guna2HtmlLabel3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.guna2HtmlLabel3.Location = new System.Drawing.Point(80, 0);
+            this.guna2HtmlLabel3.Name = "guna2HtmlLabel3";
+            this.guna2HtmlLabel3.Size = new System.Drawing.Size(52, 18);
+            this.guna2HtmlLabel3.TabIndex = 27;
+            this.guna2HtmlLabel3.Text = "Тренер";
+            this.guna2HtmlLabel3.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // TrainerID
             // 
@@ -366,9 +366,9 @@ namespace Dota_2_Training_Platform
             this.EditConfirm.FillColor = System.Drawing.Color.Gray;
             this.EditConfirm.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.EditConfirm.ForeColor = System.Drawing.Color.White;
-            this.EditConfirm.Location = new System.Drawing.Point(686, 127);
+            this.EditConfirm.Location = new System.Drawing.Point(761, 611);
             this.EditConfirm.Name = "EditConfirm";
-            this.EditConfirm.Size = new System.Drawing.Size(265, 42);
+            this.EditConfirm.Size = new System.Drawing.Size(227, 32);
             this.EditConfirm.TabIndex = 28;
             this.EditConfirm.Text = "Применить изменения";
             this.EditConfirm.Visible = false;
@@ -384,9 +384,9 @@ namespace Dota_2_Training_Platform
             this.EditSwitcher.FillColor = System.Drawing.Color.Gray;
             this.EditSwitcher.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.EditSwitcher.ForeColor = System.Drawing.Color.White;
-            this.EditSwitcher.Location = new System.Drawing.Point(686, 79);
+            this.EditSwitcher.Location = new System.Drawing.Point(761, 649);
             this.EditSwitcher.Name = "EditSwitcher";
-            this.EditSwitcher.Size = new System.Drawing.Size(265, 42);
+            this.EditSwitcher.Size = new System.Drawing.Size(227, 43);
             this.EditSwitcher.TabIndex = 27;
             this.EditSwitcher.Text = "Включить редактирование";
             this.EditSwitcher.Click += new System.EventHandler(this.guna2Button2_Click);
@@ -397,7 +397,7 @@ namespace Dota_2_Training_Platform
             this.guna2Panel5.Controls.Add(this.PlayerName5);
             this.guna2Panel5.Controls.Add(this.PlayerPicture5);
             this.guna2Panel5.FillColor = System.Drawing.SystemColors.AppWorkspace;
-            this.guna2Panel5.Location = new System.Drawing.Point(6, 600);
+            this.guna2Panel5.Location = new System.Drawing.Point(40, 600);
             this.guna2Panel5.Name = "guna2Panel5";
             this.guna2Panel5.Size = new System.Drawing.Size(295, 130);
             this.guna2Panel5.TabIndex = 25;
@@ -455,7 +455,7 @@ namespace Dota_2_Training_Platform
             this.guna2Panel4.Controls.Add(this.PlayerName4);
             this.guna2Panel4.Controls.Add(this.PlayerPicture4);
             this.guna2Panel4.FillColor = System.Drawing.SystemColors.AppWorkspace;
-            this.guna2Panel4.Location = new System.Drawing.Point(6, 452);
+            this.guna2Panel4.Location = new System.Drawing.Point(40, 452);
             this.guna2Panel4.Name = "guna2Panel4";
             this.guna2Panel4.Size = new System.Drawing.Size(295, 130);
             this.guna2Panel4.TabIndex = 25;
@@ -513,7 +513,7 @@ namespace Dota_2_Training_Platform
             this.guna2Panel3.Controls.Add(this.PlayerName3);
             this.guna2Panel3.Controls.Add(this.PlayerPicture3);
             this.guna2Panel3.FillColor = System.Drawing.SystemColors.AppWorkspace;
-            this.guna2Panel3.Location = new System.Drawing.Point(6, 303);
+            this.guna2Panel3.Location = new System.Drawing.Point(40, 303);
             this.guna2Panel3.Name = "guna2Panel3";
             this.guna2Panel3.Size = new System.Drawing.Size(295, 130);
             this.guna2Panel3.TabIndex = 25;
@@ -571,7 +571,7 @@ namespace Dota_2_Training_Platform
             this.guna2Panel2.Controls.Add(this.PlayerName2);
             this.guna2Panel2.Controls.Add(this.PlayerPicture2);
             this.guna2Panel2.FillColor = System.Drawing.SystemColors.AppWorkspace;
-            this.guna2Panel2.Location = new System.Drawing.Point(6, 154);
+            this.guna2Panel2.Location = new System.Drawing.Point(40, 154);
             this.guna2Panel2.Name = "guna2Panel2";
             this.guna2Panel2.Size = new System.Drawing.Size(295, 130);
             this.guna2Panel2.TabIndex = 25;
@@ -629,7 +629,7 @@ namespace Dota_2_Training_Platform
             this.guna2Panel1.Controls.Add(this.PlayerName1);
             this.guna2Panel1.Controls.Add(this.PlayerPicture1);
             this.guna2Panel1.FillColor = System.Drawing.SystemColors.AppWorkspace;
-            this.guna2Panel1.Location = new System.Drawing.Point(6, 6);
+            this.guna2Panel1.Location = new System.Drawing.Point(40, 6);
             this.guna2Panel1.Name = "guna2Panel1";
             this.guna2Panel1.Size = new System.Drawing.Size(295, 130);
             this.guna2Panel1.TabIndex = 24;
@@ -692,15 +692,16 @@ namespace Dota_2_Training_Platform
             this.DeleteTeamButton.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
             this.DeleteTeamButton.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.DeleteTeamButton.ForeColor = System.Drawing.Color.White;
-            this.DeleteTeamButton.Location = new System.Drawing.Point(778, 686);
+            this.DeleteTeamButton.Location = new System.Drawing.Point(761, 698);
             this.DeleteTeamButton.Name = "DeleteTeamButton";
-            this.DeleteTeamButton.Size = new System.Drawing.Size(210, 44);
+            this.DeleteTeamButton.Size = new System.Drawing.Size(227, 24);
             this.DeleteTeamButton.TabIndex = 0;
             this.DeleteTeamButton.Text = "Удалить команду";
             this.DeleteTeamButton.Click += new System.EventHandler(this.DeleteTeamButton_Click);
             // 
             // tabPage3
             // 
+            this.tabPage3.BackColor = System.Drawing.Color.WhiteSmoke;
             this.tabPage3.Controls.Add(this.comparePlayersBtn);
             this.tabPage3.Controls.Add(this.AiAdviceButton);
             this.tabPage3.Controls.Add(this.MatchInfoPanel);
@@ -715,7 +716,6 @@ namespace Dota_2_Training_Platform
             this.tabPage3.Size = new System.Drawing.Size(997, 757);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Анализ статистики";
-            this.tabPage3.UseVisualStyleBackColor = true;
             // 
             // comparePlayersBtn
             // 
@@ -744,7 +744,7 @@ namespace Dota_2_Training_Platform
             this.AiAdviceButton.ForeColor = System.Drawing.Color.White;
             this.AiAdviceButton.Location = new System.Drawing.Point(681, 695);
             this.AiAdviceButton.Name = "AiAdviceButton";
-            this.AiAdviceButton.Size = new System.Drawing.Size(240, 45);
+            this.AiAdviceButton.Size = new System.Drawing.Size(240, 35);
             this.AiAdviceButton.TabIndex = 53;
             this.AiAdviceButton.Text = "Получить совет AI";
             this.AiAdviceButton.Visible = false;
@@ -916,7 +916,7 @@ namespace Dota_2_Training_Platform
             this.OpenInMatchDetailsForm.ForeColor = System.Drawing.Color.White;
             this.OpenInMatchDetailsForm.Location = new System.Drawing.Point(359, 695);
             this.OpenInMatchDetailsForm.Name = "OpenInMatchDetailsForm";
-            this.OpenInMatchDetailsForm.Size = new System.Drawing.Size(240, 45);
+            this.OpenInMatchDetailsForm.Size = new System.Drawing.Size(240, 35);
             this.OpenInMatchDetailsForm.TabIndex = 51;
             this.OpenInMatchDetailsForm.Text = "Открыть в отдельном окне";
             this.OpenInMatchDetailsForm.Click += new System.EventHandler(this.guna2Button1_Click);
@@ -1268,6 +1268,7 @@ namespace Dota_2_Training_Platform
             // 
             // tabPage4
             // 
+            this.tabPage4.BackColor = System.Drawing.Color.WhiteSmoke;
             this.tabPage4.Controls.Add(this.DeleteTaskButton);
             this.tabPage4.Controls.Add(this.ClearArchiveButton);
             this.tabPage4.Controls.Add(this.guna2Button1);
@@ -1281,7 +1282,6 @@ namespace Dota_2_Training_Platform
             this.tabPage4.Size = new System.Drawing.Size(997, 757);
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "Тренировки";
-            this.tabPage4.UseVisualStyleBackColor = true;
             // 
             // DeleteTaskButton
             // 
@@ -1370,16 +1370,17 @@ namespace Dota_2_Training_Platform
             // 
             // tabPage5
             // 
+            this.tabPage5.BackColor = System.Drawing.Color.WhiteSmoke;
             this.tabPage5.Location = new System.Drawing.Point(184, 4);
             this.tabPage5.Name = "tabPage5";
             this.tabPage5.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage5.Size = new System.Drawing.Size(997, 757);
             this.tabPage5.TabIndex = 5;
             this.tabPage5.Text = "Прогресс";
-            this.tabPage5.UseVisualStyleBackColor = true;
             // 
             // tabPage1
             // 
+            this.tabPage1.BackColor = System.Drawing.Color.WhiteSmoke;
             this.tabPage1.Controls.Add(this.webView21);
             this.tabPage1.Controls.Add(this.twitchStreamInfoPanel);
             this.tabPage1.Controls.Add(this.twitchWebToolbarPanel);
@@ -1390,7 +1391,6 @@ namespace Dota_2_Training_Platform
             this.tabPage1.Size = new System.Drawing.Size(997, 757);
             this.tabPage1.TabIndex = 4;
             this.tabPage1.Text = "Twitch";
-            this.tabPage1.UseVisualStyleBackColor = true;
             // 
             // webView21
             // 
@@ -1606,6 +1606,7 @@ namespace Dota_2_Training_Platform
             // 
             // tabPage6
             // 
+            this.tabPage6.BackColor = System.Drawing.Color.WhiteSmoke;
             this.tabPage6.Controls.Add(this.recordingsListView);
             this.tabPage6.Controls.Add(this.recordDeleteButton);
             this.tabPage6.Controls.Add(this.recordRenameButton);
@@ -1623,7 +1624,6 @@ namespace Dota_2_Training_Platform
             this.tabPage6.Size = new System.Drawing.Size(997, 757);
             this.tabPage6.TabIndex = 6;
             this.tabPage6.Text = "Записи матчей";
-            this.tabPage6.UseVisualStyleBackColor = true;
             // 
             // recordingsListView
             // 
@@ -1801,7 +1801,6 @@ namespace Dota_2_Training_Platform
             this.guna2BorderlessForm1.DragStartTransparencyValue = 1D;
             this.guna2BorderlessForm1.HasFormShadow = false;
             this.guna2BorderlessForm1.ResizeForm = false;
-            this.guna2BorderlessForm1.TransparentWhileDrag = true;
             // 
             // guna2ControlBox1
             // 

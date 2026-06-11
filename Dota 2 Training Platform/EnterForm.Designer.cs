@@ -1,4 +1,4 @@
-﻿namespace Dota_2_Training_Platform
+namespace Dota_2_Training_Platform
 {
     partial class EnterForm
     {
@@ -90,18 +90,20 @@
             this.BackButton.Name = "BackButton";
             this.BackButton.Size = new System.Drawing.Size(72, 24);
             this.BackButton.TabIndex = 2;
+            this.BackButton.TabStop = false;
             this.BackButton.Text = "← Назад";
             this.BackButton.Visible = false;
             this.BackButton.Click += new System.EventHandler(this.BackButton_Click);
             // 
             // stepTitleLabel
             // 
+            this.stepTitleLabel.AutoSize = false;
             this.stepTitleLabel.BackColor = System.Drawing.Color.Transparent;
             this.stepTitleLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
             this.stepTitleLabel.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.stepTitleLabel.Location = new System.Drawing.Point(40, 71);
+            this.stepTitleLabel.Location = new System.Drawing.Point(0, 58);
             this.stepTitleLabel.Name = "stepTitleLabel";
-            this.stepTitleLabel.Size = new System.Drawing.Size(182, 18);
+            this.stepTitleLabel.Size = new System.Drawing.Size(280, 18);
             this.stepTitleLabel.TabIndex = 3;
             this.stepTitleLabel.Text = "Как вы хотите продолжить?";
             this.stepTitleLabel.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
@@ -509,7 +511,6 @@
             this.panelRegisterStep.PerformLayout();
             this.guna2Panel1.ResumeLayout(false);
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
