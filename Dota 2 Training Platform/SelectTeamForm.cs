@@ -1,4 +1,8 @@
-﻿using System;
+﻿using DataBaseManager;
+using Dota_2_Training_Platform.Functions;
+using Dota_2_Training_Platform.Models;
+using Guna.UI2.WinForms;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -7,10 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using DataBaseManager;
-using Dota_2_Training_Platform.Models;
-using Dota_2_Training_Platform.Functions;
-using Guna.UI2.WinForms;
+using static Dota_2_Training_Platform.EnterForm;
 
 namespace Dota_2_Training_Platform
 {
@@ -213,17 +214,18 @@ namespace Dota_2_Training_Platform
             {
                 Guna2Button button = new Guna2Button();
                 button.Animated = true;
-                button.BorderRadius = 0;
+                button.BorderRadius = 1;
                 Font font = new Font(guna2HtmlLabel1.Font, FontStyle.Regular);
                 button.Font = font;
                 button.Text = team.Name;
                 button.Width = 250;
                 button.Height = 35;
-                button.FillColor = Color.FromArgb(50, 10, 10);
+                button.FillColor = IsTrainer ? Color.FromArgb(255, 0, 0, 162) : Color.FromArgb(255, 162, 0, 0);
 
                 button.Top = guna2Panel1.Controls.Count == 0
                     ? 10
                     : guna2Panel1.Controls[guna2Panel1.Controls.Count - 1].Bottom + 2;
+                button.Left = 2;
 
                 button.Tag = team;
                 button.Click += LoadTeam;
@@ -378,5 +380,9 @@ namespace Dota_2_Training_Platform
             ContinueButton.Visible = false;
         }
 
+        private void guna2HtmlLabel6_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

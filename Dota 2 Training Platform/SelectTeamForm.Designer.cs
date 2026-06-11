@@ -59,6 +59,7 @@
             this.guna2BorderlessForm1 = new Guna.UI2.WinForms.Guna2BorderlessForm(this.components);
             this.guna2ControlBox1 = new Guna.UI2.WinForms.Guna2ControlBox();
             this.guna2ControlBox2 = new Guna.UI2.WinForms.Guna2ControlBox();
+            this.guna2HtmlLabel6 = new Guna.UI2.WinForms.Guna2HtmlLabel();
             this.guna2Panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.PlayerPicture1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.PlayerPicture2)).BeginInit();
@@ -119,9 +120,11 @@
             // guna2Panel1
             // 
             this.guna2Panel1.AutoScroll = true;
-            this.guna2Panel1.Location = new System.Drawing.Point(3, 11);
+            this.guna2Panel1.BackColor = System.Drawing.SystemColors.ScrollBar;
+            this.guna2Panel1.BorderRadius = 2;
+            this.guna2Panel1.Location = new System.Drawing.Point(3, 30);
             this.guna2Panel1.Name = "guna2Panel1";
-            this.guna2Panel1.Size = new System.Drawing.Size(263, 515);
+            this.guna2Panel1.Size = new System.Drawing.Size(263, 496);
             this.guna2Panel1.TabIndex = 15;
             // 
             // PlayerBox1
@@ -524,12 +527,26 @@
             this.guna2ControlBox2.Size = new System.Drawing.Size(42, 24);
             this.guna2ControlBox2.TabIndex = 27;
             // 
+            // guna2HtmlLabel6
+            // 
+            this.guna2HtmlLabel6.AutoSize = false;
+            this.guna2HtmlLabel6.BackColor = System.Drawing.Color.Transparent;
+            this.guna2HtmlLabel6.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.guna2HtmlLabel6.Location = new System.Drawing.Point(3, 9);
+            this.guna2HtmlLabel6.Name = "guna2HtmlLabel6";
+            this.guna2HtmlLabel6.Size = new System.Drawing.Size(263, 15);
+            this.guna2HtmlLabel6.TabIndex = 28;
+            this.guna2HtmlLabel6.Text = "Ваши команды";
+            this.guna2HtmlLabel6.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
+            this.guna2HtmlLabel6.Click += new System.EventHandler(this.guna2HtmlLabel6_Click);
+            // 
             // SelectTeamForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlLight;
             this.ClientSize = new System.Drawing.Size(886, 567);
+            this.Controls.Add(this.guna2HtmlLabel6);
             this.Controls.Add(this.guna2ControlBox2);
             this.Controls.Add(this.guna2ControlBox1);
             this.Controls.Add(this.ContinueButton);
@@ -591,5 +608,6 @@
         private Guna.UI2.WinForms.Guna2BorderlessForm guna2BorderlessForm1;
         private Guna.UI2.WinForms.Guna2ControlBox guna2ControlBox2;
         private Guna.UI2.WinForms.Guna2ControlBox guna2ControlBox1;
+        private Guna.UI2.WinForms.Guna2HtmlLabel guna2HtmlLabel6;
     }
 }
