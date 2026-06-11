@@ -120,20 +120,25 @@ namespace Dota_2_Training_Platform
             switch (step)
             {
                 case EnterWizardStep.Role:
-                    stepTitleLabel.Text = "Как вы хотите продолжить?";
+                    stepTitleLabel.Text = "Кто вы?";
+                    selectedRole = null;
                     break;
                 case EnterWizardStep.Mode:
                     stepTitleLabel.Text = selectedRole == TypeOfEntering.Trainer
-                        ? "Тренер: вход или регистрация"
-                        : "Игрок: вход или регистрация";
+                        ? "Тренер"
+                        : "Игрок";
+                    RegisterModeButton.FillColor = selectedRole == TypeOfEntering.Trainer ? Color.FromArgb(255, 0, 0, 192) : Color.FromArgb(255, 192, 0, 0);
+                    SignInModeButton.FillColor = selectedRole == TypeOfEntering.Trainer ? Color.FromArgb(255, 0, 0, 192) : Color.FromArgb(255, 192, 0, 0);
                     break;
                 case EnterWizardStep.SignIn:
                     stepTitleLabel.Text = "Вход в аккаунт";
-                    BeginInvoke(new Action(() => LoginSignInTextBox.Focus()));
+                    LoginSignInTextBox.Focus();
+                    ConfirmSignInButton.FillColor = selectedRole == TypeOfEntering.Trainer ? Color.FromArgb(255, 0, 0, 192) : Color.FromArgb(255, 192, 0, 0);
                     break;
                 case EnterWizardStep.Register:
                     stepTitleLabel.Text = "Регистрация";
-                    BeginInvoke(new Action(() => LoginRegisterTextBox.Focus()));
+                    LoginRegisterTextBox.Focus();
+                    ConfirmRegisterButton.FillColor = selectedRole == TypeOfEntering.Trainer ? Color.FromArgb(255, 0, 0, 192) : Color.FromArgb(255, 192, 0, 0);
                     break;
             }
         }

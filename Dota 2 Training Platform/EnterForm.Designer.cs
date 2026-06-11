@@ -99,14 +99,14 @@ namespace Dota_2_Training_Platform
             // 
             this.stepTitleLabel.AutoSize = false;
             this.stepTitleLabel.BackColor = System.Drawing.Color.Transparent;
-            this.stepTitleLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.stepTitleLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F);
             this.stepTitleLabel.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.stepTitleLabel.Location = new System.Drawing.Point(0, 58);
+            this.stepTitleLabel.Location = new System.Drawing.Point(0, 54);
             this.stepTitleLabel.Name = "stepTitleLabel";
-            this.stepTitleLabel.Size = new System.Drawing.Size(280, 18);
+            this.stepTitleLabel.Size = new System.Drawing.Size(280, 44);
             this.stepTitleLabel.TabIndex = 3;
-            this.stepTitleLabel.Text = "Как вы хотите продолжить?";
-            this.stepTitleLabel.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
+            this.stepTitleLabel.Text = "Кто вы?";
+            this.stepTitleLabel.TextAlignment = System.Drawing.ContentAlignment.BottomCenter;
             // 
             // enterContentPanel
             // 
@@ -140,8 +140,8 @@ namespace Dota_2_Training_Platform
             this.TrainerRoleButton.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
             this.TrainerRoleButton.DisabledState.FillColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
             this.TrainerRoleButton.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
-            this.TrainerRoleButton.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.TrainerRoleButton.FillColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.TrainerRoleButton.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(192)))));
+            this.TrainerRoleButton.FillColor2 = System.Drawing.Color.Transparent;
             this.TrainerRoleButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.TrainerRoleButton.ForeColor = System.Drawing.Color.White;
             this.TrainerRoleButton.Location = new System.Drawing.Point(28, 132);
@@ -161,8 +161,8 @@ namespace Dota_2_Training_Platform
             this.PlayerRoleButton.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
             this.PlayerRoleButton.DisabledState.FillColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
             this.PlayerRoleButton.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
-            this.PlayerRoleButton.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.PlayerRoleButton.FillColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.PlayerRoleButton.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.PlayerRoleButton.FillColor2 = System.Drawing.Color.Transparent;
             this.PlayerRoleButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.PlayerRoleButton.ForeColor = System.Drawing.Color.White;
             this.PlayerRoleButton.Location = new System.Drawing.Point(28, 56);
@@ -195,7 +195,7 @@ namespace Dota_2_Training_Platform
             this.RegisterModeButton.DisabledState.FillColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
             this.RegisterModeButton.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
             this.RegisterModeButton.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.RegisterModeButton.FillColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.RegisterModeButton.FillColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(42)))), ((int)(((byte)(57)))));
             this.RegisterModeButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.RegisterModeButton.ForeColor = System.Drawing.Color.White;
             this.RegisterModeButton.Location = new System.Drawing.Point(28, 132);
@@ -216,7 +216,7 @@ namespace Dota_2_Training_Platform
             this.SignInModeButton.DisabledState.FillColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
             this.SignInModeButton.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
             this.SignInModeButton.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.SignInModeButton.FillColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.SignInModeButton.FillColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(42)))), ((int)(((byte)(57)))));
             this.SignInModeButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.SignInModeButton.ForeColor = System.Drawing.Color.White;
             this.SignInModeButton.Location = new System.Drawing.Point(28, 56);
@@ -251,7 +251,7 @@ namespace Dota_2_Training_Platform
             this.ConfirmSignInButton.DisabledState.FillColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
             this.ConfirmSignInButton.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
             this.ConfirmSignInButton.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.ConfirmSignInButton.FillColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.ConfirmSignInButton.FillColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(42)))), ((int)(((byte)(57)))));
             this.ConfirmSignInButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.ConfirmSignInButton.ForeColor = System.Drawing.Color.White;
             this.ConfirmSignInButton.Location = new System.Drawing.Point(28, 196);
@@ -359,7 +359,7 @@ namespace Dota_2_Training_Platform
             this.ConfirmRegisterButton.DisabledState.FillColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
             this.ConfirmRegisterButton.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
             this.ConfirmRegisterButton.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.ConfirmRegisterButton.FillColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.ConfirmRegisterButton.FillColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(42)))), ((int)(((byte)(57)))));
             this.ConfirmRegisterButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.ConfirmRegisterButton.ForeColor = System.Drawing.Color.White;
             this.ConfirmRegisterButton.Location = new System.Drawing.Point(28, 228);
@@ -470,7 +470,7 @@ namespace Dota_2_Training_Platform
             // 
             // guna2Panel1
             // 
-            this.guna2Panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(106)))), ((int)(((byte)(125)))), ((int)(((byte)(156)))));
+            this.guna2Panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(49)))), ((int)(((byte)(53)))), ((int)(((byte)(61)))));
             this.guna2Panel1.Controls.Add(this.BackButton);
             this.guna2Panel1.Controls.Add(this.guna2ControlBox1);
             this.guna2Panel1.Controls.Add(this.guna2ControlBox2);
@@ -490,7 +490,7 @@ namespace Dota_2_Training_Platform
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(67)))), ((int)(((byte)(84)))), ((int)(((byte)(110)))));
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(42)))), ((int)(((byte)(57)))));
             this.ClientSize = new System.Drawing.Size(280, 400);
             this.Controls.Add(this.guna2Panel1);
             this.Controls.Add(this.enterContentPanel);
